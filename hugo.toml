@@ -1,0 +1,17 @@
+baseURL = 'https://example.org/'
+locale = 'en-us'
+title = 'Ziheng | Spatial Computing'
+theme = "PaperMod"
+
+
+[params]
+  defaultTheme = "auto"
+  
+  [params.profileMode]
+    enabled = true
+    title = "Ziheng Zhang"
+    subtitle = "Spatial Algorithm Expert | C++ & GIS Developer"
+
+    [[params.profileMode.buttons]]
+      name = "View Projects"
+      url = "/posts/"
