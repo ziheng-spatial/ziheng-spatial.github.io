@@ -1,17 +1,20 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://ziheng-spatial.github.io/'
 locale = 'en-us'
 title = 'Ziheng | Spatial Computing'
 theme = "PaperMod"
 
-
 [params]
   defaultTheme = "auto"
-  
-  [params.profileMode]
-    enabled = true
-    title = "Ziheng Zhang"
-    subtitle = "Spatial Algorithm Expert | C++ & GIS Developer"
+  # 开启返回顶部按钮，解决 iOS 用户滑动长文后的痛点
+  ShowScrollToTop = true
+  # 开启文章阅读时间
+  ShowReadingTime = true
 
-    [[params.profileMode.buttons]]
-      name = "View Projects"
-      url = "/posts/"
+[params.profileMode]
+  enabled = true
+  title = "Ziheng Zhang"
+  subtitle = "Spatial Algorithm Expert | C++ & GIS Developer"
+
+[[params.profileMode.buttons]]
+  name = "View Projects"
+  url = "/posts/"
