@@ -6,6 +6,35 @@
     <description>Recent content in Tags on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>http://localhost:1313/tags/c&#43;&#43;/</link>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GIS</title>
+      <link>http://localhost:1313/tags/gis/</link>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/gis/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Photogrammetry</title>
+      <link>http://localhost:1313/tags/photogrammetry/</link>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/photogrammetry/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Spatial Algorithms</title>
+      <link>http://localhost:1313/tags/spatial-algorithms/</link>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/spatial-algorithms/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

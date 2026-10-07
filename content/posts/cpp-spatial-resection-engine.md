@@ -1,18 +1,39 @@
-+++
-date = '2026-10-06T18:03:41+08:00'
-draft = false
-title = 'Cpp Spatial Resection Engine'
-+++
+---
+title: "C++ 空间后方交会引擎 (Spatial Resection Engine)"
+date: 2026-10-06
+description: "A high-precision single-photo spatial resection engine implemented in pure C++."
+tags: ["C++", "Photogrammetry", "Spatial Algorithms", "GIS"]
+math: true
+---
 
-### Overview
-A high-precision single-photo spatial resection engine implemented in pure C++ for rigorous photogrammetric measurement, featuring collinearity equation linearization and iterative least-squares adjustment.
+在摄影测量与空间信息计算中，单航片空间后方交会（Single-Photo Spatial Resection）是确定影像外方位元素的核心算法。本项目抛弃了高商业门槛的科学计算软件，使用纯 C++ 面向对象编程实现了严密的最小二乘法迭代解算引擎。
 
-### Core Features
-- Rigorous mathematical modeling based on collinearity equations.
-- Automated iteration with convergence criteria checking.
-- Precision evaluation via root mean square error (RMSE).
+### 1. 核心数学模型：共线条件方程
 
-### Source Code
+空间后方交会的理论基础是中心投影的共线条件。像点、投影中心与地面物点三点共线，其严密数学表达式如下：
+
+$$x-x_0=-f\frac{a_1(X-X_S)+b_1(Y-Y_S)+c_1(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}$$
+
+$$y-y_0=-f\frac{a_2(X-X_S)+b_2(Y-Y_S)+c_2(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}$$
+
+其中，$(x, y)$ 为像点坐标，$(x_0, y_0, f)$ 为相机内方位元素，$(X, Y, Z)$ 为地面控制点空间坐标，$(X_S, Y_S, Z_S)$ 为投影中心坐标，$(a_i, b_i, c_i)$ 为由三个外方位角 $(\varphi, \omega, \kappa)$ 构成的旋转矩阵 $R$ 的方向余弦。
+
+### 2. 最小二乘与泰勒级数展开
+
+由于共线方程是高度非线性的，引擎需要对其进行一阶泰勒级数展开，建立线性化的误差方程式：
+
+$$V=AX-L$$
+
+利用最小二乘原理构建法方程式 $A^TAX=A^TL$，通过矩阵求逆解算出外方位元素的改正数 $\Delta X=(A^TA)^{-1}A^TL$，进而进行迭代，直到改正数小于规定的限差准则。
+
+### 3. C++ 算法实现与测试数据
+
+为了验证引擎的可靠性，本程序采用了一组经典的 4 控制点观测数据进行迭代解算与精度评估：
+* **内方位元素**：$f = 153.24$ mm，$x_0 = y_0 = 0$
+* **摄影比例尺**：$m = 40000$
+* 本引擎完全脱离第三方数学库，自研了底层的矩阵转置、相乘与高斯-约当消元求逆运算。
+
+核心 C++ 源码如下：
 
 ```cpp
 #include <iostream>
@@ -215,4 +236,3 @@ int main() {
 
     return 0;
 }
-```
