@@ -6,8 +6,36 @@
     <description>Recent content in Tags on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AutoCAD</title>
+      <link>http://localhost:1313/tags/autocad/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/autocad/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Geomatics</title>
+      <link>http://localhost:1313/tags/geomatics/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/geomatics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Topographic Mapping</title>
+      <link>http://localhost:1313/tags/topographic-mapping/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/topographic-mapping/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Traverse Adjustment</title>
+      <link>http://localhost:1313/tags/traverse-adjustment/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/traverse-adjustment/</guid>
+      <description></description>
+    </item>
     <item>
       <title>C&#43;&#43;</title>
       <link>http://localhost:1313/tags/c&#43;&#43;/</link>

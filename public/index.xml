@@ -6,8 +6,15 @@
     <description>Recent content on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base)</title>
+      <link>http://localhost:1313/posts/digital-topographic-mapping/</link>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/digital-topographic-mapping/</guid>
+      <description>A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.</description>
+    </item>
     <item>
       <title>About</title>
       <link>http://localhost:1313/about/</link>

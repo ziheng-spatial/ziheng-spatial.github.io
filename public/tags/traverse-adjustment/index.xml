@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on Ziheng | Spatial Computing</title>
-    <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Posts on Ziheng | Spatial Computing</description>
+    <title>Traverse Adjustment on Ziheng | Spatial Computing</title>
+    <link>http://localhost:1313/tags/traverse-adjustment/</link>
+    <description>Recent content in Traverse Adjustment on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 07 Oct 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/traverse-adjustment/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base)</title>
       <link>http://localhost:1313/posts/digital-topographic-mapping/</link>
       <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/digital-topographic-mapping/</guid>
       <description>A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.</description>
-    </item>
-    <item>
-      <title>C&#43;&#43; 空间后方交会引擎 (Spatial Resection Engine)</title>
-      <link>http://localhost:1313/posts/cpp-spatial-resection-engine/</link>
-      <pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/cpp-spatial-resection-engine/</guid>
-      <description>A high-precision single-photo spatial resection engine implemented in pure C&#43;&#43;.</description>
     </item>
   </channel>
 </rss>

@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Tags | Ziheng | Spatial Computing</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
+<title>1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base) | Ziheng | Spatial Computing</title>
+<meta name="keywords" content="Geomatics, Topographic Mapping, AutoCAD, Traverse Adjustment">
+<meta name="description" content="A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/tags/">
+<link rel="canonical" href="http://localhost:1313/posts/digital-topographic-mapping/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css" integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/digital-topographic-mapping/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,8 +65,12 @@
     }
 
 </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });"></script>
+
 </head>
-<body class="list" id="top">
+<body id="top">
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
@@ -110,36 +113,61 @@
     </nav>
 </header>
 <main class="main">
-<header class="page-header">
-    <h1>Tags</h1>
-</header>
 
-<ul class="terms-tags">
-            <li>
-                <a href="http://localhost:1313/tags/autocad/">AutoCAD <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43; <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/geomatics/">Geomatics <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/gis/">GIS <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/photogrammetry/">Photogrammetry <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/spatial-algorithms/">Spatial Algorithms <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/topographic-mapping/">Topographic Mapping <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
-            <li>
-                <a href="http://localhost:1313/tags/traverse-adjustment/">Traverse Adjustment <sup><strong><sup>1</sup></strong></sup> </a>
-            </li>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base)
+    </h1>
+    <div class="post-description">
+      A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.
+    </div>
+    <div class="post-meta">
+
+<span title='2026-10-07 00:00:00 +0000 UTC'>October 7, 2026</span>&nbsp;·&nbsp;<span>2 min</span>
+
+</div>
+  </header> 
+  <div class="post-content md-content"><h3 id="1-equipment--geodetic-datum">1. Equipment &amp; Geodetic Datum<a hidden class="anchor" aria-hidden="true" href="#1-equipment--geodetic-datum">#</a></h3>
+<p>High-precision topographic mapping requires stringent adherence to geodetic standards and instrument calibration. For this dual-site project (University Campus &amp; Mountain Internship Base), the spatial framework was established using the <strong>CGCS2000 coordinate system</strong> (Gauss-Kruger projection, 39-degree zone) and the <strong>1985 National Height Datum</strong>.</p>
+<ul>
+<li><strong>Primary Instrument:</strong> South NSTR6 Total Station (2&quot; angular accuracy, ±2mm+2ppm prism distance accuracy, equipped with dual-axis compensation).</li>
+<li><strong>Leveling Instrument:</strong> DS3 Automatic Level with double-faced leveling staves for fourth-order leveling networks.</li>
 </ul>
+<p><img alt="South NSTR6 Controller Data Capture" loading="lazy" src="/images/survey-controller.jpg"></p>
+<h3 id="2-rigorous-control-survey--manual-adjustment">2. Rigorous Control Survey &amp; Manual Adjustment<a hidden class="anchor" aria-hidden="true" href="#2-rigorous-control-survey--manual-adjustment">#</a></h3>
+<p>Before any topographic detailing begins, a robust control network must be established. We deployed closed and intersecting traverse networks (导线测量) alongside fourth-order leveling routes (四等水准测量).</p>
+<p>To ensure absolute mathematical rigor and verify software outputs, all raw traverse observations (including horizontal angles, vertical angles, and slope distances) underwent strict manual adjustment. This included calculating angle closure errors ($f_\beta$), coordinate increment closures, and distributing corrections via least-squares principles.</p>
+<p>As documented in the handwritten accuracy assessment below, the 20-station traverse achieved an angular closure error of only <strong>42&quot;</strong> (well within the 53.67&quot; tolerance) and an exceptional relative linear closure of <strong>1/65,895</strong>—vastly exceeding the standard 1/2000 requirement for secondary traverses.</p>
+<p><em>Top: Field Traverse Observation Record | Middle: Inner Office Adjustment Calculation | Bottom: Manual Accuracy Assessment</em>
+<img alt="Traverse Record" loading="lazy" src="/images/traverse-record.jpg">
+<img alt="Calculation Sheet" loading="lazy" src="/images/traverse-calc.jpg">
+<img alt="Accuracy Assessment" loading="lazy" src="/images/accuracy-assessment.jpg"></p>
+<h3 id="3-field-data-acquisition-detailing">3. Field Data Acquisition (Detailing)<a hidden class="anchor" aria-hidden="true" href="#3-field-data-acquisition-detailing">#</a></h3>
+<p>With the control network mathematically verified, field detailing (碎部测量) was executed using the polar coordinate method. Over 1,900 topographic points were acquired across complex terrains.</p>
+<p>The South NSTR6&rsquo;s reflectorless measurement capability (up to 1000m range) was heavily utilized to capture inaccessible architectural corners and steep terrain features, maintaining a point position RMSE (Root Mean Square Error) of $\le \pm 5$ cm relative to control points. Detailed field sketches were drawn simultaneously to document topological relationships.</p>
+<h3 id="4-digital-cartography--cass-vectorization">4. Digital Cartography &amp; CASS Vectorization<a hidden class="anchor" aria-hidden="true" href="#4-digital-cartography--cass-vectorization">#</a></h3>
+<p>The raw coordinate data was exported and processed using <strong>South CASS / AutoCAD</strong>. Following the national cartographic standards (GB/T 20257.1-2017), the points were vectorized into a comprehensive 1:500 digital topographic map (<code>.dwg</code>).</p>
+<p>The final deliverables accurately model hydrographic features (e.g., Jixia Lake contouring), dense architectural footprints, vegetation boundaries, and independent utility features, complete with proper map framing, legends, and 0.5m interval contour lines for mountainous sections.</p>
+<p><img alt="Topographic Map - Jixia Lake Area" loading="lazy" src="/images/cad-map-lake.jpg">
+<img alt="Vectorized Parcels" loading="lazy" src="/images/cad-parcels.jpg">
+<img alt="Vectorized Buildings" loading="lazy" src="/images/cad-buildings.jpg"></p>
+<hr>
+<p><em>Note: This project demonstrates end-to-end proficiency in traditional geomatics field operations, rigorous mathematical error adjustment, and modern CAD-based spatial vectorization.</em></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/geomatics/">Geomatics</a></li>
+      <li><a href="http://localhost:1313/tags/topographic-mapping/">Topographic Mapping</a></li>
+      <li><a href="http://localhost:1313/tags/autocad/">AutoCAD</a></li>
+      <li><a href="http://localhost:1313/tags/traverse-adjustment/">Traverse Adjustment</a></li>
+    </ul>
+  </footer>
+</article>
     </main>
     
 <footer class="footer">
