@@ -18,3 +18,15 @@ theme = "PaperMod"
 [[params.profileMode.buttons]]
   name = "View Projects"
   url = "/posts/"
+
+[[menu.main]]
+  identifier = "about"
+  name = "About (关于我)"
+  url = "/about/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "posts"
+  name = "Projects (项目库)"
+  url = "/posts/"
+  weight = 20
