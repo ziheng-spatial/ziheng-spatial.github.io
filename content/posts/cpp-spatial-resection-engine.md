@@ -2,6 +2,7 @@
 title: "Industrial-Grade Single-Photo Space Resection Engine in Modern C++"
 date: 2026-10-09
 draft: false
+math: true
 tags: ["C++", "Photogrammetry", "Geomatics", "Numerical Optimization"]
 summary: "High-precision exterior orientation estimation engine built from scratch using Modern C++ and Taylor-expanded Collinearity Condition Equations, optimized for sub-centimeter photogrammetric triangulation."
 ---
