@@ -30,3 +30,8 @@ theme = "PaperMod"
   name = "Projects (项目库)"
   url = "/posts/"
   weight = 20
+  
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

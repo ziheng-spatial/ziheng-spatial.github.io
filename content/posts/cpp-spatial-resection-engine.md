@@ -38,7 +38,23 @@ Because these equations are non-linear with respect to the 6 EOPs, the system li
 
 ## 3. Architecture & Algorithmic Implementation
 
+<pre class="mermaid">
+graph TD
+    A["Input: 4+ Ground Control Points (X, Y, Z) & Image Coords (x, y)"] --> B["Initialize EOPs: Xs0, Ys0, Zs0, phi0, omega0, kappa0"]
+    B --> C["Compute 3D Orthogonal Rotation Matrix R"]
+    C --> D["Calculate Projected Coordinates & Discrepancies L"]
+    D --> E["Formulate Design Matrix A via Partial Derivatives"]
+    E --> F["Construct Normal Equations: N = A^T * A, W = A^T * L"]
+    F --> G["Solve Linear System via LU: delta_X = N^-1 * W"]
+    G --> H["Update Parameters: X = X + delta_X"]
+    H --> I{"Check Convergence: abs(delta_EOP) &lt; Threshold?"}
+    I -- "No (Iter &lt;= Max)" --> C
+    I -- "Yes" --> J["Compute Variance-Covariance Matrix Q_XX & sigma_0"]
+    J --> K["Output Calibrated EOPs & Precision Report"]
+</pre>
+
 ### 3.1 Least-Squares Adjustment Pipeline
+
 The engine executes the iterative least-squares adjustment via the standard normal equations:
 
 $$V = A \cdot \delta X - L, \quad P = I$$
@@ -90,4 +106,4 @@ $$Q_{XX} = (A^T P A)^{-1}$$
 The core implementation is structured as an isolated C++ header-only engine with zero external third-party numerical math dependencies.
 
 * **Repository Architecture**: Decoupled IO parser, Gauss-Markov normal equations assembler, and LU-based matrix solver.
-* **Source Access**: Core pipeline architecture is maintained on GitHub under MIT License. Full production benchmark suites and test GCP vectors are available upon request for commercial integration.
+* **Source Access**: Core pipeline architecture is maintained on GitHub under MIT License. Full production benchmark suites and test GCP vectors are available upon request for commercial integration. 

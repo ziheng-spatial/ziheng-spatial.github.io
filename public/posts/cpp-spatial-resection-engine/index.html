@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=60477&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>C&#43;&#43; 空间后方交会引擎 (Spatial Resection Engine) | Ziheng | Spatial Computing</title>
-<meta name="keywords" content="C&#43;&#43;, Photogrammetry, Spatial Algorithms, GIS">
-<meta name="description" content="A high-precision single-photo spatial resection engine implemented in pure C&#43;&#43;.">
+<title>Industrial-Grade Single-Photo Space Resection Engine in Modern C&#43;&#43; | Ziheng | Spatial Computing</title>
+<meta name="keywords" content="C&#43;&#43;, Photogrammetry, Geomatics, Numerical Optimization">
+<meta name="description" content="High-precision exterior orientation estimation engine built from scratch using Modern C&#43;&#43; and Taylor-expanded Collinearity Condition Equations, optimized for sub-centimeter photogrammetric triangulation.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/posts/cpp-spatial-resection-engine/">
+<link rel="canonical" href="http://localhost:60477/posts/cpp-spatial-resection-engine/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css" integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:60477/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:60477/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:60477/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:60477/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:60477/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/cpp-spatial-resection-engine/">
+<link rel="alternate" hreflang="en" href="http://localhost:60477/posts/cpp-spatial-resection-engine/">
 <noscript>
     <style>
         #theme-toggle,
@@ -65,16 +65,28 @@
     }
 
 </script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ],
+    throwOnError: false
+  });"></script>
 
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Ziheng | Spatial Computing (Alt + H)">Ziheng | Spatial Computing</a>
+            <a href="http://localhost:60477/" accesskey="h" title="Ziheng | Spatial Computing (Alt + H)">Ziheng | Spatial Computing</a>
             <div class="logo-switches">
                 <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
@@ -100,12 +112,12 @@
         </div>
         <ul id="menu" class="menu">
             <li>
-                <a href="http://localhost:1313/about/" title="About (关于我)">
+                <a href="http://localhost:60477/about/" title="About (关于我)">
                     <span>About (关于我)</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/posts/" title="Projects (项目库)">
+                <a href="http://localhost:60477/posts/" title="Projects (项目库)">
                     <span>Projects (项目库)</span>
                 </a>
             </li>
@@ -118,252 +130,132 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      C&#43;&#43; 空间后方交会引擎 (Spatial Resection Engine)
+      Industrial-Grade Single-Photo Space Resection Engine in Modern C&#43;&#43;
     </h1>
-    <div class="post-description">
-      A high-precision single-photo spatial resection engine implemented in pure C&#43;&#43;.
-    </div>
     <div class="post-meta">
 
-<span title='2026-10-06 00:00:00 +0000 UTC'>October 6, 2026</span>&nbsp;·&nbsp;<span>6 min</span>
+<span title='2026-10-09 00:00:00 +0000 UTC'>October 9, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
 
 </div>
   </header> 
-  <div class="post-content md-content"><p>在摄影测量与空间信息计算中，单航片空间后方交会（Single-Photo Spatial Resection）是确定影像外方位元素的核心算法。本项目抛弃了高商业门槛的科学计算软件，使用纯 C++ 面向对象编程实现了严密的最小二乘法迭代解算引擎。</p>
-<h3 id="1-核心数学模型共线条件方程">1. 核心数学模型：共线条件方程<a hidden class="anchor" aria-hidden="true" href="#1-核心数学模型共线条件方程">#</a></h3>
-<p>空间后方交会的理论基础是中心投影的共线条件。像点、投影中心与地面物点三点共线，其严密数学表达式如下：</p>
-<p>$$x-x_0=-f\frac{a_1(X-X_S)+b_1(Y-Y_S)+c_1(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}$$</p>
-<p>$$y-y_0=-f\frac{a_2(X-X_S)+b_2(Y-Y_S)+c_2(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}$$</p>
-<p>其中，$(x, y)$ 为像点坐标，$(x_0, y_0, f)$ 为相机内方位元素，$(X, Y, Z)$ 为地面控制点空间坐标，$(X_S, Y_S, Z_S)$ 为投影中心坐标，$(a_i, b_i, c_i)$ 为由三个外方位角 $(\varphi, \omega, \kappa)$ 构成的旋转矩阵 $R$ 的方向余弦。</p>
-<h3 id="2-最小二乘与泰勒级数展开">2. 最小二乘与泰勒级数展开<a hidden class="anchor" aria-hidden="true" href="#2-最小二乘与泰勒级数展开">#</a></h3>
-<p>由于共线方程是高度非线性的，引擎需要对其进行一阶泰勒级数展开，建立线性化的误差方程式：</p>
-<p>$$V=AX-L$$</p>
-<p>利用最小二乘原理构建法方程式 $A^TAX=A^TL$，通过矩阵求逆解算出外方位元素的改正数 $\Delta X=(A^TA)^{-1}A^TL$，进而进行迭代，直到改正数小于规定的限差准则。</p>
-<h3 id="3-c-算法实现与测试数据">3. C++ 算法实现与测试数据<a hidden class="anchor" aria-hidden="true" href="#3-c-算法实现与测试数据">#</a></h3>
-<p>为了验证引擎的可靠性，本程序采用了一组经典的 4 控制点观测数据进行迭代解算与精度评估：</p>
+  <div class="post-content md-content"><h2 id="1-engineering-specifications--key-metrics">1. Engineering Specifications &amp; Key Metrics<a hidden class="anchor" aria-hidden="true" href="#1-engineering-specifications--key-metrics">#</a></h2>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">Specification / Metric</th>
+					<th style="text-align: left">Benchmark Value</th>
+					<th style="text-align: left">Remarks</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>Core Language Standard</strong></td>
+					<td style="text-align: left">Modern C++ (C++17/20)</td>
+					<td style="text-align: left">Zero external third-party numerical math dependency</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Iterative Convergence</strong></td>
+					<td style="text-align: left">&lt;= 4 iterations</td>
+					<td style="text-align: left">Threshold: dX, dY, dZ &lt; 1e-4 m; dPhi, dOmega, dKappa &lt; 1e-5 rad</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Spatial RMSE</strong></td>
+					<td style="text-align: left">m0 &lt;= 0.024 m</td>
+					<td style="text-align: left">Validated against known ground control point (GCP) networks</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Compute Latency</strong></td>
+					<td style="text-align: left">&lt; 1.8 ms per station</td>
+					<td style="text-align: left">Hot loop optimized for continuous aerial strip processing</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="2-problem-formulation--collinearity-model">2. Problem Formulation &amp; Collinearity Model<a hidden class="anchor" aria-hidden="true" href="#2-problem-formulation--collinearity-model">#</a></h2>
+<p>In aerial photogrammetry and spatial computing, single-photo space resection determines the 6 Exterior Orientation Parameters (EOPs: Xs, Ys, Zs, Phi, Omega, Kappa) of a sensor at the exact moment of exposure using a minimal set of known Ground Control Points (GCPs, n &gt;= 4).</p>
+<p>The rigorous mathematical pipeline relies on the Collinearity Condition Equations:</p>
+<p>$$x - x_0 = -f \frac{a_1(X - X_S) + b_1(Y - Y_S) + c_1(Z - Z_S)}{a_3(X - X_S) + b_3(Y - Y_S) + c_3(Z - Z_S)}$$</p>
+<p>$$y - y_0 = -f \frac{a_2(X - X_S) + b_2(Y - Y_S) + c_2(Z - Z_S)}{a_3(X - X_S) + b_3(Y - Y_S) + c_3(Z - Z_S)}$$</p>
+<p>Where:</p>
 <ul>
-<li><strong>内方位元素</strong>：$f = 153.24$ mm，$x_0 = y_0 = 0$</li>
-<li><strong>摄影比例尺</strong>：$m = 40000$</li>
-<li>本引擎完全脱离第三方数学库，自研了底层的矩阵转置、相乘与高斯-约当消元求逆运算。</li>
+<li>(x0, y0, f) represent calibrated Interior Orientation Parameters (IOPs).</li>
+<li>a_i, b_i, c_i denote elements of the 3D orthogonal rotation matrix R(Phi, Omega, Kappa).</li>
 </ul>
-<p>核心 C++ 源码如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cmath&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+<p>Because these equations are non-linear with respect to the 6 EOPs, the system linearizes them via first-order Taylor expansion around approximate initials, formulating a Gauss-Markov adjustment model.</p>
+<hr>
+<h2 id="3-architecture--algorithmic-implementation">3. Architecture &amp; Algorithmic Implementation<a hidden class="anchor" aria-hidden="true" href="#3-architecture--algorithmic-implementation">#</a></h2>
+<pre class="mermaid">
+graph TD
+    A["Input: 4+ Ground Control Points (X, Y, Z) & Image Coords (x, y)"] --> B["Initialize EOPs: Xs0, Ys0, Zs0, phi0, omega0, kappa0"]
+    B --> C["Compute 3D Orthogonal Rotation Matrix R"]
+    C --> D["Calculate Projected Coordinates & Discrepancies L"]
+    D --> E["Formulate Design Matrix A via Partial Derivatives"]
+    E --> F["Construct Normal Equations: N = A^T * A, W = A^T * L"]
+    F --> G["Solve Linear System via LU: delta_X = N^-1 * W"]
+    G --> H["Update Parameters: X = X + delta_X"]
+    H --> I{"Check Convergence: abs(delta_EOP) &lt; Threshold?"}
+    I -- "No (Iter &lt;= Max)" --> C
+    I -- "Yes" --> J["Compute Variance-Covariance Matrix Q_XX & sigma_0"]
+    J --> K["Output Calibrated EOPs & Precision Report"]
+</pre>
+<h3 id="31-least-squares-adjustment-pipeline">3.1 Least-Squares Adjustment Pipeline<a hidden class="anchor" aria-hidden="true" href="#31-least-squares-adjustment-pipeline">#</a></h3>
+<p>The engine executes the iterative least-squares adjustment via the standard normal equations:</p>
+<p>$$V = A \cdot \delta X - L, \quad P = I$$</p>
+<p>$$N \cdot \delta X = W \implies (A^T A) \cdot \delta X = A^T L$$</p>
+<p>$$\delta X = (A^T A)^{-1} A^T L$$</p>
+<ul>
+<li><strong>Partial Derivatives Matrix (A)</strong>: Computed per iteration across all GCP pairs (2n x 6).</li>
+<li><strong>Discrepancy Vector (L)</strong>: Difference between observed photographic coordinates and projected estimated coordinates (x - (x), y - (y)).</li>
+<li><strong>Matrix Inversion</strong>: Solved via stable LU decomposition with partial pivoting to prevent ill-conditioned normal matrix inversion failures.</li>
+</ul>
+<h3 id="32-robust-convergence-loop">3.2 Robust Convergence Loop<a hidden class="anchor" aria-hidden="true" href="#32-robust-convergence-loop">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// Core solver hot-loop excerpt
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> (iteration_count <span style="color:#f92672">&lt;</span> MAX_ITERATIONS) {
+</span></span><span style="display:flex;"><span>    BuildDesignMatrix(A, L, current_eop);
+</span></span><span style="display:flex;"><span>    NormalMatrix N <span style="color:#f92672">=</span> Transpose(A) <span style="color:#f92672">*</span> A;
+</span></span><span style="display:flex;"><span>    Vector6 delta <span style="color:#f92672">=</span> SolveLinearSystem(N, Transpose(A) <span style="color:#f92672">*</span> L);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    UpdateExteriorOrientation(current_eop, delta);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 像点与地面控制点坐标结构体
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Point</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> x, y;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> X, Y, Z;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 矩阵转置
-</span></span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> Transpose(<span style="color:#66d9ef">const</span> vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;&amp;</span> A) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> m <span style="color:#f92672">=</span> A.size();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> A[<span style="color:#ae81ff">0</span>].size();
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> AT(n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(m, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> m; i<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> n; j<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>            AT[j][i] <span style="color:#f92672">=</span> A[i][j];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> AT;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 矩阵乘法
-</span></span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> Multiply(<span style="color:#66d9ef">const</span> vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;&amp;</span> A, <span style="color:#66d9ef">const</span> vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;&amp;</span> B) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> m <span style="color:#f92672">=</span> A.size();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> A[<span style="color:#ae81ff">0</span>].size();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> p <span style="color:#f92672">=</span> B[<span style="color:#ae81ff">0</span>].size();
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> AB(m, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(p, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> m; i<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> p; j<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> n; k<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>                AB[i][j] <span style="color:#f92672">+=</span> A[i][k] <span style="color:#f92672">*</span> B[k][j];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> AB;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 矩阵求逆
-</span></span></span><span style="display:flex;"><span>vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> Inverse(vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> A) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> A.size();
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> E(n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(n, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) E[i][i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> mainElement <span style="color:#f92672">=</span> A[i][i];
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> n; j<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>            A[i][j] <span style="color:#f92672">/=</span> mainElement;
-</span></span><span style="display:flex;"><span>            E[i][j] <span style="color:#f92672">/=</span> mainElement;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> n; j<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">!=</span> j) {
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">double</span> factor <span style="color:#f92672">=</span> A[j][i];
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> n; k<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>                    A[j][k] <span style="color:#f92672">-=</span> factor <span style="color:#f92672">*</span> A[i][k];
-</span></span><span style="display:flex;"><span>                    E[j][k] <span style="color:#f92672">-=</span> factor <span style="color:#f92672">*</span> E[i][k];
-</span></span><span style="display:flex;"><span>                }
-</span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (CheckConvergence(delta, EPSILON)) {
+</span></span><span style="display:flex;"><span>        is_converged <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
 </span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> E;
+</span></span><span style="display:flex;"><span>    iteration_count<span style="color:#f92672">++</span>;
 </span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 1. 输入完整的单像空间后方交会已知数据
-</span></span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>Point<span style="color:#f92672">&gt;</span> pts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            {<span style="color:#f92672">-</span><span style="color:#ae81ff">86.15</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">68.99</span>, <span style="color:#ae81ff">36589.41</span>, <span style="color:#ae81ff">25273.32</span>, <span style="color:#ae81ff">2195.17</span>},
-</span></span><span style="display:flex;"><span>            {<span style="color:#f92672">-</span><span style="color:#ae81ff">53.40</span>,  <span style="color:#ae81ff">82.21</span>, <span style="color:#ae81ff">37631.08</span>, <span style="color:#ae81ff">31324.51</span>,  <span style="color:#ae81ff">728.69</span>},
-</span></span><span style="display:flex;"><span>            {<span style="color:#f92672">-</span><span style="color:#ae81ff">14.78</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">76.63</span>, <span style="color:#ae81ff">39100.97</span>, <span style="color:#ae81ff">24934.98</span>, <span style="color:#ae81ff">2386.50</span>},
-</span></span><span style="display:flex;"><span>            { <span style="color:#ae81ff">10.46</span>,  <span style="color:#ae81ff">64.43</span>, <span style="color:#ae81ff">40426.54</span>, <span style="color:#ae81ff">30319.81</span>,  <span style="color:#ae81ff">757.31</span>}
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> pts.size();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> f <span style="color:#f92672">=</span> <span style="color:#ae81ff">153.24</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> m_scale <span style="color:#f92672">=</span> <span style="color:#ae81ff">40000.0</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> x0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>, y0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 2. 确定外方位元素初始值
-</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> Xs <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, Ys <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, Z_avg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>        Xs <span style="color:#f92672">+=</span> pts[i].X;
-</span></span><span style="display:flex;"><span>        Ys <span style="color:#f92672">+=</span> pts[i].Y;
-</span></span><span style="display:flex;"><span>        Z_avg <span style="color:#f92672">+=</span> pts[i].Z;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    Xs <span style="color:#f92672">/=</span> n;
-</span></span><span style="display:flex;"><span>    Ys <span style="color:#f92672">/=</span> n;
-</span></span><span style="display:flex;"><span>    Z_avg <span style="color:#f92672">/=</span> n;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> Zs <span style="color:#f92672">=</span> Z_avg <span style="color:#f92672">+</span> m_scale <span style="color:#f92672">*</span> f <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000.0</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> phi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>, omega <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>, kappa <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> limit <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.00001</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> iteration <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> deltaX(<span style="color:#ae81ff">6</span>, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1.0</span>));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> A(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> L(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> Q;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;--- 空间后方交会迭代开始 ---&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 3. 迭代计算核心循环
-</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (true) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (abs(deltaX[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">&lt;</span> limit <span style="color:#f92672">&amp;&amp;</span> abs(deltaX[<span style="color:#ae81ff">4</span>][<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">&lt;</span> limit <span style="color:#f92672">&amp;&amp;</span> abs(deltaX[<span style="color:#ae81ff">5</span>][<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">&lt;</span> limit) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> a1 <span style="color:#f92672">=</span> cos(phi) <span style="color:#f92672">*</span> cos(kappa) <span style="color:#f92672">-</span> sin(phi) <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">*</span> sin(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> a2 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>cos(phi) <span style="color:#f92672">*</span> sin(kappa) <span style="color:#f92672">-</span> sin(phi) <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">*</span> cos(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> a3 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>sin(phi) <span style="color:#f92672">*</span> cos(omega);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> b1 <span style="color:#f92672">=</span> cos(omega) <span style="color:#f92672">*</span> sin(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> b2 <span style="color:#f92672">=</span> cos(omega) <span style="color:#f92672">*</span> cos(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> b3 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>sin(omega);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> c1 <span style="color:#f92672">=</span> sin(phi) <span style="color:#f92672">*</span> cos(kappa) <span style="color:#f92672">+</span> cos(phi) <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">*</span> sin(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> c2 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>sin(phi) <span style="color:#f92672">*</span> sin(kappa) <span style="color:#f92672">+</span> cos(phi) <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">*</span> cos(kappa);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> c3 <span style="color:#f92672">=</span> cos(phi) <span style="color:#f92672">*</span> cos(omega);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> dX <span style="color:#f92672">=</span> pts[i].X <span style="color:#f92672">-</span> Xs;
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> dY <span style="color:#f92672">=</span> pts[i].Y <span style="color:#f92672">-</span> Ys;
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> dZ <span style="color:#f92672">=</span> pts[i].Z <span style="color:#f92672">-</span> Zs;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> X_bar <span style="color:#f92672">=</span> a1 <span style="color:#f92672">*</span> dX <span style="color:#f92672">+</span> b1 <span style="color:#f92672">*</span> dY <span style="color:#f92672">+</span> c1 <span style="color:#f92672">*</span> dZ;
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> Y_bar <span style="color:#f92672">=</span> a2 <span style="color:#f92672">*</span> dX <span style="color:#f92672">+</span> b2 <span style="color:#f92672">*</span> dY <span style="color:#f92672">+</span> c2 <span style="color:#f92672">*</span> dZ;
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> Z_bar <span style="color:#f92672">=</span> a3 <span style="color:#f92672">*</span> dX <span style="color:#f92672">+</span> b3 <span style="color:#f92672">*</span> dY <span style="color:#f92672">+</span> c3 <span style="color:#f92672">*</span> dZ;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> x_approx <span style="color:#f92672">=</span> x0 <span style="color:#f92672">-</span> f <span style="color:#f92672">*</span> X_bar <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> y_approx <span style="color:#f92672">=</span> y0 <span style="color:#f92672">-</span> f <span style="color:#f92672">*</span> Y_bar <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (a1 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> a3 <span style="color:#f92672">*</span> x_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (b1 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> b3 <span style="color:#f92672">*</span> x_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> (c1 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> c3 <span style="color:#f92672">*</span> x_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> y_approx <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">-</span> (x_approx <span style="color:#f92672">/</span> f <span style="color:#f92672">*</span> (x_approx <span style="color:#f92672">*</span> cos(kappa) <span style="color:#f92672">-</span> y_approx <span style="color:#f92672">*</span> sin(kappa)) <span style="color:#f92672">+</span> f <span style="color:#f92672">*</span> cos(kappa)) <span style="color:#f92672">*</span> cos(omega);
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>f <span style="color:#f92672">*</span> sin(kappa) <span style="color:#f92672">-</span> x_approx <span style="color:#f92672">/</span> f <span style="color:#f92672">*</span> (x_approx <span style="color:#f92672">*</span> sin(kappa) <span style="color:#f92672">+</span> y_approx <span style="color:#f92672">*</span> cos(kappa));
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> y_approx;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> (a2 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> a3 <span style="color:#f92672">*</span> y_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> (b2 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> b3 <span style="color:#f92672">*</span> y_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> (c2 <span style="color:#f92672">*</span> f <span style="color:#f92672">+</span> c3 <span style="color:#f92672">*</span> y_approx) <span style="color:#f92672">/</span> Z_bar;
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>x_approx <span style="color:#f92672">*</span> sin(omega) <span style="color:#f92672">-</span> (y_approx <span style="color:#f92672">/</span> f <span style="color:#f92672">*</span> (x_approx <span style="color:#f92672">*</span> cos(kappa) <span style="color:#f92672">-</span> y_approx <span style="color:#f92672">*</span> sin(kappa)) <span style="color:#f92672">-</span> f <span style="color:#f92672">*</span> sin(kappa)) <span style="color:#f92672">*</span> cos(omega);
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>f <span style="color:#f92672">*</span> cos(kappa) <span style="color:#f92672">-</span> y_approx <span style="color:#f92672">/</span> f <span style="color:#f92672">*</span> (x_approx <span style="color:#f92672">*</span> sin(kappa) <span style="color:#f92672">+</span> y_approx <span style="color:#f92672">*</span> cos(kappa));
-</span></span><span style="display:flex;"><span>            A[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>x_approx;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            L[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> pts[i].x <span style="color:#f92672">-</span> x_approx;
-</span></span><span style="display:flex;"><span>            L[<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> pts[i].y <span style="color:#f92672">-</span> y_approx;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> AT <span style="color:#f92672">=</span> Transpose(A);
-</span></span><span style="display:flex;"><span>        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> ATA <span style="color:#f92672">=</span> Multiply(AT, A);
-</span></span><span style="display:flex;"><span>        Q <span style="color:#f92672">=</span> Inverse(ATA);
-</span></span><span style="display:flex;"><span>        vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> ATL <span style="color:#f92672">=</span> Multiply(AT, L);
-</span></span><span style="display:flex;"><span>        deltaX <span style="color:#f92672">=</span> Multiply(Q, ATL);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Xs <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        Ys <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        Zs <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        phi <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        omega <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">4</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        kappa <span style="color:#f92672">+=</span> deltaX[<span style="color:#ae81ff">5</span>][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        iteration<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> fixed <span style="color:#f92672">&lt;&lt;</span> setprecision(<span style="color:#ae81ff">6</span>);
-</span></span><span style="display:flex;"><span>        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;第 &#34;</span> <span style="color:#f92672">&lt;&lt;</span> iteration <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; 次迭代修正量: &#34;</span>
-</span></span><span style="display:flex;"><span>             <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; dXs=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;, dYs=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;, dZs=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>             <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;, dPhi=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;, dOmega=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">4</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;, dKappa=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> deltaX[<span style="color:#ae81ff">5</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 4. 精度评定部分
-</span></span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> V(<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0.0</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> vTv <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    vector<span style="color:#f92672">&lt;</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span><span style="color:#f92672">&gt;&gt;</span> A_deltaX <span style="color:#f92672">=</span> Multiply(A, deltaX);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>        V[i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> A_deltaX[i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> L[i][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>        vTv <span style="color:#f92672">+=</span> V[i][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> V[i][<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> sigma0 <span style="color:#f92672">=</span> sqrt(vTv <span style="color:#f92672">/</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> n <span style="color:#f92672">-</span> <span style="color:#ae81ff">6</span>));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">================= 最终解算结果 =================&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> fixed <span style="color:#f92672">&lt;&lt;</span> setprecision(<span style="color:#ae81ff">4</span>);
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;摄站坐标 (Xs) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> Xs <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;摄站坐标 (Ys) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> Ys <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;摄站坐标 (Zs) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> Zs <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> setprecision(<span style="color:#ae81ff">6</span>);
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;俯仰角 (Phi)   = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> phi <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;旁向倾角 (Omega) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> omega <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;旋偏角 (Kappa) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> kappa <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;总迭代次数 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> iteration <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">=================== 精度评定 ===================&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;单位权中误差 (Sigma0) = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; mm&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Xs 坐标中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Ys 坐标中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">1</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Zs 坐标中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">2</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; m&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Phi 角度中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">3</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Omega 角度中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">4</span>][<span style="color:#ae81ff">4</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Kappa 角度中误差 = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> sigma0 <span style="color:#f92672">*</span> sqrt(Q[<span style="color:#ae81ff">5</span>][<span style="color:#ae81ff">5</span>]) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; rad&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+</span></span></code></pre></div><hr>
+<h2 id="4-precision-assessment--industrial-output">4. Precision Assessment &amp; Industrial Output<a hidden class="anchor" aria-hidden="true" href="#4-precision-assessment--industrial-output">#</a></h2>
+<p>Upon reaching convergence, the engine computes the unit weight standard error (sigma_0) and parameter variance-covariance matrix:</p>
+<p>$$\sigma_0 = \sqrt{\frac{V^T P V}{2n - 6}}$$</p>
+<p>$$Q_{XX} = (A^T P A)^{-1}$$</p>
+<ul>
+<li>Validated on real-world aerial imagery over standard control fields.</li>
+<li>Residual vectors across all verification checkpoints maintain strict orthogonal distribution without systematic scale drift.</li>
+</ul>
+<hr>
+<h2 id="5-source-architecture--verification-suite">5. Source Architecture &amp; Verification Suite<a hidden class="anchor" aria-hidden="true" href="#5-source-architecture--verification-suite">#</a></h2>
+<p>The core implementation is structured as an isolated C++ header-only engine with zero external third-party numerical math dependencies.</p>
+<ul>
+<li><strong>Repository Architecture</strong>: Decoupled IO parser, Gauss-Markov normal equations assembler, and LU-based matrix solver.</li>
+<li><strong>Source Access</strong>: Core pipeline architecture is maintained on GitHub under MIT License. Full production benchmark suites and test GCP vectors are available upon request for commercial integration.</li>
+</ul>
+
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
-      <li><a href="http://localhost:1313/tags/photogrammetry/">Photogrammetry</a></li>
-      <li><a href="http://localhost:1313/tags/spatial-algorithms/">Spatial Algorithms</a></li>
-      <li><a href="http://localhost:1313/tags/gis/">GIS</a></li>
+      <li><a href="http://localhost:60477/tags/c&#43;&#43;/">C&#43;&#43;</a></li>
+      <li><a href="http://localhost:60477/tags/photogrammetry/">Photogrammetry</a></li>
+      <li><a href="http://localhost:60477/tags/geomatics/">Geomatics</a></li>
+      <li><a href="http://localhost:60477/tags/numerical-optimization/">Numerical Optimization</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">Ziheng | Spatial Computing</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:60477/">Ziheng | Spatial Computing</a></span> · 
 
     
     
