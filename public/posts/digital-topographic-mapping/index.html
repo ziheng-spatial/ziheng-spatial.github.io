@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=60477&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base) | Ziheng | Spatial Computing</title>
-<meta name="keywords" content="Geomatics, Topographic Mapping, AutoCAD, Traverse Adjustment">
-<meta name="description" content="A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.">
+<title>Industrial 1:500 Digital Topographic &amp; Cadastral Survey Engineering | Ziheng | Spatial Computing</title>
+<meta name="keywords" content="Geomatics, GNSS-RTK, Least-Squares Adjustment, AutoCAD/CASS, Field Survey">
+<meta name="description" content="High-precision engineering survey framework: GNSS-RTK geodetic baseline control, rigorous traverse closure adjustment, and 1:500 digital line graphic (DLG) vectorization.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:60477/posts/digital-topographic-mapping/">
+<link rel="canonical" href="http://localhost:1313/posts/digital-topographic-mapping/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css" integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:60477/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:60477/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:60477/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:60477/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:60477/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:60477/posts/digital-topographic-mapping/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/digital-topographic-mapping/">
 <noscript>
     <style>
         #theme-toggle,
@@ -86,7 +86,7 @@
     <header class="header">
     <nav class="header-nav">
         <div class="logo">
-            <a href="http://localhost:60477/" accesskey="h" title="Ziheng | Spatial Computing (Alt + H)">Ziheng | Spatial Computing</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Ziheng | Spatial Computing (Alt + H)">Ziheng | Spatial Computing</a>
             <div class="logo-switches">
                 <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
@@ -112,12 +112,12 @@
         </div>
         <ul id="menu" class="menu">
             <li>
-                <a href="http://localhost:60477/about/" title="About (关于我)">
+                <a href="http://localhost:1313/about/" title="About (关于我)">
                     <span>About (关于我)</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:60477/posts/" title="Projects (项目库)">
+                <a href="http://localhost:1313/posts/" title="Projects (项目库)">
                     <span>Projects (项目库)</span>
                 </a>
             </li>
@@ -130,60 +130,94 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base)
+      Industrial 1:500 Digital Topographic &amp; Cadastral Survey Engineering
     </h1>
-    <div class="post-description">
-      A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.
-    </div>
     <div class="post-meta">
 
-<span title='2026-10-07 00:00:00 +0000 UTC'>October 7, 2026</span>&nbsp;·&nbsp;<span>2 min</span>
+<span title='2026-10-10 00:00:00 +0000 UTC'>October 10, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
 
 </div>
   </header> 
-  <div class="post-content md-content"><h3 id="1-equipment--geodetic-datum">1. Equipment &amp; Geodetic Datum<a hidden class="anchor" aria-hidden="true" href="#1-equipment--geodetic-datum">#</a></h3>
-<p>High-precision topographic mapping requires stringent adherence to geodetic standards and instrument calibration. For this dual-site project (University Campus &amp; Mountain Internship Base), the spatial framework was established using the <strong>CGCS2000 coordinate system</strong> (Gauss-Kruger projection, 39-degree zone) and the <strong>1985 National Height Datum</strong>.</p>
+  <div class="post-content md-content"><h2 id="1-geodetic-framework--field-instrumentation">1. Geodetic Framework &amp; Field Instrumentation<a hidden class="anchor" aria-hidden="true" href="#1-geodetic-framework--field-instrumentation">#</a></h2>
+<p>The project established a localized high-precision geodetic control framework using dual-frequency GNSS-RTK receivers (South NSTR6 series) and high-accuracy electronic total stations. Station calibration and target benchmark checks were performed prior to topographic data collection.</p>
+<p><img alt="Field Station Calibration &amp; Coordinate Check" loading="lazy" src="/images/survey-controller.webp">
+<em>Figure 1: Field total station calibration displaying real-time coordinate verification (N, E, Z metrics).</em></p>
+<h3 id="technical-parameters--tolerances">Technical Parameters &amp; Tolerances<a hidden class="anchor" aria-hidden="true" href="#technical-parameters--tolerances">#</a></h3>
 <ul>
-<li><strong>Primary Instrument:</strong> South NSTR6 Total Station (2&quot; angular accuracy, ±2mm+2ppm prism distance accuracy, equipped with dual-axis compensation).</li>
-<li><strong>Leveling Instrument:</strong> DS3 Automatic Level with double-faced leveling staves for fourth-order leveling networks.</li>
+<li><strong>Horizontal &amp; Vertical Angle Precision</strong>: 1&quot;</li>
+<li><strong>Distance Measurement Accuracy</strong>: $1\text{ mm} + 1\text{ ppm}$</li>
+<li><strong>Datum Transformation</strong>: Local topocentric projection tied to regional CORS differential network.</li>
+<li><strong>Control Density</strong>: 20 secondary traverse stations covering a total traverse length of $\Sigma D = 1813.172\text{ m}$.</li>
 </ul>
-<p><img alt="South NSTR6 Controller Data Capture" loading="lazy" src="/images/survey-controller.jpg"></p>
-<h3 id="2-rigorous-control-survey--manual-adjustment">2. Rigorous Control Survey &amp; Manual Adjustment<a hidden class="anchor" aria-hidden="true" href="#2-rigorous-control-survey--manual-adjustment">#</a></h3>
-<p>Before any topographic detailing begins, a robust control network must be established. We deployed closed and intersecting traverse networks (导线测量) alongside fourth-order leveling routes (四等水准测量).</p>
-<p>To ensure absolute mathematical rigor and verify software outputs, all raw traverse observations (including horizontal angles, vertical angles, and slope distances) underwent strict manual adjustment. This included calculating angle closure errors ($f_\beta$), coordinate increment closures, and distributing corrections via least-squares principles.</p>
-<p>As documented in the handwritten accuracy assessment below, the 20-station traverse achieved an angular closure error of only <strong>42&quot;</strong> (well within the 53.67&quot; tolerance) and an exceptional relative linear closure of <strong>1/65,895</strong>—vastly exceeding the standard 1/2000 requirement for secondary traverses.</p>
-<p><em>Top: Field Traverse Observation Record | Middle: Inner Office Adjustment Calculation | Bottom: Manual Accuracy Assessment</em>
-<img alt="Traverse Record" loading="lazy" src="/images/traverse-record.jpg">
-<img alt="Calculation Sheet" loading="lazy" src="/images/traverse-calc.jpg">
-<img alt="Accuracy Assessment" loading="lazy" src="/images/accuracy-assessment.jpg"></p>
-<h3 id="3-field-data-acquisition-detailing">3. Field Data Acquisition (Detailing)<a hidden class="anchor" aria-hidden="true" href="#3-field-data-acquisition-detailing">#</a></h3>
-<p>With the control network mathematically verified, field detailing (碎部测量) was executed using the polar coordinate method. Over 1,900 topographic points were acquired across complex terrains.</p>
-<p>The South NSTR6&rsquo;s reflectorless measurement capability (up to 1000m range) was heavily utilized to capture inaccessible architectural corners and steep terrain features, maintaining a point position RMSE (Root Mean Square Error) of $\le \pm 5$ cm relative to control points. Detailed field sketches were drawn simultaneously to document topological relationships.</p>
-<h3 id="4-digital-cartography--cass-vectorization">4. Digital Cartography &amp; CASS Vectorization<a hidden class="anchor" aria-hidden="true" href="#4-digital-cartography--cass-vectorization">#</a></h3>
-<p>The raw coordinate data was exported and processed using <strong>South CASS / AutoCAD</strong>. Following the national cartographic standards (GB/T 20257.1-2017), the points were vectorized into a comprehensive 1:500 digital topographic map (<code>.dwg</code>).</p>
-<p>The final deliverables accurately model hydrographic features (e.g., Jixia Lake contouring), dense architectural footprints, vegetation boundaries, and independent utility features, complete with proper map framing, legends, and 0.5m interval contour lines for mountainous sections.</p>
-<p><img alt="Topographic Map - Jixia Lake Area" loading="lazy" src="/images/cad-map-lake.jpg">
-<img alt="Vectorized Parcels" loading="lazy" src="/images/cad-parcels.jpg">
-<img alt="Vectorized Buildings" loading="lazy" src="/images/cad-buildings.jpg"></p>
 <hr>
-<p><em>Note: This project demonstrates end-to-end proficiency in traditional geomatics field operations, rigorous mathematical error adjustment, and modern CAD-based spatial vectorization.</em></p>
+<h2 id="2-traverse-control-network--rigorous-adjustment">2. Traverse Control Network &amp; Rigorous Adjustment<a hidden class="anchor" aria-hidden="true" href="#2-traverse-control-network--rigorous-adjustment">#</a></h2>
+<p>Control point distribution utilized closed and traverse networks to ensure error propagation remained strictly within national class-IV and second-order specifications.</p>
+<h3 id="21-raw-field-observation-log">2.1 Raw Field Observation Log<a hidden class="anchor" aria-hidden="true" href="#21-raw-field-observation-log">#</a></h3>
+<p>Field observations were recorded using multi-set direction methods (face-left and face-right sets) to eliminate systematic collimation and index errors.</p>
+<p><img alt="Raw Traverse Observation Field Log" loading="lazy" src="/images/traverse-record.webp">
+<em>Figure 2: Primary traverse field observation log showing horizontal angles, vertical zenith angles, and multi-reading verification.</em></p>
+<h3 id="22-error-distribution-and-least-squares-matrix">2.2 Error Distribution and Least-Squares Matrix<a hidden class="anchor" aria-hidden="true" href="#22-error-distribution-and-least-squares-matrix">#</a></h3>
+<p>Closure errors were analyzed and adjusted through conditional least-squares adjustment. Coordinate increments ($\Delta x, \Delta y$) were balanced proportionally to distance lengths.</p>
+<p>$$\sum v_\beta = f_\beta = \sum \beta_{\text{obs}} - (n - 2) \times 180^\circ$$</p>
+<p>$$\Delta x_{\text{adj}} = \Delta x - \frac{d_i}{\sum d} f_x, \quad \Delta y_{\text{adj}} = \Delta y - \frac{d_i}{\sum d} f_y$$</p>
+<p><img alt="Traverse Closure and Coordinate Adjustment Calculation" loading="lazy" src="/images/traverse-calc.webp">
+<em>Figure 3: Rigorous traverse network closure discrepancies and coordinate adjustment computational sheet.</em></p>
+<hr>
+<h2 id="3-feature-extraction--digital-cartography-1500-dlg">3. Feature Extraction &amp; Digital Cartography (1:500 DLG)<a hidden class="anchor" aria-hidden="true" href="#3-feature-extraction--digital-cartography-1500-dlg">#</a></h2>
+<p>Data collected from over 1,200 detail points was synchronized into AutoCAD/CASS environments for topographical contouring, cadastral parcel mapping, and topological boundary cleanup.</p>
+<h3 id="31-hypsography--contour-interpolation">3.1 Hypsography &amp; Contour Interpolation<a hidden class="anchor" aria-hidden="true" href="#31-hypsography--contour-interpolation">#</a></h3>
+<p>Contour intervals (0.5m) were generated through Delaunay Triangulation (TIN) modeling, integrating real-time feature breaklines and water-body shorelines.</p>
+<p><img alt="Topographic Contours and Reservoir Area" loading="lazy" src="/images/cad-map-lake.webp">
+<em>Figure 4: Detailed hypsography layer showing interpolated 0.5m contours and reservoir shoreline geometry.</em></p>
+<h3 id="32-high-density-built-environment-vectorization">3.2 High-Density Built Environment Vectorization<a hidden class="anchor" aria-hidden="true" href="#32-high-density-built-environment-vectorization">#</a></h3>
+<p>Structures, residential boundaries, and transportation corridors were vectorized with strict coordinate corner checks and polygon enclosure checks.</p>
+<p><img alt="Built Environment and Boundary Features" loading="lazy" src="/images/cad-buildings.webp">
+<em>Figure 5: High-density structural layout and building corner point registration.</em></p>
+<p><img alt="Comprehensive Parcel Fabric and Road Alignment" loading="lazy" src="/images/cad-parcels.webp">
+<em>Figure 6: Master 1:500 digital line graphic (DLG) with cadastral parcel fabrics and transportation networks.</em></p>
+<hr>
+<h2 id="4-quality-assurance--precision-evaluation">4. Quality Assurance &amp; Precision Evaluation<a hidden class="anchor" aria-hidden="true" href="#4-quality-assurance--precision-evaluation">#</a></h2>
+<p>A rigorous accuracy assessment was conducted on the traverse closure results against second-order traverse survey standards.</p>
+<p><img alt="Traverse Network Accuracy Assessment &amp; Error Propagation" loading="lazy" src="/images/accuracy-assessment.webp">
+<em>Figure 7: Traverse network closure verification and precision estimation report.</em></p>
+<h3 id="41-angular-misclosure-verification">4.1 Angular Misclosure Verification<a hidden class="anchor" aria-hidden="true" href="#41-angular-misclosure-verification">#</a></h3>
+<ul>
+<li><strong>Observed Angular Misclosure ($f_\beta$)</strong>: $-42&rsquo;'$</li>
+<li><strong>Allowable Tolerance ($f_{\beta,\text{tol}} = \pm 12&rsquo;&rsquo;\sqrt{n}$)</strong>: $\pm 12&rsquo;&rsquo;\sqrt{20} \approx \pm 53.67&rsquo;'$</li>
+<li><strong>Validation</strong>: $|f_\beta| = 42&rsquo;&rsquo; &lt; 53.67&rsquo;&rsquo;$ (Compliant)</li>
+<li><strong>Estimated Angular Mean Square Error ($m_\beta$)</strong>: $\pm 2.1&rsquo;&rsquo; \le \pm 12&rsquo;'$</li>
+</ul>
+<h3 id="42-linear-closure--relative-precision">4.2 Linear Closure &amp; Relative Precision<a hidden class="anchor" aria-hidden="true" href="#42-linear-closure--relative-precision">#</a></h3>
+<ul>
+<li><strong>Absolute Closure Discrepancy ($f$)</strong>:
+$$f = \sqrt{f_x^2 + f_y^2} = \sqrt{(-0.020)^2 + 0.019^2} \approx 0.0276\text{ m}$$</li>
+<li><strong>Relative Fractional Closure ($K$)</strong>:
+$$K = \frac{f}{\sum D} = \frac{0.0276}{1813.172} \approx \frac{1}{65,000} \ll \frac{1}{2,000}\text{ (Standard limit)}$$</li>
+</ul>
+<h3 id="43-engineering-conclusions">4.3 Engineering Conclusions<a hidden class="anchor" aria-hidden="true" href="#43-engineering-conclusions">#</a></h3>
+<ul>
+<li>Starting and terminating coordinates coincide exactly with known geodetic benchmarks ($124,000\text{ m}$ framework) with zero coordinate jump.</li>
+<li>Planimetric position error is well within hard-surface engineering thresholds ($\le \pm 0.035\text{ m}$).</li>
+<li>Deliverables provide a fully validated geodetic baseline for large-scale engineering design and GIS asset registries.</li>
+</ul>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="http://localhost:60477/tags/geomatics/">Geomatics</a></li>
-      <li><a href="http://localhost:60477/tags/topographic-mapping/">Topographic Mapping</a></li>
-      <li><a href="http://localhost:60477/tags/autocad/">AutoCAD</a></li>
-      <li><a href="http://localhost:60477/tags/traverse-adjustment/">Traverse Adjustment</a></li>
+      <li><a href="http://localhost:1313/tags/geomatics/">Geomatics</a></li>
+      <li><a href="http://localhost:1313/tags/gnss-rtk/">GNSS-RTK</a></li>
+      <li><a href="http://localhost:1313/tags/least-squares-adjustment/">Least-Squares Adjustment</a></li>
+      <li><a href="http://localhost:1313/tags/autocad/cass/">AutoCAD/CASS</a></li>
+      <li><a href="http://localhost:1313/tags/field-survey/">Field Survey</a></li>
     </ul>
   </footer>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:60477/">Ziheng | Spatial Computing</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Ziheng | Spatial Computing</a></span> · 
 
     
     

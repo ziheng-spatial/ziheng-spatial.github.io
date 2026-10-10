@@ -2,59 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Ziheng | Spatial Computing</title>
-    <link>http://localhost:60477/tags/</link>
+    <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Oct 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:60477/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>C&#43;&#43;</title>
-      <link>http://localhost:60477/tags/c&#43;&#43;/</link>
-      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/c&#43;&#43;/</guid>
+      <title>AutoCAD/CASS</title>
+      <link>http://localhost:1313/tags/autocad/cass/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/autocad/cass/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Field Survey</title>
+      <link>http://localhost:1313/tags/field-survey/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/field-survey/</guid>
       <description></description>
     </item>
     <item>
       <title>Geomatics</title>
-      <link>http://localhost:60477/tags/geomatics/</link>
+      <link>http://localhost:1313/tags/geomatics/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/geomatics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GNSS-RTK</title>
+      <link>http://localhost:1313/tags/gnss-rtk/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/gnss-rtk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Least-Squares Adjustment</title>
+      <link>http://localhost:1313/tags/least-squares-adjustment/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/least-squares-adjustment/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>http://localhost:1313/tags/c&#43;&#43;/</link>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/geomatics/</guid>
+      <guid>http://localhost:1313/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
     <item>
       <title>Numerical Optimization</title>
-      <link>http://localhost:60477/tags/numerical-optimization/</link>
+      <link>http://localhost:1313/tags/numerical-optimization/</link>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/numerical-optimization/</guid>
+      <guid>http://localhost:1313/tags/numerical-optimization/</guid>
       <description></description>
     </item>
     <item>
       <title>Photogrammetry</title>
-      <link>http://localhost:60477/tags/photogrammetry/</link>
+      <link>http://localhost:1313/tags/photogrammetry/</link>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/photogrammetry/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>AutoCAD</title>
-      <link>http://localhost:60477/tags/autocad/</link>
-      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/autocad/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Topographic Mapping</title>
-      <link>http://localhost:60477/tags/topographic-mapping/</link>
-      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/topographic-mapping/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Traverse Adjustment</title>
-      <link>http://localhost:60477/tags/traverse-adjustment/</link>
-      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/tags/traverse-adjustment/</guid>
+      <guid>http://localhost:1313/tags/photogrammetry/</guid>
       <description></description>
     </item>
   </channel>

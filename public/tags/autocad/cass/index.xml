@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AutoCAD/CASS on Ziheng | Spatial Computing</title>
+    <link>http://localhost:1313/tags/autocad/cass/</link>
+    <description>Recent content in AutoCAD/CASS on Ziheng | Spatial Computing</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/autocad/cass/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Industrial 1:500 Digital Topographic &amp; Cadastral Survey Engineering</title>
+      <link>http://localhost:1313/posts/digital-topographic-mapping/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/digital-topographic-mapping/</guid>
+      <description>High-precision engineering survey framework: GNSS-RTK geodetic baseline control, rigorous traverse closure adjustment, and 1:500 digital line graphic (DLG) vectorization.</description>
+    </item>
+  </channel>
+</rss>

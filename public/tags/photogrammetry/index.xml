@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Photogrammetry on Ziheng | Spatial Computing</title>
-    <link>http://localhost:60477/tags/photogrammetry/</link>
+    <link>http://localhost:1313/tags/photogrammetry/</link>
     <description>Recent content in Photogrammetry on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 09 Oct 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:60477/tags/photogrammetry/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/photogrammetry/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Industrial-Grade Single-Photo Space Resection Engine in Modern C&#43;&#43;</title>
-      <link>http://localhost:60477/posts/cpp-spatial-resection-engine/</link>
+      <link>http://localhost:1313/posts/cpp-spatial-resection-engine/</link>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/posts/cpp-spatial-resection-engine/</guid>
+      <guid>http://localhost:1313/posts/cpp-spatial-resection-engine/</guid>
       <description>High-precision exterior orientation estimation engine built from scratch using Modern C++ and Taylor-expanded Collinearity Condition Equations, optimized for sub-centimeter photogrammetric triangulation.</description>
     </item>
   </channel>

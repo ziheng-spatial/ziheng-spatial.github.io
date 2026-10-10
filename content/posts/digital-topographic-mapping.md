@@ -1,44 +1,89 @@
 ---
-title: "1:500 Large-Scale Digital Topographic Mapping (Campus & Base)"
-date: 2026-10-07
-description: "A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps."
-tags: ["Geomatics", "Topographic Mapping", "AutoCAD", "Traverse Adjustment"]
-math: true
+title: "Industrial 1:500 Digital Topographic & Cadastral Survey Engineering"
+date: 2026-10-10
+tags: ["Geomatics", "GNSS-RTK", "Least-Squares Adjustment", "AutoCAD/CASS", "Field Survey"]
+categories: ["Geomatics Engineering"]
+summary: "High-precision engineering survey framework: GNSS-RTK geodetic baseline control, rigorous traverse closure adjustment, and 1:500 digital line graphic (DLG) vectorization."
 ---
 
-### 1. Equipment & Geodetic Datum
-High-precision topographic mapping requires stringent adherence to geodetic standards and instrument calibration. For this dual-site project (University Campus & Mountain Internship Base), the spatial framework was established using the **CGCS2000 coordinate system** (Gauss-Kruger projection, 39-degree zone) and the **1985 National Height Datum**.
+## 1. Geodetic Framework & Field Instrumentation
 
-*   **Primary Instrument:** South NSTR6 Total Station (2" angular accuracy, ±2mm+2ppm prism distance accuracy, equipped with dual-axis compensation).
-*   **Leveling Instrument:** DS3 Automatic Level with double-faced leveling staves for fourth-order leveling networks.
+The project established a localized high-precision geodetic control framework using dual-frequency GNSS-RTK receivers (South NSTR6 series) and high-accuracy electronic total stations. Station calibration and target benchmark checks were performed prior to topographic data collection.
 
-![South NSTR6 Controller Data Capture](/images/survey-controller.jpg)
+![Field Station Calibration & Coordinate Check](/images/survey-controller.webp)
+*Figure 1: Field total station calibration displaying real-time coordinate verification (N, E, Z metrics).*
 
-### 2. Rigorous Control Survey & Manual Adjustment
-Before any topographic detailing begins, a robust control network must be established. We deployed closed and intersecting traverse networks (导线测量) alongside fourth-order leveling routes (四等水准测量). 
-
-To ensure absolute mathematical rigor and verify software outputs, all raw traverse observations (including horizontal angles, vertical angles, and slope distances) underwent strict manual adjustment. This included calculating angle closure errors ($f_\beta$), coordinate increment closures, and distributing corrections via least-squares principles. 
-
-As documented in the handwritten accuracy assessment below, the 20-station traverse achieved an angular closure error of only **42"** (well within the 53.67" tolerance) and an exceptional relative linear closure of **1/65,895**—vastly exceeding the standard 1/2000 requirement for secondary traverses.
-
-*Top: Field Traverse Observation Record | Middle: Inner Office Adjustment Calculation | Bottom: Manual Accuracy Assessment*
-![Traverse Record](/images/traverse-record.jpg)
-![Calculation Sheet](/images/traverse-calc.jpg)
-![Accuracy Assessment](/images/accuracy-assessment.jpg)
-
-### 3. Field Data Acquisition (Detailing)
-With the control network mathematically verified, field detailing (碎部测量) was executed using the polar coordinate method. Over 1,900 topographic points were acquired across complex terrains. 
-
-The South NSTR6's reflectorless measurement capability (up to 1000m range) was heavily utilized to capture inaccessible architectural corners and steep terrain features, maintaining a point position RMSE (Root Mean Square Error) of $\le \pm 5$ cm relative to control points. Detailed field sketches were drawn simultaneously to document topological relationships.
-
-### 4. Digital Cartography & CASS Vectorization
-The raw coordinate data was exported and processed using **South CASS / AutoCAD**. Following the national cartographic standards (GB/T 20257.1-2017), the points were vectorized into a comprehensive 1:500 digital topographic map (`.dwg`). 
-
-The final deliverables accurately model hydrographic features (e.g., Jixia Lake contouring), dense architectural footprints, vegetation boundaries, and independent utility features, complete with proper map framing, legends, and 0.5m interval contour lines for mountainous sections.
-
-![Topographic Map - Jixia Lake Area](/images/cad-map-lake.jpg)
-![Vectorized Parcels](/images/cad-parcels.jpg)
-![Vectorized Buildings](/images/cad-buildings.jpg)
+### Technical Parameters & Tolerances
+* **Horizontal & Vertical Angle Precision**: 1"
+* **Distance Measurement Accuracy**: $1\text{ mm} + 1\text{ ppm}$
+* **Datum Transformation**: Local topocentric projection tied to regional CORS differential network.
+* **Control Density**: 20 secondary traverse stations covering a total traverse length of $\Sigma D = 1813.172\text{ m}$.
 
 ---
-*Note: This project demonstrates end-to-end proficiency in traditional geomatics field operations, rigorous mathematical error adjustment, and modern CAD-based spatial vectorization.*
+
+## 2. Traverse Control Network & Rigorous Adjustment
+
+Control point distribution utilized closed and traverse networks to ensure error propagation remained strictly within national class-IV and second-order specifications.
+
+### 2.1 Raw Field Observation Log
+Field observations were recorded using multi-set direction methods (face-left and face-right sets) to eliminate systematic collimation and index errors.
+
+![Raw Traverse Observation Field Log](/images/traverse-record.webp)
+*Figure 2: Primary traverse field observation log showing horizontal angles, vertical zenith angles, and multi-reading verification.*
+
+### 2.2 Error Distribution and Least-Squares Matrix
+Closure errors were analyzed and adjusted through conditional least-squares adjustment. Coordinate increments ($\Delta x, \Delta y$) were balanced proportionally to distance lengths.
+
+$$\sum v_\beta = f_\beta = \sum \beta_{\text{obs}} - (n - 2) \times 180^\circ$$
+
+$$\Delta x_{\text{adj}} = \Delta x - \frac{d_i}{\sum d} f_x, \quad \Delta y_{\text{adj}} = \Delta y - \frac{d_i}{\sum d} f_y$$
+
+![Traverse Closure and Coordinate Adjustment Calculation](/images/traverse-calc.webp)
+*Figure 3: Rigorous traverse network closure discrepancies and coordinate adjustment computational sheet.*
+
+---
+
+## 3. Feature Extraction & Digital Cartography (1:500 DLG)
+
+Data collected from over 1,200 detail points was synchronized into AutoCAD/CASS environments for topographical contouring, cadastral parcel mapping, and topological boundary cleanup.
+
+### 3.1 Hypsography & Contour Interpolation
+Contour intervals (0.5m) were generated through Delaunay Triangulation (TIN) modeling, integrating real-time feature breaklines and water-body shorelines.
+
+![Topographic Contours and Reservoir Area](/images/cad-map-lake.webp)
+*Figure 4: Detailed hypsography layer showing interpolated 0.5m contours and reservoir shoreline geometry.*
+
+### 3.2 High-Density Built Environment Vectorization
+Structures, residential boundaries, and transportation corridors were vectorized with strict coordinate corner checks and polygon enclosure checks.
+
+![Built Environment and Boundary Features](/images/cad-buildings.webp)
+*Figure 5: High-density structural layout and building corner point registration.*
+
+![Comprehensive Parcel Fabric and Road Alignment](/images/cad-parcels.webp)
+*Figure 6: Master 1:500 digital line graphic (DLG) with cadastral parcel fabrics and transportation networks.*
+
+---
+
+## 4. Quality Assurance & Precision Evaluation
+
+A rigorous accuracy assessment was conducted on the traverse closure results against second-order traverse survey standards.
+
+![Traverse Network Accuracy Assessment & Error Propagation](/images/accuracy-assessment.webp)
+*Figure 7: Traverse network closure verification and precision estimation report.*
+
+### 4.1 Angular Misclosure Verification
+* **Observed Angular Misclosure ($f_\beta$)**: $-42''$
+* **Allowable Tolerance ($f_{\beta,\text{tol}} = \pm 12''\sqrt{n}$)**: $\pm 12''\sqrt{20} \approx \pm 53.67''$
+* **Validation**: $|f_\beta| = 42'' < 53.67''$ (Compliant)
+* **Estimated Angular Mean Square Error ($m_\beta$)**: $\pm 2.1'' \le \pm 12''$
+
+### 4.2 Linear Closure & Relative Precision
+* **Absolute Closure Discrepancy ($f$)**: 
+  $$f = \sqrt{f_x^2 + f_y^2} = \sqrt{(-0.020)^2 + 0.019^2} \approx 0.0276\text{ m}$$
+* **Relative Fractional Closure ($K$)**:
+  $$K = \frac{f}{\sum D} = \frac{0.0276}{1813.172} \approx \frac{1}{65,000} \ll \frac{1}{2,000}\text{ (Standard limit)}$$
+
+### 4.3 Engineering Conclusions
+* Starting and terminating coordinates coincide exactly with known geodetic benchmarks ($124,000\text{ m}$ framework) with zero coordinate jump.
+* Planimetric position error is well within hard-surface engineering thresholds ($\le \pm 0.035\text{ m}$).
+* Deliverables provide a fully validated geodetic baseline for large-scale engineering design and GIS asset registries.

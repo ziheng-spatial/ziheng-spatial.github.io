@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Ziheng | Spatial Computing</title>
-    <link>http://localhost:60477/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Ziheng | Spatial Computing</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Oct 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:60477/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Industrial-Grade Single-Photo Space Resection Engine in Modern C&#43;&#43;</title>
-      <link>http://localhost:60477/posts/cpp-spatial-resection-engine/</link>
-      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/posts/cpp-spatial-resection-engine/</guid>
-      <description>High-precision exterior orientation estimation engine built from scratch using Modern C++ and Taylor-expanded Collinearity Condition Equations, optimized for sub-centimeter photogrammetric triangulation.</description>
+      <title>Industrial 1:500 Digital Topographic &amp; Cadastral Survey Engineering</title>
+      <link>http://localhost:1313/posts/digital-topographic-mapping/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/digital-topographic-mapping/</guid>
+      <description>High-precision engineering survey framework: GNSS-RTK geodetic baseline control, rigorous traverse closure adjustment, and 1:500 digital line graphic (DLG) vectorization.</description>
     </item>
     <item>
-      <title>1:500 Large-Scale Digital Topographic Mapping (Campus &amp; Base)</title>
-      <link>http://localhost:60477/posts/digital-topographic-mapping/</link>
-      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:60477/posts/digital-topographic-mapping/</guid>
-      <description>A complete geomatics workflow featuring South NSTR6 data acquisition, rigorous manual traverse adjustment, and CASS vectorization for 1:500 topographical maps.</description>
+      <title>Industrial-Grade Single-Photo Space Resection Engine in Modern C&#43;&#43;</title>
+      <link>http://localhost:1313/posts/cpp-spatial-resection-engine/</link>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/cpp-spatial-resection-engine/</guid>
+      <description>High-precision exterior orientation estimation engine built from scratch using Modern C++ and Taylor-expanded Collinearity Condition Equations, optimized for sub-centimeter photogrammetric triangulation.</description>
     </item>
   </channel>
 </rss>
