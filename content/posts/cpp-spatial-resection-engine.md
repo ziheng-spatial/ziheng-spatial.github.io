@@ -101,7 +101,27 @@ $$Q_{XX} = (A^T P A)^{-1}$$
 
 ---
 
-## 5. Source Architecture & Verification Suite
+## 5. Numerical Stability & Ill-Conditioned Matrix Regularization
+
+In collinearity equation solving via standard Gauss-Newton iteration, normal matrices frequently become ill-conditioned when ground control points (GCPs) exhibit near-coplanar distributions or when high-altitude nadir angles induce extreme parameter cross-correlations between exterior orientation angles $(\varphi, \omega, \kappa)$ and spatial offsets $(X_S, Y_S, Z_S)$.
+
+### 5.1 Condition Number Monitoring & Tikhonov Damping
+The solver computes the condition number $\kappa(N)$ of the normal equation matrix $N = A^T P A$ before inversion:
+
+$$\kappa(N) = \|N\| \cdot \|N^{-1}\|$$
+
+* **Dynamic Damping Trigger**: If $\kappa(N) > 10^8$, adaptive Tikhonov regularization is engaged to enforce stable convergence:
+  $$\Delta X = (A^T P A + \lambda \cdot \text{diag}(A^T P A))^{-1} A^T P L$$
+* **Angle Oscillation Protection**: Step-length factor $\alpha \in (0, 1]$ prevents exterior orientation angles from oscillating beyond boundary conditions.
+
+### 5.2 Convergence Criteria
+* **Correction limits**: $\max(|\Delta X_S|, |\Delta Y_S|, |\Delta Z_S|) < 10^{-4}\text{ m}$
+* **Angular tolerance**: $\max(|\Delta \varphi|, |\Delta \omega|, |\Delta \kappa|) < 10^{-6}\text{ rad}$
+* **Hard upper bound**: 15 iterations (typical well-conditioned dataset converges within 4–6 iterations).
+
+---
+
+## 6. Source Architecture & Verification Suite
 
 The core implementation is structured as an isolated C++ header-only engine with zero external third-party numerical math dependencies.
 
