@@ -14,7 +14,7 @@ Thematic spatial visualization translates multi-dimensional socioeconomic indica
 ### 1.1 Classification Methodology
 Data distributions are classified using Jenks Natural Breaks to minimize within-class variance while maximizing between-class variance:
 
-$$\text{GVF} = 1 - \frac{\sum_{i=1}^k \sum_{j=1}^{n_i} (z_{ij} - \bar{z}_i)^2}{\sum_{j=1}^n (z_j - \bar{z})^2}$$
+$$\text{GVF} = 1 - \frac{\sum\_{i=1}^k \sum\_{j=1}^{n\_i} (z\_{ij} - \bar{z}\_i)^2}{\sum\_{j=1}^n (z\_j - \bar{z})^2}$$
 
 * **Color Palette**: Perceptually uniform, colorblind-safe sequential ramps (deep navy to soft amber) avoiding raw saturated primaries.
 * **Administrative Boundaries**: Dual-line casing with outer masking to maintain visual boundary prominence over dense fills.
