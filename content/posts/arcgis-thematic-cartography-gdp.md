@@ -4,6 +4,7 @@ date: 2026-10-10
 tags: ["ArcGIS", "Cartography", "VBScript", "Choropleth", "Spatial Statistics"]
 categories: ["Geospatial Cartography"]
 summary: "High-standard demographic & macroeconomic thematic mapping workflow featuring natural-breaks classification, fraction-style annotation expressions, and map book automation."
+math: true
 ---
 
 ## 1. Cartographic Hierarchy & Color Harmony
