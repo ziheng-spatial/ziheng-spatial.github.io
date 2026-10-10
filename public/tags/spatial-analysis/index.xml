@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Spatial Analysis on Ziheng | Spatial Computing</title>
+    <link>http://localhost:1313/tags/spatial-analysis/</link>
+    <description>Recent content in Spatial Analysis on Ziheng | Spatial Computing</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Oct 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/spatial-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>3D Municipal Underground Pipeline Network Modeling &amp; Topological Quality Control in ArcGIS</title>
+      <link>http://localhost:1313/posts/arcgis-underground-pipeline-network/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/arcgis-underground-pipeline-network/</guid>
+      <description>Production-grade municipal utility pipeline modeling in ArcGIS: Enterprise Geodatabase schema design, attribute-driven SQL definition queries, dual-layer line styling, and topological integrity enforcement.</description>
+    </item>
+  </channel>
+</rss>

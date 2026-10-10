@@ -9,6 +9,20 @@
     <lastBuildDate>Sat, 10 Oct 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>3D Municipal Underground Pipeline Network Modeling &amp; Topological Quality Control in ArcGIS</title>
+      <link>http://localhost:1313/posts/arcgis-underground-pipeline-network/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/arcgis-underground-pipeline-network/</guid>
+      <description>Production-grade municipal utility pipeline modeling in ArcGIS: Enterprise Geodatabase schema design, attribute-driven SQL definition queries, dual-layer line styling, and topological integrity enforcement.</description>
+    </item>
+    <item>
+      <title>Automated Macroeconomic &amp; Thematic Cartography Engineering in ArcGIS</title>
+      <link>http://localhost:1313/posts/arcgis-thematic-cartography-gdp/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/arcgis-thematic-cartography-gdp/</guid>
+      <description>High-standard demographic &amp;amp; macroeconomic thematic mapping workflow featuring natural-breaks classification, fraction-style annotation expressions, and map book automation.</description>
+    </item>
+    <item>
       <title>Industrial 1:500 Digital Topographic &amp; Cadastral Survey Engineering</title>
       <link>http://localhost:1313/posts/digital-topographic-mapping/</link>
       <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>

@@ -2,19 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/posts/arcgis-underground-pipeline-network/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/arcgis/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/autocad/cass/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/arcgis-thematic-cartography-gdp/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/cartography/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/choropleth/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/field-survey/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/geodatabase/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/geomatics/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/geomatics-engineering/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/geospatial-cartography/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/geospatial-engineering/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/gnss-rtk/</loc>
@@ -29,7 +53,22 @@
     <loc>http://localhost:1313/posts/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/spatial-analysis/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/spatial-statistics/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/topology/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/utility-network/</loc>
+    <lastmod>2026-10-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/vbscript/</loc>
     <lastmod>2026-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>

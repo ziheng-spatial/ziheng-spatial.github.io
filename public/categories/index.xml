@@ -15,5 +15,19 @@
       <guid>http://localhost:1313/categories/geomatics-engineering/</guid>
       <description></description>
     </item>
+    <item>
+      <title>Geospatial Cartography</title>
+      <link>http://localhost:1313/categories/geospatial-cartography/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/geospatial-cartography/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Geospatial Engineering</title>
+      <link>http://localhost:1313/categories/geospatial-engineering/</link>
+      <pubDate>Sat, 10 Oct 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/geospatial-engineering/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

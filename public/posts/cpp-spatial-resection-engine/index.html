@@ -134,7 +134,7 @@
     </h1>
     <div class="post-meta">
 
-<span title='2026-10-09 00:00:00 +0000 UTC'>October 9, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
+<span title='2026-10-09 00:00:00 +0000 UTC'>October 9, 2026</span>&nbsp;·&nbsp;<span>4 min</span>
 
 </div>
   </header> 
@@ -233,7 +233,24 @@ graph TD
 <li>Residual vectors across all verification checkpoints maintain strict orthogonal distribution without systematic scale drift.</li>
 </ul>
 <hr>
-<h2 id="5-source-architecture--verification-suite">5. Source Architecture &amp; Verification Suite<a hidden class="anchor" aria-hidden="true" href="#5-source-architecture--verification-suite">#</a></h2>
+<h2 id="5-numerical-stability--ill-conditioned-matrix-regularization">5. Numerical Stability &amp; Ill-Conditioned Matrix Regularization<a hidden class="anchor" aria-hidden="true" href="#5-numerical-stability--ill-conditioned-matrix-regularization">#</a></h2>
+<p>In collinearity equation solving via standard Gauss-Newton iteration, normal matrices frequently become ill-conditioned when ground control points (GCPs) exhibit near-coplanar distributions or when high-altitude nadir angles induce extreme parameter cross-correlations between exterior orientation angles $(\varphi, \omega, \kappa)$ and spatial offsets $(X_S, Y_S, Z_S)$.</p>
+<h3 id="51-condition-number-monitoring--tikhonov-damping">5.1 Condition Number Monitoring &amp; Tikhonov Damping<a hidden class="anchor" aria-hidden="true" href="#51-condition-number-monitoring--tikhonov-damping">#</a></h3>
+<p>The solver computes the condition number $\kappa(N)$ of the normal equation matrix $N = A^T P A$ before inversion:</p>
+<p>$$\kappa(N) = |N| \cdot |N^{-1}|$$</p>
+<ul>
+<li><strong>Dynamic Damping Trigger</strong>: If $\kappa(N) &gt; 10^8$, adaptive Tikhonov regularization is engaged to enforce stable convergence:
+$$\Delta X = (A^T P A + \lambda \cdot \text{diag}(A^T P A))^{-1} A^T P L$$</li>
+<li><strong>Angle Oscillation Protection</strong>: Step-length factor $\alpha \in (0, 1]$ prevents exterior orientation angles from oscillating beyond boundary conditions.</li>
+</ul>
+<h3 id="52-convergence-criteria">5.2 Convergence Criteria<a hidden class="anchor" aria-hidden="true" href="#52-convergence-criteria">#</a></h3>
+<ul>
+<li><strong>Correction limits</strong>: $\max(|\Delta X_S|, |\Delta Y_S|, |\Delta Z_S|) &lt; 10^{-4}\text{ m}$</li>
+<li><strong>Angular tolerance</strong>: $\max(|\Delta \varphi|, |\Delta \omega|, |\Delta \kappa|) &lt; 10^{-6}\text{ rad}$</li>
+<li><strong>Hard upper bound</strong>: 15 iterations (typical well-conditioned dataset converges within 4–6 iterations).</li>
+</ul>
+<hr>
+<h2 id="6-source-architecture--verification-suite">6. Source Architecture &amp; Verification Suite<a hidden class="anchor" aria-hidden="true" href="#6-source-architecture--verification-suite">#</a></h2>
 <p>The core implementation is structured as an isolated C++ header-only engine with zero external third-party numerical math dependencies.</p>
 <ul>
 <li><strong>Repository Architecture</strong>: Decoupled IO parser, Gauss-Markov normal equations assembler, and LU-based matrix solver.</li>
