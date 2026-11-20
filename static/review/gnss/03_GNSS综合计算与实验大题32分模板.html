@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03_GNSS综合计算与实验大题32分模板</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.75; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .nav-bar { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+  .nav-bar a { color: #00ff80; text-decoration: none; font-weight: 600; font-size: 0.95em; }
+  h1, h2, h3 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin-top: 28px; }
+  h1 { color: #00ff80; font-size: 1.7em; }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; min-width: 110px; }
+  th { background: #161b22; color: #58a6ff; }
+  tr:nth-child(even) { background: #12171f; }
+  code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
+  blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
+  strong { color: #ffa657; }
+</style>
+</head>
+<body>
+<div class="nav-bar"><a href="../index.html">← 返回复习总目录</a></div>
+<div id="content"></div>
+<script type="text/plain" id="md-raw"># 03 GNSS 综合计算与实验大题 32 分模板
+
+> **适用课程与考纲**：山东理工大学（SDUT）《GNSS 原理与应用》期末冲刺（李征航、黄劲松《GPS测量与数据处理（第三版）》，武汉大学出版社）
+> **题型分值**：综合题共 **32 分**（通常为 2 道大题，如 16 分基础计算题 + 16 分控制网设计/实验数据处理综合题，难度偏基础，主体源自 9 次作业与实验报告）
+> **阅卷抢分准则**：计算题严格按“**列标准公式（40%）+ 代入中间过程（30%）+ 数值结果与单位（30%）**”分步给分；实验与方案综合题按“**阶段流程图 + 关键技术指标数字 + 异常排错对策**”踩点给分。
+
+---
+
+## 零、考场 32 分综合题生死线：六大防错铁律总表
+
+| 高危考点模块 | 致命易错表现 | 典型错误示例 | 考场满分防错铁律 |
+| :--- | :--- | :--- | :--- |
+| **1. 控制网时段取整** | 对小数时段四舍五入，或拿小数时段算基线数 | $S_{\min} = 26.2 \to 26$ | 理论最少时段 $S_{\min} = \lceil nm / N \rceil$ **凡有小数一律进一取整**，且后续 $B_A, B_I, B_R$ 必须代入**取整后的整数 $S$** 计算！ |
+| **2. 多余基线数公式** | 误用总基线数减去必要基线数 | 写成 $B_R = B_A - B_N$ | 非独立同步基线不提供平差多余观测，多余基线数必为 **$B_R = B_I - B_N = S(N-1) - (n-1)$**！ |
+| **3. 基线弦长中误差单位** | 距离 $d$ 用米（$\mathrm{m}$）直接代入公式 | $d=800\ \mathrm{m}$ 直接算 $1\times 800$ | 在 $\sigma = \sqrt{a^2 + (b \cdot d)^2}$ 中，当 $a$ 用 $\mathrm{mm}$、$b$ 取 $\mathrm{ppm}$ 前纯数值时，**边长 $d$ 必须化成千米（$\mathrm{km}$）**！ |
+| **4. 高程异常正负号** | 颠倒大地高与正常高的减法顺序 | 写成 $\zeta = H_\gamma - H$ | 死记黄金母式 **$H = H_\gamma + \zeta$** $\implies$ 求高程异常 **$\zeta = H - H_\gamma$**，求正常高 **$H_\gamma = H - \zeta$**（注意负负得正！）。 |
+| **5. 七参数弧秒与尺度** | 旋转角角秒未化弧度直接乘 $10^6\ \mathrm{m}$ 坐标 | 直接代 $\omega_X = 0.5$ 算米 | 正算前必须令 **$\omega(\mathrm{rad}) = \dfrac{\omega''}{206264.8''}$**，尺度 **$m = m_{\mathrm{ppm}} \times 10^{-6}$**；无大地高时严禁拿正常高硬套三维七参数！ |
+| **6. 周内秒（SOW）起点** | 把星期一当每周第 0 天，或漏减东八区 $8^{\mathrm{h}}$ | 星期三取 $D = 2$ | ① 先算 $\mathrm{UTC} = \text{北京时间} - 8^{\mathrm{h}}$；② GPS 周与北斗周均以**星期日 $00\text{:}00\text{:}00$ 为起点**（星期日 $D=0$，星期三 $D=3$）。 |
+
+---
+
+# 上篇：九次作业必考六大基础计算题模板与真题精解
+
+---
+
+## 必考计算一：GNSS 控制网时段数、四类基线数与五大质量限差（作业 6 原题！）
+
+### 1. 标准公式链（设全网共 $n$ 个点，$N$ 台接收机同步观测，每点设计设站 $m$ 次）
+1. **理论最少观测时段数与扩展连通时段数**：
+   $$S_{\min} = \left\lceil \frac{n \cdot m}{N} \right\rceil, \qquad S_{\text{点连}} = \left\lceil \frac{n - 1}{N - 1} \right\rceil, \qquad S_{\text{边连}} = \left\lceil \frac{n - 2}{N - 2} \right\rceil, \qquad S_{\text{网连}} = \left\lceil \frac{n - k}{N - k} \right\rceil$$
+2. **四类基线数、设站效率 $e$ 与平均可靠性指标 $\eta$**（无特别说明时取实际时段数 $S = S_{\min}$）：
+   $$B_A(\text{总基线}) = S \cdot \frac{N(N - 1)}{2}, \qquad B_I(\text{独立基线}) = S \cdot (N - 1)$$
+   $$B_N(\text{必要基线}) = n - 1, \qquad B_R(\text{多余基线}) = B_I - B_N = S(N - 1) - (n - 1)$$
+   $$e = \frac{S_{\min}}{S_D}, \qquad \eta = \frac{B_R}{B_I} = 1 - \frac{n - 1}{S(N - 1)}$$
+3. **基线向量弦长中误差与 GB/T 18314—2009 五大质量检核限差**（固定误差 $a[\mathrm{mm}]$，比例误差 $b[\mathrm{ppm}]$，平均边长 $d[\mathrm{km}]$）：
+   - **弦长中误差**：$\sigma = \sqrt{a^2 + (b \cdot d)^2}\ (\mathrm{mm})$；
+   - **三边同步环闭合差限差**：分量 $\lvert W_X \rvert, \lvert W_Y \rvert, \lvert W_Z \rvert \le \dfrac{\sqrt{3}}{5}\sigma$，全长 $W_S = \sqrt{W_X^2 + W_Y^2 + W_Z^2} \le \dfrac{3}{5}\sigma$；
+   - **$n_{\text{边}}$ 条独立基线构成的异步环闭合差限差**：分量 $\lvert W_X \rvert, \lvert W_Y \rvert, \lvert W_Z \rvert \le 3\sqrt{n_{\text{边}}}\,\sigma$，全长 $W_S \le 3\sqrt{3 n_{\text{边}}}\,\sigma$；
+   - **复测基线长度较差限差**：$d_s \le 2\sqrt{2}\,\sigma$；
+   - **无约束平差基线分量残差限差**：$\lvert V_{\Delta X,Y,Z} \rvert \le 3\sigma$；**约束与无约束残差较差限差**：$\lvert \mathrm{d}V_{\Delta X,Y,Z} \rvert \le 2\sigma$。
+
+---
+
+### 2. 【真题算例 1A】本学期第 6 次作业原题 + 限差扩展综合计算
+
+> **【题目】**：某 D 级 GNSS 控制网由 $n = 80$ 个控制点组成，投入 $N = 5$ 台标称精度为 $\pm(5\ \mathrm{mm} + 1\times 10^{-6}\cdot d)$ 的双频接收机进行同步静态观测，设计要求每点平均设站次数 $m = 4$ 次，全网平均边长 $d = 12\ \mathrm{km}$。
+> (1) 试计算该控制网的理论最少观测时段数 $S_{\min}$、全网基线总数 $B_A$、独立基线数 $B_I$、必要基线数 $B_N$、多余基线数 $B_R$ 及平均可靠性指标 $\eta$；
+> (2) 计算该网基线向量弦长中误差 $\sigma$，以及三边同步环全长限差、四边异步（独立）环分量与全长限差、复测基线长度较差限差。
+
+**【满分分步解答】**：
+1. **计算观测时段数与各类基线指标**（已知 $n = 80,\ N = 5,\ m = 4$）：
+   - 理论最少观测时段数：$S_{\min} = \left\lceil \dfrac{80 \times 4}{5} \right\rceil = \mathbf{64\ (\text{个时段})}$；
+   - 全网基线总数：$B_A = 64 \times \dfrac{5 \times (5 - 1)}{2} = 64 \times 10 = \mathbf{640\ (\text{条})}$；
+   - 全网独立基线数：$B_I = 64 \times (5 - 1) = \mathbf{256\ (\text{条})}$；
+   - 必要基线数：$B_N = 80 - 1 = \mathbf{79\ (\text{条})}$；
+   - 多余基线数与平均可靠性指标：
+     $$B_R = B_I - B_N = 256 - 79 = \mathbf{177\ (\text{条})}, \qquad \eta = \frac{177}{256} \approx \mathbf{69.14\%}$$
+2. **计算弦长中误差 $\sigma$ 与质量检核限差**（已知 $a = 5\ \mathrm{mm},\ b = 1\ \mathrm{ppm},\ d = 12\ \mathrm{km}$）：
+   - 弦长中误差：$\sigma = \sqrt{5^2 + (1 \times 12)^2} = \sqrt{25 + 144} = \sqrt{169} = \mathbf{13.0\ \mathrm{mm}}$；
+   - 三边同步环全长闭合差限差：$W_{S,\text{同步}} \le \dfrac{3}{5}\sigma = 0.6 \times 13.0 = \mathbf{7.80\ \mathrm{mm}}$（分量限差 $\dfrac{\sqrt{3}}{5}\sigma = \mathbf{4.50\ \mathrm{mm}}$）；
+   - 四边异步环（$n_{\text{边}} = 4$）闭合差限差：
+     $$\text{分量限差} = 3\sqrt{4} \times 13.0 = \mathbf{78.00\ \mathrm{mm}}, \qquad \text{全长限差} = 3\sqrt{3 \times 4} \times 13.0 = 6\sqrt{3} \times 13.0 = \mathbf{135.10\ \mathrm{mm}}$$
+   - 复测基线长度较差限差：$d_{s,\text{限}} = 2\sqrt{2} \times 13.0 \approx 2.8284 \times 13.0 = \mathbf{36.77\ \mathrm{mm}}$。
+
+---
+
+## 必考计算二：三类高程关系与 GPS 水准多项式曲面拟合（课堂与作业重点！）
+
+### 1. 标准五步解题模板
+1. **核心高程转换公式**：
+   $$H = H_g + N, \qquad H = H_\gamma + \zeta \quad \Longleftrightarrow \quad \zeta_i = H_i - H_{\gamma,i}, \qquad \hat{H}_{\gamma,P} = H_P - \hat{\zeta}_P$$
+2. **公共水准点平面坐标重心化归一化**（共 $m$ 个公共点，缩放常数常取 $S_0 = 1000\ \mathrm{m}$）：
+   $$X_0 = \frac{1}{m}\sum_{i=1}^m X_i, \quad Y_0 = \frac{1}{m}\sum_{i=1}^m Y_i \implies \mathrm{d}X_i = \frac{X_i - X_0}{S_0}, \quad \mathrm{d}Y_i = \frac{Y_i - Y_0}{S_0}$$
+3. **建立多项式误差方程 $\boldsymbol{V} = \boldsymbol{B}\hat{\boldsymbol{x}} - \boldsymbol{l}$**：
+   - **平面拟合**（$t = 3$ 参数，最少 **$m \ge 3$ 个不共线公共点**）：$\zeta_i = a_0 + a_1\,\mathrm{d}X_i + a_2\,\mathrm{d}Y_i$；
+   - **二次曲面拟合**（$t = 6$ 参数，最少 **$m \ge 6$ 个公共点**）：$\zeta_i = a_0 + a_1\,\mathrm{d}X_i + a_2\,\mathrm{d}Y_i + a_3\,\mathrm{d}X_i^2 + a_4\,\mathrm{d}Y_i^2 + a_5\,\mathrm{d}X_i\mathrm{d}Y_i$。
+4. **最小二乘解算与内/外符合精度评定**：
+   $$\hat{\boldsymbol{x}} = (\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{B})^{-1}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{l}, \qquad \hat{\sigma}_{\text{内}} = \pm\sqrt{\frac{\boldsymbol{V}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{V}}{m - t}}, \qquad \mu_{\text{外}} = \pm\sqrt{\frac{\sum_{j=1}^k (\hat{\zeta}_j - \zeta_j^{\text{实测}})^2}{k}}$$
+   *（附：平原地区四等水准测量高差闭合差限差为 **$f_{h\text{容}} = \pm 20\sqrt{L}\ \mathrm{mm}$**，$L$ 为路线长 $\mathrm{km}$；如 $L = 2\ \mathrm{km}$ 时容许闭合差为 $\pm 28.3\ \mathrm{mm}$。）*
+5. **内插待定点 $P$ 的正常高**：用公共点重心 $(X_0, Y_0)$ 算 $(\mathrm{d}X_P, \mathrm{d}Y_P) \to$ 代入求 $\hat{\zeta}_P \to \hat{H}_{\gamma,P} = H_P - \hat{\zeta}_P$。
+
+---
+
+### 2. 【典型算例 2】4 公共点 GPS 水准平面拟合手算全流程
+
+> **【题目】**：某平坦测区四周均匀分布 $A, B, C, D$ 共 4 个等权 GPS 水准公共点，观测数据如下表。试用一次多项式（平面模型）拟合测区似大地水准面，评定内符合精度 $\hat{\sigma}_0$，并求网内待定点 $P(X_P = 2500\ \mathrm{m},\ Y_P = 3400\ \mathrm{m},\ H_P = 47.650\ \mathrm{m})$ 的正常高 $\hat{H}_{\gamma,P}$。
+>
+> | 点名 | $X_i\ (\mathrm{m})$ | $Y_i\ (\mathrm{m})$ | 大地高 $H_i\ (\mathrm{m})$ | 正常高 $H_{\gamma,i}\ (\mathrm{m})$ | 实测高程异常 $\zeta_i = H_i - H_{\gamma,i}$ |
+> | :---: | :---: | :---: | :---: | :---: | :---: |
+> | **$A$** | $1000$ | $2000$ | $45.210$ | $50.406$ | $-5.196\ \mathrm{m}$ |
+> | **$B$** | $3000$ | $2000$ | $46.530$ | $51.702$ | $-5.172\ \mathrm{m}$ |
+> | **$C$** | $3000$ | $4000$ | $48.100$ | $53.260$ | $-5.160\ \mathrm{m}$ |
+> | **$D$** | $1000$ | $4000$ | $47.020$ | $52.208$ | $-5.188\ \mathrm{m}$ |
+
+**【满分分步解答】**：
+1. **重心化坐标计算**（取 $S_0 = 1000\ \mathrm{m}$）：
+   $$X_0 = \frac{1000+3000+3000+1000}{4} = 2000\ \mathrm{m}, \qquad Y_0 = \frac{2000+2000+4000+4000}{4} = 3000\ \mathrm{m}$$
+   得 $(\mathrm{d}X_i, \mathrm{d}Y_i)$ 依次为：$A(-1, -1),\ B(+1, -1),\ C(+1, +1),\ D(-1, +1)$。
+2. **列立误差方程并最小二乘解算参数**（等权 $\boldsymbol{P} = \boldsymbol{I}$）：
+   $$\boldsymbol{B} = \begin{bmatrix} 1 & -1 & -1 \\ 1 & +1 & -1 \\ 1 & +1 & +1 \\ 1 & -1 & +1 \end{bmatrix}, \quad \boldsymbol{l} = \begin{bmatrix} -5.196 \\ -5.172 \\ -5.160 \\ -5.188 \end{bmatrix} \implies \boldsymbol{B}^{\mathrm{T}}\boldsymbol{B} = 4\boldsymbol{I}_3, \quad \boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} -20.716 \\ +0.052 \\ +0.020 \end{bmatrix}$$
+   $$\hat{\boldsymbol{x}} = \frac{1}{4}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} \hat{a}_0 \\ \hat{a}_1 \\ \hat{a}_2 \end{bmatrix} = \begin{bmatrix} \mathbf{-5.179\ \mathrm{m}} \\ \mathbf{+0.013\ \mathrm{m/km}} \\ \mathbf{+0.005\ \mathrm{m/km}} \end{bmatrix} \implies \hat{\zeta} = -5.179 + 0.013\,\mathrm{d}X + 0.005\,\mathrm{d}Y$$
+3. **评定内符合拟合中误差**（多余观测 $f = m - t = 4 - 3 = 1$）：
+   代回求残差 $v_i = \hat{\zeta}_i - \zeta_i$ 得 $v_A = -1\ \mathrm{mm},\ v_B = +1\ \mathrm{mm},\ v_C = -1\ \mathrm{mm},\ v_D = +1\ \mathrm{mm}$，故：
+   $$\hat{\sigma}_0 = \pm\sqrt{\frac{(-1)^2 + 1^2 + (-1)^2 + 1^2}{4 - 3}} = \mathbf{\pm 2.0\ \mathrm{mm}}$$
+4. **推算待定点 $P$ 的正常高**：
+   $$\mathrm{d}X_P = \frac{2500 - 2000}{1000} = +0.5\ \mathrm{km}, \qquad \mathrm{d}Y_P = \frac{3400 - 3000}{1000} = +0.4\ \mathrm{km}$$
+   $$\hat{\zeta}_P = -5.179 + 0.013(0.5) + 0.005(0.4) = -5.1705\ \mathrm{m} \implies \hat{H}_{\gamma,P} = 47.650 - (-5.1705) = \mathbf{52.821\ \mathrm{m}}$$
+
+---
+
+## 必考计算三：时间系统换算、周内秒（SOW）与广播星历算卫星坐标
+
+### 1. 时间换算链与 16 参数广播星历十步公式速查
+1. **时间系统固定常数关系**（现行跳秒 $\mathrm{TAI} - \mathrm{UTC} = 37\ \mathrm{s}$；若题目另给跳秒数 $\Delta t_{\mathrm{AT}}$ 则按题给值计算）：
+   $$\mathrm{UTC} = \text{北京时间} - 8^{\mathrm{h}}, \qquad \mathrm{TAI} - \mathrm{GPST} \equiv 19\ \mathrm{s}, \qquad \mathrm{TAI} - \mathrm{BDT} \equiv 33\ \mathrm{s}, \qquad \mathrm{GPST} - \mathrm{BDT} \equiv 14\ \mathrm{s}$$
+   $$\mathrm{GPST} = \mathrm{UTC} + 18\ \mathrm{s}, \qquad \mathrm{BDT} = \mathrm{UTC} + 4\ \mathrm{s}, \qquad \mathrm{SOW} = D \times 86400 + \text{时}\times 3600 + \text{分}\times 60 + \text{秒}\ (\text{周日 } D=0)$$
+2. **16 参数广播星历解算卫星地固三维坐标标准十步法**：
+   - **① 长半轴与平均角速度**：$A = (\sqrt{A})^2,\quad n_0 = \sqrt{GM / A^3},\quad n = n_0 + \Delta n$；
+   - **② 归化时间与平近点角**：$t_k = t - t_{oe}$（超 $\pm 302400\ \mathrm{s}$ 加减 $604800\ \mathrm{s}$），$M_k = M_0 + n t_k$；
+   - **③ 迭代解开普勒方程求偏近点角（弧度！）**：$E_k^{(j+1)} = M_k + e\sin E_k^{(j)}$（初值 $E_k^{(0)} = M_k$）；
+   - **④ 求真近点角与未改正升交距角**：$v_k = \operatorname{atan2}(\sqrt{1-e^2}\sin E_k,\ \cos E_k - e),\quad \phi_k = v_k + \omega$；
+   - **⑤ 二倍角调和摄动改正**：$\delta u_k = C_{us}\sin(2\phi_k) + C_{uc}\cos(2\phi_k)$（$\delta r_k, \delta i_k$ 同理，注意自变量为 **$2\phi_k$**）；
+   - **⑥ 改正后升交距角、向径与轨道倾角**：$u_k = \phi_k + \delta u_k,\quad r_k = A(1 - e\cos E_k) + \delta r_k,\quad i_k = i_0 + \mathrm{IDOT}\cdot t_k + \delta i_k$；
+   - **⑦ 轨道平面直角坐标**：$x_k = r_k\cos u_k,\quad y_k = r_k\sin u_k$；
+   - **⑧ GPS 及北斗 MEO/IGSO 升交点经度与地固坐标**：
+     $$\Omega_k = \Omega_0 + (\dot{\Omega} - \dot{\Omega}_e)t_k - \dot{\Omega}_e t_{oe}, \qquad \begin{bmatrix} X_k \\ Y_k \\ Z_k \end{bmatrix} = \begin{bmatrix} x_k\cos\Omega_k - y_k\cos i_k\sin\Omega_k \\ x_k\sin\Omega_k + y_k\cos i_k\cos\Omega_k \\ y_k\sin i_k \end{bmatrix}$$
+   - **⑨ 北斗 GEO 卫星专属修正**：令 $\Omega_k = \Omega_0 + \dot{\Omega}t_k - \dot{\Omega}_e t_{oe}$ 算出 $[X_{GK}, Y_{GK}, Z_{GK}]^{\mathrm{T}}$ 后，左乘 $\boldsymbol{R}_Z(\dot{\Omega}_e t_k)\boldsymbol{R}_X(-5^\circ)$ 转回 CGCS2000；
+   - **⑩ 信号传播期间地球自转（Sagnac）改正**（$\alpha = \dot{\Omega}_e \tau$）：$X^S = X_k + \alpha Y_k,\ Y^S = Y_k - \alpha X_k,\ Z^S = Z_k$。
+
+---
+
+### 2. 【典型算例 3】北京时间换算 UTC、GPST 与 BDT 周内秒
+
+> **【题目】**：已知观测时刻为北京时间 2026 年 11 月 19 日（星期四）$10^{\mathrm{h}}30^{\mathrm{m}}00^{\mathrm{s}}$，设当前国际原子时与协调世界时之差 $\mathrm{TAI} - \mathrm{UTC} = 37\ \mathrm{s}$。求此刻对应的 UTC 时刻、国际原子时 TAI、GPS 时周内秒 $\mathrm{SOW}_{\mathrm{GPS}}$ 以及北斗时周内秒 $\mathrm{SOW}_{\mathrm{BDT}}$。
+
+**【满分分步解答】**：
+1. **换算至协调世界时 UTC**：
+   $$\mathrm{UTC} = 10^{\mathrm{h}}30^{\mathrm{m}}00^{\mathrm{s}} - 8^{\mathrm{h}} = \mathbf{2026\text{年}11\text{月}19\text{日（星期四） }02^{\mathrm{h}}30^{\mathrm{m}}00^{\mathrm{s}}}$$
+2. **换算至 TAI、GPST 与 BDT 日内时刻**：
+   $$\mathrm{TAI} = \mathrm{UTC} + 37\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}37^{\mathrm{s}}}$$
+   $$\mathrm{GPST} = \mathrm{TAI} - 19\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}18^{\mathrm{s}}}, \qquad \mathrm{BDT} = \mathrm{TAI} - 33\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}04^{\mathrm{s}}}$$
+3. **计算周内秒 SOW**（星期四距本周起点星期日 $0^{\mathrm{h}}$ 已完整经过日、一、二、三共 $D = 4$ 整天）：
+   $$\mathrm{SOW}_{\mathrm{GPS}} = 4 \times 86400 + 2 \times 3600 + 30 \times 60 + 18 = 345600 + 7200 + 1800 + 18 = \mathbf{354\,618\ \mathrm{s}}$$
+   $$\mathrm{SOW}_{\mathrm{BDT}} = \mathrm{SOW}_{\mathrm{GPS}} - 14\ \mathrm{s} = \mathbf{354\,604\ \mathrm{s}}$$
+
+---
+
+## 必考计算四：伪距单点定位泰勒线性化与五大 DOP 因子计算
+
+### 1. 标准公式模板
+1. **伪距观测方程一阶泰勒线性化**（未知参数 $\hat{\boldsymbol{x}} = [V_X, V_Y, V_Z, cV_{t_R}]^{\mathrm{T}}$，单系统 **4 个未知数需 $\ge 4$ 颗星**；GPS+BDS 双系统加 1 个系统间偏差 ISB 共 **5 个未知数需 $\ge 5$ 颗星**）：
+   - 近似几何距离：$\rho_i^0 = \sqrt{(X^i - X^0)^2 + (Y^i - Y^0)^2 + (Z^i - Z^0)^2}$；
+   - 方向余弦：$l_i = \dfrac{X^i - X^0}{\rho_i^0},\quad m_i = \dfrac{Y^i - Y^0}{\rho_i^0},\quad n_i = \dfrac{Z^i - Z^0}{\rho_i^0}$；
+   - 线性化误差方程 $\boldsymbol{V} = \boldsymbol{B}\hat{\boldsymbol{x}} - \boldsymbol{l}$：
+     $$\boldsymbol{B}_{k\times 4} = \begin{bmatrix} -l_1 & -m_1 & -n_1 & -1 \\ \vdots & \vdots & \vdots & \vdots \\ -l_k & -m_k & -n_k & -1 \end{bmatrix}, \qquad l_i = \tilde{\rho}_i - \rho_i^0 - cV_{t^S_i} + (V_{\mathrm{ion}})_i + (V_{\mathrm{trop}})_i$$
+2. **五大精度衰减因子（DOP）与恒等式**（站心地平系协因数阵 $\boldsymbol{Q}_{\mathrm{NEU}} = \boldsymbol{H}(\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{B})^{-1}\boldsymbol{H}^{\mathrm{T}}$）：
+   $$\mathrm{HDOP} = \sqrt{q_{NN} + q_{EE}}, \qquad \mathrm{VDOP} = \sqrt{q_{UU}}, \qquad \mathrm{TDOP} = \sqrt{q_{TT}}$$
+   $$\mathrm{PDOP} = \sqrt{q_{XX} + q_{YY} + q_{ZZ}} = \sqrt{\mathrm{HDOP}^2 + \mathrm{VDOP}^2}, \qquad \mathrm{GDOP} = \sqrt{\mathrm{PDOP}^2 + \mathrm{TDOP}^2}$$
+   $$\text{平面中误差 } m_H = m_0 \cdot \mathrm{HDOP}, \qquad \text{高程中误差 } m_V = m_0 \cdot \mathrm{VDOP}$$
+
+---
+
+### 2. 【典型算例 4】四星星座分布手算五大 DOP 值与定位精度
+
+> **【题目】**：某测站同步等权观测 4 颗卫星，在站心地平系 $(N, E, U)$ 中：1 号星位于天顶（高度角 $E_1 = 90^\circ$），2、3、4 号星高度角均为 $30^\circ$，方位角分别为 $0^\circ, 120^\circ, 240^\circ$。若伪距单位权中误差 $m_0 = \pm 1.5\ \mathrm{m}$，求五大 DOP 值及平面、高程定位中误差。
+
+**【满分分步解答】**：
+1. **列站心系设计矩阵 $\boldsymbol{B}$**（第 $i$ 行为 $[-\cos E_i\cos A_i,\ -\cos E_i\sin A_i,\ -\sin E_i,\ -1]$）：
+   $$\boldsymbol{B} = \begin{bmatrix} 0 & 0 & -1 & -1 \\ -\frac{\sqrt{3}}{2} & 0 & -\frac{1}{2} & -1 \\ \frac{\sqrt{3}}{4} & -\frac{3}{4} & -\frac{1}{2} & -1 \\ \frac{\sqrt{3}}{4} & \frac{3}{4} & -\frac{1}{2} & -1 \end{bmatrix} \implies \boldsymbol{B}^{\mathrm{T}}\boldsymbol{B} = \begin{bmatrix} \frac{9}{8} & 0 & 0 & 0 \\ 0 & \frac{9}{8} & 0 & 0 \\ 0 & 0 & \frac{7}{4} & \frac{5}{2} \\ 0 & 0 & \frac{5}{2} & 4 \end{bmatrix}$$
+2. **求逆得协因数阵 $\boldsymbol{Q} = (\boldsymbol{B}^{\mathrm{T}}\boldsymbol{B})^{-1}$**：
+   $$\boldsymbol{Q} = \begin{bmatrix} \frac{8}{9} & 0 & 0 & 0 \\ 0 & \frac{8}{9} & 0 & 0 \\ 0 & 0 & \frac{16}{3} & -\frac{10}{3} \\ 0 & 0 & -\frac{10}{3} & \frac{7}{3} \end{bmatrix}$$
+3. **计算五大 DOP 值与定位中误差**：
+   - $\mathrm{HDOP} = \sqrt{\frac{8}{9} + \frac{8}{9}} = \dfrac{4}{3} \approx \mathbf{1.333} \implies m_H = 1.5 \times \dfrac{4}{3} = \mathbf{\pm 2.00\ \mathrm{m}}$；
+   - $\mathrm{VDOP} = \sqrt{\frac{16}{3}} = \dfrac{4}{\sqrt{3}} \approx \mathbf{2.309} \implies m_V = 1.5 \times \dfrac{4}{\sqrt{3}} \approx \mathbf{\pm 3.46\ \mathrm{m}}$（验证 $\mathrm{VDOP} > \mathrm{HDOP}$）；
+   - $\mathrm{PDOP} = \sqrt{\frac{16}{9} + \frac{48}{9}} = \dfrac{8}{3} \approx \mathbf{2.667}$，$\mathrm{TDOP} = \sqrt{\frac{7}{3}} \approx \mathbf{1.528}$，$\mathrm{GDOP} = \dfrac{\sqrt{85}}{3} \approx \mathbf{3.073}$。
+
+---
+
+## 必考计算五：单双三差推导、双频无电离层组合与“M-W + GF”周跳解算
+
+### 1. 核心推导与计算模板
+1. **非差 $\to$ 单差 $\to$ 双差 $\to$ 三差四步精简推导链**（以周为单位，顾及机端延迟 $\varphi_{0,i}$ 与星端延迟 $\varphi_0^p$）：
+   - **非差**：$\tilde{\varphi}_i^p(t_1) = \frac{f}{c}\rho_i^p - fV_{t_i} + fV_{t^p} - (N_i^p - \varphi_{0,i} + \varphi_0^p) - \frac{f}{c}V_{\mathrm{ion}} - \frac{f}{c}V_{\mathrm{trop}}$（非差模糊度非整数）；
+   - **站间单差 $\Delta\varphi_{ij}^p$**：两站相减**彻底消除卫星钟差 $V_{t^p}$ 与星端延迟 $\varphi_0^p$**，噪声 $\sqrt{2}\sigma$；
+   - **站星双差 $\Delta\varphi_{ij}^{pq}$**：两星单差再相减**彻底消除接收机钟差 $V_{t_{ij}}$ 与机端延迟差 $(\varphi_{0,j}-\varphi_{0,i})$，严格恢复双差模糊度 $\Delta N_{ij}^{pq} \in \mathbb{Z}$ 的整数特性**（噪声 $2\sigma$，同历元不同双差相关系数 $\rho = +0.5$）；
+   - **历元三差 $\Delta\varphi_{ij}^{pq}(t_1, t_2)$**：相邻历元相减**彻底消去整周模糊度参数**，用于周跳探测与求初始基线解（噪声 $\sqrt{8}\sigma$）。
+2. **双频无电离层组合（IF/LC）系数推导**：
+   令 $\rho_{\mathrm{IF}} = m\rho'_1 + n\rho'_2$ 满足 $m + n = 1$ 且 $\dfrac{m}{f_1^2} + \dfrac{n}{f_2^2} = 0$，解得（GPS $f_1 = 154 f_0,\ f_2 = 120 f_0$）：
+   $$m = \frac{f_1^2}{f_1^2 - f_2^2} \approx +2.5457, \qquad n = -\frac{f_2^2}{f_1^2 - f_2^2} \approx -1.5457, \qquad \sigma_{\mathrm{IF}} = \sqrt{m^2 + n^2}\,\sigma_1 \approx 3.0\,\sigma_1$$
+3. **双频“M-W 宽巷 + GF 电离层残差”联立解算独立周跳 $(\Delta N_1, \Delta N_2)$**：
+   - 宽巷等效波长 $\lambda_\Delta = \dfrac{c}{f_1 - f_2} \approx 86.19\ \mathrm{cm}$；M-W 组合测定宽巷跳变 $\Delta N_\Delta = \Delta N_1 - \Delta N_2$；
+   - GF 组合 $\varphi_{nm} = \varphi_1 - \dfrac{f_1}{f_2}\varphi_2$ 测定历元间跳变 $\Delta\varphi_{nm} = \Delta N_1 - \dfrac{f_1}{f_2}\Delta N_2$；
+   - 两式联立唯一解出：
+     $$\Delta N_2 = \frac{f_2}{f_2 - f_1}\big(\Delta N_\Delta - \Delta\varphi_{nm}\big), \qquad \Delta N_1 = \Delta N_\Delta + \Delta N_2$$
+
+---
+
+### 2. 【典型算例 5】利用 M-W 与 GF 组合探测并修复双频周跳
+
+> **【题目】**：某双频 GPS 接收机（$f_1 / f_2 = 154 / 120 = 77 / 60$）在相邻两历元间发生失锁周跳。经计算，M-W 宽巷模糊度组合在两历元间发生阶跃跳变 $\Delta N_\Delta = +2.00$ 周，同时 GF 无几何相位组合 $\varphi_{nm} = \varphi_1 - \frac{f_1}{f_2}\varphi_2$ 发生跳变 $\Delta\varphi_{nm} = +1.15$ 周（忽略极短历元间电离层变化）。试求 $L_1$ 与 $L_2$ 载波各自发生的整周跳变量 $(\Delta N_1, \Delta N_2)$。
+
+**【满分分步解答】**：
+1. **建立双频周跳联立方程组**：
+   $$\begin{cases} \Delta N_1 - \Delta N_2 = +2.00 \\[4pt] \Delta N_1 - \dfrac{77}{60}\Delta N_2 = +1.15 \end{cases}$$
+2. **消元求解整数周跳**：用第 1 式减去第 2 式消去 $\Delta N_1$：
+   $$\left(\frac{77}{60} - 1\right)\Delta N_2 = 2.00 - 1.15 \implies \frac{17}{60}\Delta N_2 = 0.85 \implies \Delta N_2 = 0.85 \times \frac{60}{17} = \mathbf{+3\ \text{周}}$$
+   代回第 1 式得：$\Delta N_1 = 2 + 3 = \mathbf{+5\ \text{周}}$。随后将该历元及后续所有连续历元的 $\varphi_1, \varphi_2$ 分别减去 $5$ 周与 $3$ 周即完成精确修复。
+
+---
+
+## 必考计算六：布尔莎七参数与平面四参数坐标转换
+
+### 1. 核心公式模板
+1. **布尔莎（Bursa-Wolf）三维七参数线性化模型**（至少 **$k \ge 3$ 个不共线三维公共点**，多余观测数 $f = 3k - 7$；正算前务必将旋转角除以 $\rho'' = 206264.8''$ 化弧度，尺度乘 $10^{-6}$）：
+   $$\begin{bmatrix} X_i \\ Y_i \\ Z_i \end{bmatrix}_A = \begin{bmatrix} X_i \\ Y_i \\ Z_i \end{bmatrix}_B + \begin{bmatrix} 1 & 0 & 0 & 0 & -Z_{B_i} & +Y_{B_i} & X_{B_i} \\ 0 & 1 & 0 & +Z_{B_i} & 0 & -X_{B_i} & Y_{B_i} \\ 0 & 0 & 1 & -Y_{B_i} & +X_{B_i} & 0 & Z_{B_i} \end{bmatrix}\begin{bmatrix} T_X \\ T_Y \\ T_Z \\ \omega_X \\ \omega_Y \\ \omega_Z \\ m \end{bmatrix}$$
+2. **二维平面四参数线性直接解法**（至少 **$k \ge 2$ 个公共平面点**，工程取 $\ge 3$ 点，$f = 2k - 4$；令 $u = m\cos\alpha,\ v = m\sin\alpha$）：
+   $$\begin{bmatrix} X_{B_i} \\ Y_{B_i} \end{bmatrix} = \begin{bmatrix} 1 & 0 & X_{A_i} & -Y_{A_i} \\ 0 & 1 & Y_{A_i} & X_{A_i} \end{bmatrix}\begin{bmatrix} \Delta X_0 \\ \Delta Y_0 \\ u \\ v \end{bmatrix} \implies m = \sqrt{\hat{u}^2 + \hat{v}^2}, \quad \alpha = \operatorname{atan2}(\hat{v}, \hat{u})$$
+
+---
+
+### 2. 【典型算例 6】布尔莎七参数三维坐标转换正算（考查弧秒与 ppm 换算）
+
+> **【题目】**：已知从 WGS-84（$B$ 系）到某地方坐标系（$A$ 系）的布尔莎七参数为：$T_X = -12.500\ \mathrm{m},\ T_Y = +18.200\ \mathrm{m},\ T_Z = -8.400\ \mathrm{m}$；旋转角 $\omega_X = +0.206265'',\ \omega_Y = -0.412530'',\ \omega_Z = +0.618794''$；尺度变化 $m = +2.50\ \mathrm{ppm}$。已知点 $P$ 在 $B$ 系坐标为 $(-2\,000\,000.000,\ 5\,000\,000.000,\ 3\,000\,000.000)\ \mathrm{m}$，求其在 $A$ 系的坐标（取 $\rho'' = 206264.8''$）。
+
+**【满分分步解答】**：
+1. **统一单位化为弧度与无量纲小数**：
+   $$\omega_X = +1.0\times 10^{-6}\ \mathrm{rad}, \quad \omega_Y = -2.0\times 10^{-6}\ \mathrm{rad}, \quad \omega_Z = +3.0\times 10^{-6}\ \mathrm{rad}, \quad m = +2.5\times 10^{-6}$$
+2. **计算三轴坐标增量 $(\Delta X, \Delta Y, \Delta Z)$ 并相加**：
+   - $\Delta X = -12.500 + (2.5\times 10^{-6})(-2\times 10^6) - (3\times 10^6)(-2\times 10^{-6}) + (5\times 10^6)(3\times 10^{-6}) = -12.5 - 5.0 + 6.0 + 15.0 = +3.500\ \mathrm{m}$；
+   - $\Delta Y = +18.200 + (2.5\times 10^{-6})(5\times 10^6) + (3\times 10^6)(1\times 10^{-6}) - (-2\times 10^6)(3\times 10^{-6}) = +18.2 + 12.5 + 3.0 + 6.0 = +39.700\ \mathrm{m}$；
+   - $\Delta Z = -8.400 + (2.5\times 10^{-6})(3\times 10^6) - (5\times 10^6)(1\times 10^{-6}) + (-2\times 10^6)(-2\times 10^{-6}) = -8.4 + 7.5 - 5.0 + 4.0 = -1.900\ \mathrm{m}$；
+   - 故 $A$ 系坐标为 **$X_A = -1\,999\,996.500\ \mathrm{m},\ Y_A = 5\,000\,039.700\ \mathrm{m},\ Z_A = 2\,999\,998.100\ \mathrm{m}$**。
+
+---
+
+# 下篇：实验与工程综合应用大题标准答题模板（覆盖内外业全流程）
+
+---
+
+## 实验综合模板一：静态 GNSS 控制网“外业施测 + 内业基线解算与平差”全流程方案
+
+> **适用命题形式**：“某测区需建立 D/E 级 GNSS 首级控制网，试设计其从选点布网、外业静态观测到内业基线解算、不合格基线处理及网平差的完整技术方案。”（16 分综合大题）
+
+### 1. 五阶段标准作业全流程（按序分条作答拿满分）
+
+1. **阶段一：技术设计与野外选点埋石（3 分）**
+   - **网形与起算点设计**：采用图形强度高且效率均衡的**边连式或混连式**同步图形扩展构网（每点连接 $\ge 3$ 条独立基线，D 级最简独立环边数 $\le 8$ 条）；在测区**四周均匀联测不少于 $3\sim 5$ 个高等级已知平面控制点**及均匀包围测区的水准点，重要点位旁布设距离 $\ge 300\ \mathrm{m}$ 的通视方位点；
+   - **选点避障要求**：视场四周高度角 **$15^\circ$ 以上无成片障碍物**；避开水面、玻璃幕墙（防多路径效应），远离高压输电线 $\ge 50\ \mathrm{m}$、大功率无线电发射塔 $\ge 200\ \mathrm{m}$（防电磁干扰抬升底噪引发失锁周跳），点位稳固便于保存。
+
+2. **阶段二：外业仪器架设与静态同步观测记录（3 分）**
+   - **安置与指北**：严格对中（误差 $\le 1\sim 2\ \mathrm{mm}$）、整平，将所有接收机**天线指北标志线统一指向正北（偏差 $\le \pm 5^\circ$）**以抵消同型号天线水平 PCO 偏差；同点连续观测两时段之间**必须重新对中、整平并重测天线高**；
+   - **天线高双检核与斜高归算**：用专用量高尺沿护圈互成 $120^\circ$ 三个方向在**开机前、关机后各量测一次（互差均 $\le 3\ \mathrm{mm}$）**取中数记录；斜高 $l$ 归算至相位中心铅垂高公式为 $h = \sqrt{l^2 - R^2} + h_0$；
+   - **观测参数与纪律**：设置截止高度角 **$15^\circ$**、采样间隔 **$10\sim 30\ \mathrm{s}$**，确保有效卫星 $\ge 4$ 颗、$\mathrm{PDOP} \le 6$，观测时长满足规范（D 级 $\ge 60\ \mathrm{min}$、E 级 $\ge 40\ \mathrm{min}$），观测期间严守“五不准”纪律。
+
+3. **阶段三：数据导出与 RINEX 标准格式转换（2 分）**
+   - 导出原始数据并转换为国际通用 RINEX 标准文件（如 `ssssdddf.yyt`：`ssss` 为 4 位测站名，`ddd` 为年积日，`f` 为**全网统一同步观测时段号**，`yy` 为年份后两位，`t` 中 `O` 为观测文件、`N` 为导航电文），重点核查各测站名、量高方式（斜高/直高）、天线高数值及天线型号（PCO 参数）是否录入无误。
+
+4. **阶段四：内业基线向量解算与三级质量检核（4 分）**
+   - **① 单条基线检核**：检查双差整周模糊度是否成功固定为整数解，要求 **$\mathrm{Ratio} \ge 3.0$（或 $\ge 2.0$）** 且双差观测残差 **RMS 较小**（一般 $< 1\sim 2\ \mathrm{cm}$）；
+   - **② 同步环闭合差检核**（$W_S \le \frac{3}{5}\sigma$）：检核软件解算与数据同步性；
+   - **③ 异步（独立）环闭合差检核**（$W_S \le 3\sqrt{3n_{\text{边}}}\sigma$）与**复测基线较差检核**（$d_s \le 2\sqrt{2}\sigma$）：全面检核外业对中、天线高量取与真实基线质量。
+
+5. **阶段五：控制网两步严密平差与高程转换输出（4 分）**
+   - **① 三维无约束平差**：仅固定网中 1 个点的地心坐标提供位置基准，评定 GNSS 网自身**内符合精度**，按基线残差 $\lvert V \rvert \le 3\sigma$ 探测剔除粗差并调整先验权比；
+   - **② 三维/二维约束平差与起算点兼容性检验**：引入外部已知控制点强制约束转换至目标坐标系（如 CGCS2000），若无约束合格而约束平差残差较差 $\lvert \mathrm{d}V \rvert > 2\sigma$，通过**轮换固定不同起算点组合**剔除变形/粗差已知点；
+   - **③ 高程拟合**：利用联测水准公共点通过 GPS 水准平面/二次曲面拟合推求各待定点 1985 国家高程基准正常高，输出最终平差坐标成果表。
+
+---
+
+### 2. 【实验高频追问】内业解算发现某条基线 `Ratio < 1.8`（未固定）或异步环超限，应如何一步步排查处理？
+
+1. **第一步（核查外业录入人为粗差）**：优先检查两个测站的**点名是否张冠李戴**（仅导致异步环超限而同步环仍为 0！）、**天线高数值是否输错**、**量高方式（斜高 vs 直高）及天线型号（PCO）是否选错**；
+2. **第二步（调整内业基线解算策略重算）**：
+   - 适当**提高卫星截止高度角**（如从 $15^\circ$ 调至 $20^\circ\sim 25^\circ$）滤除低仰角强多路径信号；
+   - 查看卫星残差图与信噪比图，**手动屏蔽频繁失锁多周跳的劣质卫星或剔除受干扰的起止坏时段历元**；
+   - 确认准确选定了高度角最高、信噪比最优的**基准星**，长基线改用双频无电离层组合（LC）并导入 **IGS 精密星历**重算；
+3. **第三步（图形剔除或外业补测/重测判定）**：
+   若重算后仍不合格，判断直接删去该劣质基线后新构成的最简独立环边数是否仍满足规范上限（如 D 级 $\le 8$ 条）且各点独立基线数达标——满足则直接剔除参与平差，**不满足则必须外业重测该基线所在的整个同步观测图形**。
+
+---
+
+## 实验综合模板二：RTK / 网络 RTK（CORS）外业实操配置、点校正与故障诊断
+
+> **适用命题形式**：“结合本学期外业 RTK 实验，详述使用网络 RTK（CORS）进行地形图碎部测量（或放样）的完整操作步骤、关键手簿参数设置、已知点检核要求以及现场无法固定或坐标异常的排查方法。”（16 分实验大题）
+
+### 1. 网络 RTK（CORS）标准五步施测与南方手簿核心参数表
+
+| 操作步骤 | 现场操作与手簿（工程之星）关键配置内容 | 核心质量控制与实验防错要点 |
+| :--- | :--- | :--- |
+| **Step 1：单机组装与新建工程** | 组装流动站接收机 + 碳纤对中杆 + 手簿蓝牙连接；新建工程配置目标椭球（**CGCS2000**）及高斯投影 **$3^\circ$ 带中央子午线**（如淄博 $117^\circ\mathrm{E}$ 或 $120^\circ\mathrm{E}$） | 无需自架基准站和电台；测前确认对中杆长度（如 $1.800\ \mathrm{m}$ 或 $2.000\ \mathrm{m}$）录入为“杆高（直高）”，并校准**电子气泡**。 |
+| **Step 2：配置移动站数据链** | 进入【移动站设置】，数据链切换为 **“接收机移动网络（内置 SIM）”** 或 **“手簿网络（手机热点）”**，关闭电台路由，设截止高度角 **$10^\circ\sim 15^\circ$** | 严禁误留在“内置电台”或“WIFI”模式，否则差分延迟显示 $\infty$ 永远卡在单点解。 |
+| **Step 3：登录 CORS 并选挂载点** | 填入服务器 IP/域名（如 `115.120.90.96`）、**坐标框架对应端口**（如 **`8003` 对应 CGCS2000**，`8002` 对应 WGS84）、账号密码；点击【获取接入点】选**五星十六频挂载点**（如 `RTCM33GRCEJ`），开启**自动发送 NMEA-GGA** | **端口直接决定坐标框架**，选错会产生分米～米级系统偏差；不发 GGA 则 VRS 中心无法在流动站旁生成虚拟参考站！ |
+| **Step 4：OTF 固定与已知点检核** | 在开阔处静置数秒，确认差分延迟（Age）稳定在 **$1\sim 2\ \mathrm{s}$**，解状态变为 **【固定解 Fixed】**（$\mathrm{HRMS/VRMS} < 2\sim 3\ \mathrm{cm}$）；**正式测图前必须先到测区已知控制点实测比对检核** | 平面较差 $\le 5\ \mathrm{cm}$、高程较差合限后方可开工；若测区采用地方独立系，须先联测四周均匀分布的 **$\ge 3\sim 4$ 个控制点做“点校正”（平面四参数+高程拟合）**并用独立点检核。 |
+| **Step 5：碎部测量与导出成图** | 全程保持对中杆气泡居中及**固定解**状态采点（遇树下/墙角浮动解改用偏心测量或全站仪补测）；收工导出 CASS 标准 `.dat` 格式（`点名,编码,东坐标Y,北坐标X,高程H`） | 注意南方 CASS `.dat` 第 3 列为**东坐标 $Y$**、第 4 列为**北坐标 $X$**，导出时切勿选反纵横轴顺序导致展点镜像翻转！ |
+
+---
+
+### 2. 实验现场三大高频异常一步到位诊断速查
+
+1. **异常 A：手簿一直显示“单点解”，差分延迟无变化**
+   - **诊断**：通信链路断路，未收到差分流。检查 SIM 卡流量/信号、手簿热点、IP/端口/账号密码拼写、是否点击获取并选中了挂载点、是否勾选了上传 NMEA-GGA（电台模式则查基站蓄电池、收发频段与空中波特率协议一致性）。
+2. **异常 B：差分延迟正常（$1\sim 2\ \mathrm{s}$），但长期停留在“浮点解（Float）”无法固定**
+   - **诊断**：周跳与多路径严重或空间误差去相关。检查头顶是否有茂密树冠、高层建筑夹缝遮挡、旁侧是否有大面积水面/玻璃幕墙或高压线干扰；走到开阔地带重做初始化，确认挂载点已选包含北斗三号的多星多频接入点（单基站模式还需检查是否超出 $15\ \mathrm{km}$ 作业半径）。
+3. **异常 C：状态显示“固定解”，但上已知控制点检核相差几十厘米甚至上百米**
+   - **诊断**：坐标系统参数失配或假固定。相差几十至上百公里查**中央子午线与带号是否漏加/错输**；相差几十厘米至数米查 **CORS 端口框架是否选错、杆高是否输错、四参数点校正是否混入错误控制点**；树荫遮挡边缘相差十余厘米则为模糊度**假固定（False Fix）**，重置 RTK 解算引擎重新收敛核对两次坐标一致性即可排除。</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const raw = document.getElementById("md-raw").textContent;
+    document.getElementById("content").innerHTML = marked.parse(raw);
+    renderMathInElement(document.getElementById("content"), {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+baseURL = 'https://ziheng-spatial.github.io/'
+locale = 'en-us'
+title = 'Ziheng | Spatial Computing'
+theme = "PaperMod"
+
+[params]
+  defaultTheme = "auto"
+  # 开启返回顶部按钮，解决 iOS 用户滑动长文后的痛点
+  ShowScrollToTop = true
+  # 开启文章阅读时间
+  ShowReadingTime = true
+
+[params.profileMode]
+  enabled = true
+  title = "Ziheng Zhang"
+  subtitle = "Spatial Algorithm Expert | C++ & GIS Developer"
+
+[[params.profileMode.buttons]]
+  name = "View Projects"
+  url = "/posts/"
+
+[[menu.main]]
+  identifier = "about"
+  name = "About (关于我)"
+  url = "/about/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "posts"
+  name = "Projects (项目库)"
+  url = "/posts/"
+  weight = 20
+  
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

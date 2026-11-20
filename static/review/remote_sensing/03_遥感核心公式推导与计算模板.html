@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03_遥感核心公式推导与计算模板</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.75; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .nav-bar { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+  .nav-bar a { color: #00ff80; text-decoration: none; font-weight: 600; font-size: 0.95em; }
+  h1, h2, h3 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin-top: 28px; }
+  h1 { color: #00ff80; font-size: 1.7em; }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; min-width: 110px; }
+  th { background: #161b22; color: #58a6ff; }
+  tr:nth-child(even) { background: #12171f; }
+  code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
+  blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
+  strong { color: #ffa657; }
+</style>
+</head>
+<body>
+<div class="nav-bar"><a href="../index.html">← 返回复习总目录</a></div>
+<div id="content"></div>
+<script type="text/plain" id="md-raw"># 03 遥感核心公式推导与计算模板（SDUT《遥感原理与应用》计算题满分指南）
+
+> **复习说明**：本文档汇总了山东理工大学《遥感原理与应用》全部核心数学公式、物理推导过程及**课程讲义原题标准解题模板**（涵盖黑体辐射定律、太阳常数、传感器扫描几何与分辨率、真实/合成孔径雷达分辨率、数字图像采样量化与辐射定标、空间滤波卷积、PCA 贡献率、光谱指数、贝叶斯分类与混淆矩阵 Kappa 计算）。所有公式均采用标准 LaTeX 语法编写。
+
+---
+
+## 模块一：电磁辐射与黑体辐射定律计算模板
+
+### 1. 核心公式体系
+1. **电磁波基本关系**：
+   $$c = \lambda \cdot f$$
+   式中：$c \approx 3.0 \times 10^8\text{ m/s}$ 为真空光速；$\lambda$ 为波长（注意单位换算：$1\text{ m} = 10^2\text{ cm} = 10^3\text{ mm} = 10^6\ \mu\text{m} = 10^9\text{ nm}$）；$f$ 为频率（$1\text{ GHz} = 10^3\text{ MHz} = 10^9\text{ Hz}$）。
+2. **普朗克黑体辐射定律（Planck's Law）**：
+   $$W(\lambda) = \frac{2\pi h c^2}{\lambda^5 \left( e^{\frac{hc}{\lambda k T}} - 1 \right)}$$
+   式中：$W(\lambda)$ 为光谱辐射出射度（分谱辐射通量密度），单位 $\text{W}/(\text{cm}^2\cdot\mu\text{m})$ 或 $\text{W}/(\text{m}^2\cdot\mu\text{m})$；$h = 6.6256 \times 10^{-34}\text{ J}\cdot\text{s}$ 为普朗克常数；$k = 1.38 \times 10^{-23}\text{ J/K}$ 为玻尔兹曼常数；$T$ 为绝对温度（$\text{K}$，热力学温标与摄氏温标换算：**$T(\text{K}) = t(^\circ\text{C}) + 273.15$**，课程简算常取 $+273$）。
+3. **斯蒂芬-玻尔兹曼定律（Stefan-Boltzmann Law）——由普朗克公式对全波长积分推导**：
+   $$W = \int_{0}^{\infty} W(\lambda) \, d\lambda = \left( \frac{2\pi^5 k^4}{15 c^2 h^3} \right) T^4 = \sigma T^4$$
+   式中：$\sigma \approx 5.67 \times 10^{-8}\text{ W}\cdot\text{m}^{-2}\cdot\text{K}^{-4}$ 为斯蒂芬-玻尔兹曼常数；$W$ 为黑体总辐射通量密度（$\text{W/m}^2$）。
+   * **推论（两黑体总辐射能量之比）**：若黑体 A 与黑体 B 的绝对温度分别为 $T_A$ 和 $T_B$，则其单位面积总辐射通量之比为：
+     $$\frac{W_A}{W_B} = \left( \frac{T_A}{T_B} \right)^4$$
+4. **维恩位移定律（Wien's Displacement Law）——由普朗克公式对 $\lambda$ 求极值 $\frac{\partial W(\lambda)}{\partial \lambda} = 0$ 推导**：
+   $$\lambda_{\max} \cdot T = b = 2897.8\ \mu\text{m}\cdot\text{K} \approx 2898\ \mu\text{m}\cdot\text{K}$$
+   $$\lambda_{\max} = \frac{2897.8}{T}$$
+   式中：$\lambda_{\max}$ 为辐射峰值波长（单位：**$\mu\text{m}$**）；$T$ 为绝对温度（单位：**$\text{K}$**）。
+5. **基尔霍夫定律与实际物体辐射出射度**：
+   $$M = \varepsilon \cdot M_0 = \varepsilon \sigma T^4$$
+   对于不透明物体（透射率 $\tau = 0$），由能量守恒 $\alpha(\lambda) + \rho(\lambda) = 1$ 及 $\varepsilon(\lambda) = \alpha(\lambda)$ 得：
+   $$\varepsilon(\lambda) = 1 - \rho(\lambda)$$
+6. **太阳常数（$I_0$）与太阳总辐射功率计算**：
+   已知日地平均距离 $R = 1.5 \times 10^{11}\text{ m}$，太阳常数 $I_0 = 1.353 \times 10^3\text{ W/m}^2$，则太阳每秒钟向外辐射的总能量（功率 $W_{\text{sun}}$）为以 $R$ 为半径的球面积乘以 $I_0$：
+   $$W_{\text{sun}} = 4\pi R^2 \cdot I_0 = 4\pi \times (1.5 \times 10^{11})^2 \times 1.353 \times 10^3 \approx 3.826 \times 10^{26}\text{ W}$$
+
+### 2. 课程经典例题与解题模板
+* **【例题 1.1】（讲义第2章及第9章原题）维恩位移定律与探测波段选择计算**
+  > **题目**：
+  > （1）地球表面的平均温度是 $23^\circ\text{C}$，求地表向太空辐射出的峰值波长是多少？
+  > （2）假设太阳发射出的峰值波长是 $0.48\ \mu\text{m}$，请计算出太阳的表面绝对温度。
+  > （3）森林火灾中木头燃烧时温度约为 $500^\circ\text{C} \sim 800^\circ\text{C}$，求林火辐射的峰值波长范围，并说明监测森林火灾应选用哪个大气窗口？
+  * **【标准解答】**：
+    1. **计算地表辐射峰值波长**：
+       将摄氏温度转化为绝对温度：$T_{\text{earth}} = 23 + 273.15 = 296.15\text{ K}$（若按讲义取 $273$ 则为 $296\text{ K}$）。
+       由维恩位移定律 $\lambda_{\max} \cdot T = 2897.8\ \mu\text{m}\cdot\text{K}$ 得：
+       $$\lambda_{\max} = \frac{2897.8}{296.15} \approx 9.78\ \mu\text{m} \quad (\text{当取 } T=300\text{ K 时，} \lambda_{\max} = 9.66\ \mu\text{m})$$
+       故常温地球表面辐射峰值位于 $9.7\ \mu\text{m}$ 左右，应选用 $8 \sim 14\ \mu\text{m}$ 热红外大气窗口进行地表温度探测。
+    2. **计算太阳表面温度**：
+       已知 $\lambda_{\max} = 0.48\ \mu\text{m}$，代入维恩位移定律：
+       $$T_{\text{sun}} = \frac{2897.8}{\lambda_{\max}} = \frac{2897.8}{0.48} \approx 6037\text{ K} \approx 6000\text{ K}$$
+    3. **计算森林火灾峰值波长范围**：
+       当燃烧温度 $t_1 = 500^\circ\text{C}$ 时，$T_1 = 500 + 273 = 773\text{ K}$（注：讲义 Page 73 按 $500\text{ K}$ 列表得 $5.8\ \mu\text{m}$，若严格换算开尔文温度则：$T_1 = 773\text{ K} \Rightarrow \lambda_{\max 1} = 2897.8 / 773 \approx 3.75\ \mu\text{m}$；若考场上遇到该题，建议**同时写出两种情况**：① 若指绝对温度 $500 \sim 800\text{ K}$，则 $\lambda_{\max} = \frac{2897.8}{800} \sim \frac{2897.8}{500} = 3.63 \sim 5.80\ \mu\text{m}$；② 若指摄氏温度 $500 \sim 800^\circ\text{C}$ 即 $773 \sim 1073\text{ K}$，则 $\lambda_{\max} = 2.70 \sim 3.75\ \mu\text{m}$）。
+       **结论**：无论哪种情况，林火高温目标的辐射峰值均显著向短波方向移动并落入 **$3 \sim 5\ \mu\text{m}$ 中红外大气窗口**（如 AVHRR 的 $3.7\ \mu\text{m}$ 通道），因此 $3 \sim 5\ \mu\text{m}$ 是监测森林火灾、识别隐火与残火的最佳波段。
+
+---
+
+## 模块二：卫星轨道、传感器空间分辨率、IFOV 与重访周期计算模板
+
+### 1. 核心公式体系
+1. **开普勒第三定律与卫星轨道高度 $H$ 计算**：
+   $$\frac{T^2}{(R_0 + H)^3} = C \implies H = \left( \frac{T^2}{C} \right)^{\frac{1}{3}} - R_0$$
+   式中：$T$ 为卫星绕地运行周期；$R_0 \approx 6371\text{ km}$ 为地球平均半径；$H$ 为卫星轨道高度；$C = \frac{4\pi^2}{GM}$ 为开普勒常数。
+2. **光机扫描仪瞬时地面分辨率 $D$（空间分辨率）与瞬时视场角 $\text{IFOV}$**：
+   $$D = H \cdot \beta = H \cdot \text{IFOV}$$
+   式中：$H$ 为平台航高或卫星轨道高度（单位 $\text{m}$ 或 $\text{km}$）；$\beta$（即 $\text{IFOV}$）为瞬时视场角（单位为弧度 $\text{rad}$；注意换算：**$1\text{ mrad} = 10^{-3}\text{ rad}$，$1\ \mu\text{rad} = 10^{-6}\text{ rad}$**）。
+3. **航空数码/光学面阵相机地面采样间隔（GSD）与摄影比例尺 $1/m$**：
+   $$\frac{1}{m} = \frac{f}{H} = \frac{d}{\text{GSD}} \implies \text{GSD} = \frac{H \cdot d}{f}$$
+   式中：$f$ 为镜头焦距；$H$ 为相对航高；$d$ 为焦平面探测像元物理尺寸（Pixel Pitch，如 $15\ \mu\text{m}$）；$\text{GSD}$ 为地面采样距离（空间分辨率）。
+4. **扫描带地面总宽度（Swath Width, $W$）与总视场角 $\text{FOV}$（或最大扫描角 $\theta_{\max}$）**：
+   * 当总视场角 $\text{FOV}$（弧度或角度）较小时（弧长近似法，讲义 MSS 采用此法）：
+     $$W = \text{FOV}(\text{rad}) \cdot H = \text{FOV}(^\circ) \cdot \frac{\pi}{180^\circ} \cdot H$$
+   * 当采用平板地面三角几何严密计算时（设扫描镜向两侧最大扫描半角为 $\theta_{\max} = \frac{\text{FOV}}{2}$）：
+     $$W = 2 H \tan\left(\frac{\text{FOV}}{2}\right) = 2 H \tan\theta_{\max}$$
+     （注：若光学反射镜旋转摆动机械角为 $\pm \alpha$，则反射光束偏转角为 $2\alpha$，总视场角 $\text{FOV} = 4\alpha$！）
+5. **扫描行衔接条件（无漏扫条件）**：
+   设卫星/飞机地面飞行速度为 $v$，扫描仪摆动周期为 $T_s$，每次扫描包含 $N_{\text{line}}$ 个并行探测单元（单行地面宽度为 $D$），则在一次扫描周期内平台前进的距离 $\Delta L$ 必须恰好等于一次扫描覆盖的沿轨地面宽度：
+   $$\Delta L = v \cdot T_s = N_{\text{line}} \cdot D$$
+6. **卫星重访周期（Revisit Period）与轨道覆盖周期估算**：
+   设赤道周长 $L_{\text{eq}} = 2\pi R_0 \approx 40075\text{ km}$，单轨扫描有效幅宽为 $W$，相邻轨道间重叠率为 $\eta$，卫星每天绕地球运行圈数为 $k = \frac{24\text{ h}}{T_{\text{orbit}}}$，则全球覆盖一次所需的理论重访天数 $D_{\text{revisit}}$ 为：
+   $$D_{\text{revisit}} = \frac{L_{\text{eq}}}{k \cdot W \cdot (1 - \eta)}$$
+
+### 2. 课程经典例题与解题模板
+* **【例题 2.1】（讲义第4章 Page 14-15 原题）Landsat MSS 扫描仪参数综合计算**
+  > **题目**：早期 Landsat 卫星轨道高度 $H = 915\text{ km}$，卫星地面速度 $v = 6.5\text{ km/s}$。搭载的 MSS 多光谱扫描仪每个波段沿航向排列有 $6$ 个玻璃纤维探测单元，单个探测单元的瞬时视场角 $\text{IFOV} = 86\ \mu\text{rad}$。扫描镜机械摆动幅度为 $\pm 2.89^\circ$（总观测视场角 $\text{FOV} = 11.56^\circ$），扫描摆动周期 $T_s = 73.42\text{ ms}$。求：
+  > （1）扫描瞬间单个像元的地面空间分辨率 $D$；
+  > （2）垂直于飞行方向的地面扫描带总宽度 $W$；
+  > （3）验证在扫描一次的时间内，卫星沿轨移动距离是否与 6 条扫描线恰好无缝衔接？
+  * **【标准解答】**：
+    1. **计算瞬时像元地面空间分辨率 $D$**：
+       已知 $\text{IFOV} = 86\ \mu\text{rad} = 86 \times 10^{-6}\text{ rad}$，$H = 915\text{ km} = 9.15 \times 10^5\text{ m}$：
+       $$D = \text{IFOV} \times H = 86 \times 10^{-6} \times 9.15 \times 10^5 \approx 78.69\text{ m} \approx 79\text{ m}$$
+       即地面观察面积为 $79\text{ m} \times 79\text{ m}$。
+    2. **计算地面扫描带总宽度 $W$**：
+       由反射定律，扫描镜摆动幅度 $\pm 2.89^\circ$（共 $5.78^\circ$），引起入射视束偏转总视场角 $\text{FOV} = 2 \times 5.78^\circ = 11.56^\circ$。代入弧长公式：
+       $$W = 11.56^\circ \times \frac{\pi}{180^\circ} \times 915\text{ km} \approx 184.6\text{ km} \approx 185\text{ km}$$
+    3. **验证沿轨扫描线衔接**：
+       在扫描一次周期 $T_s = 73.42\text{ ms} = 73.42 \times 10^{-3}\text{ s}$ 内，卫星沿轨前进距离 $\Delta L$ 为：
+       $$\Delta L = v \times T_s = 6.5 \times 10^3\text{ m/s} \times 73.42 \times 10^{-3}\text{ s} \approx 477\text{ m} \quad (\text{讲义计为 } 474\text{ m})$$
+       而成像板上单波段 6 个探测单元同时扫描一次覆盖的沿轨宽度为：
+       $$6 \times D = 6 \times 79\text{ m} = 474\text{ m}$$
+       两者相等，说明相邻两次摆扫的 6 条扫描线在地面上恰好无缝衔接！
+
+---
+
+## 模块三：侧视雷达（RAR 与 SAR）空间分辨率与几何畸变计算模板
+
+### 1. 核心公式体系
+设雷达平台高度为 $H$，斜距为 $R$，雷达波束**俯角（Depression Angle，距离方向水平线与波束夹角）为 $\Phi$**，平坦地面上**入射角（Incidence Angle，波束与地面法线夹角）为 $\theta$**，则 $\theta + \Phi = 90^\circ$（互余，故 $\cos\Phi = \sin\theta$）。
+1. **距离向分辨率（Range Resolution）——RAR 与 SAR 相同**：
+   * **斜距分辨率 $\Delta R_s$**：
+     $$\Delta R_s = \frac{c \cdot \tau}{2}$$
+   * **地距分辨率 $\Delta R_g$**：
+     $$\Delta R_g = \frac{c \cdot \tau}{2 \cos\Phi} = \frac{c \cdot \tau}{2 \sin\theta}$$
+     式中：$c = 3 \times 10^8\text{ m/s}$ 为光速；$\tau$ 为发射脉冲宽度（持续时间，如 $0.1\ \mu\text{s} = 10^{-7}\text{ s}$）。
+     **重要规律**：脉冲宽度 $\tau$ 越窄，距离分辨率越高；俯角 $\Phi$ 越小（即入射角 $\theta$ 越大，越靠近**远区/远程**），$\cos\Phi$ 越大，**地距分辨率 $\Delta R_g$ 越高（数值越小）**！
+2. **真实孔径雷达（RAR）方位向分辨率 $R_\beta$**：
+   $$R_\beta = \beta \cdot R = \frac{\lambda}{D} \cdot R$$
+   式中：$\beta = \frac{\lambda}{D}$ 为天线水平波束宽度（波瓣角）；$\lambda$ 为雷达工作波长；$D$ 为真实天线孔径长度；$R$ 为目标斜距。
+   **重要规律**：真实孔径雷达的方位分辨率与波长 $\lambda$ 成正比、与斜距 $R$ 成正比（**距离越近方位分辨率越高，近区能分辨的目标在远区可能无法分辨**）、与天线孔径 $D$ 成反比。
+3. **合成孔径雷达（SAR）方位向理论分辨率 $\rho_a$**：
+   合成孔径长度 $L_s = \beta \cdot R = \frac{\lambda R}{D}$，等效合成波束宽度 $\beta_s = \frac{\lambda}{2 L_s} = \frac{D}{2R}$，从而：
+   $$\rho_a = \beta_s \cdot R = \frac{D}{2}$$
+   **颠覆性物理结论**：合成孔径雷达（SAR）的方位分辨率**仅取决于真实天线孔径长度 $D$ 的一半，与波长 $\lambda$ 无关，与斜距 $R$（轨道高度）也完全无关**！而且真实天线尺寸 $D$ 越小，合成孔径越长，方位分辨率反而越高！
+
+### 2. 课程经典例题与解题模板
+* **【例题 3.1】（讲义第5章 Page 78 原题）侧视雷达距离分辨率与目标可分辨性判别**
+  > **题目**：某真实孔径侧视雷达发射脉冲宽度 $\tau = 0.1\ \mu\text{s}$。地面近程有相距 $d_{AB} = 20\text{ m}$ 的两个目标 $A$ 和 $B$（对应俯角 $\Phi_1 = 50^\circ$），远程有相距 $d_{CD} = 20\text{ m}$ 的两个目标 $C$ 和 $D$（对应俯角 $\Phi_2 = 35^\circ$）。试计算两处的地距分辨率，并判断 $A$ 与 $B$、$C$ 与 $D$ 能否在雷达图像上被区分开？（已知 $\cos 50^\circ \approx 0.643$，$\cos 35^\circ \approx 0.819$）
+  * **【标准解答】**：
+    1. 计算斜距分辨率：
+       $$\Delta R = \frac{c \cdot \tau}{2} = \frac{3 \times 10^8\text{ m/s} \times 0.1 \times 10^{-6}\text{ s}}{2} = 15\text{ m}$$
+    2. 计算近程（$\Phi_1 = 50^\circ$）地距分辨率 $\Delta R_{g1}$：
+       $$\Delta R_{g1} = \frac{c \cdot \tau}{2 \cos 50^\circ} = \frac{15}{0.643} \approx 23.3\text{ m} \approx 23\text{ m}$$
+       由于目标间距 $d_{AB} = 20\text{ m} < \Delta R_{g1} (23\text{ m})$，故**近程目标 $A$ 和 $B$ 不能被分辨**。
+    3. 计算远程（$\Phi_2 = 35^\circ$）地距分辨率 $\Delta R_{g2}$：
+       $$\Delta R_{g2} = \frac{c \cdot \tau}{2 \cos 35^\circ} = \frac{15}{0.819} \approx 18.3\text{ m} \approx 18\text{ m}$$
+       由于目标间距 $d_{CD} = 20\text{ m} > \Delta R_{g2} (18\text{ m})$，故**远程目标 $C$ 和 $D$ 能够被清晰分辨**。
+
+* **【例题 3.2】（讲义第5章 Page 80 & Page 82 原题）RAR 与 SAR 方位分辨率对比计算**
+  > **题目**：
+  > （1）某星载侧视雷达斜距 $R = 700\text{ km}$，工作波长 $\lambda = 25\text{ cm}$。若采用真实孔径雷达（RAR）且要求方位分辨率达到 $10\text{ m}$，天线孔径 $D$ 需要多长？
+  > （2）若另一星载雷达斜距 $R = 400\text{ km}$，波长 $\lambda = 4\text{ cm}$，真实天线孔径 $D = 8\text{ m}$，分别求真实孔径模式与合成孔径（SAR）模式下的方位分辨率，并求分辨率提升倍数。
+  * **【标准解答】**：
+    1. 由 $R_\beta = \frac{\lambda \cdot R}{D}$ 反求真实天线孔径 $D$：
+       $$D = \frac{\lambda \cdot R}{R_\beta} = \frac{0.25\text{ m} \times 700 \times 10^3\text{ m}}{10\text{ m}} = 17500\text{ m} = 17.5\text{ km}$$
+       可见在工程上制造 $17.5\text{ km}$ 长的卫星天线是完全不现实的，必须采用 SAR 技术。
+    2. 当 $R = 400\text{ km} = 4 \times 10^5\text{ m}$，$\lambda = 0.04\text{ m}$，$D = 8\text{ m}$ 时：
+       * **真实孔径方位分辨率**：
+         $$R_\beta(\text{RAR}) = \frac{\lambda \cdot R}{D} = \frac{0.04 \times 4 \times 10^5}{8} = 2000\text{ m} = 2\text{ km}$$
+       * **合成孔径长度 $L_s$**：$L_s = 2\text{ km}$，**合成孔径方位分辨率**：
+         $$\rho_a(\text{SAR}) = \frac{D}{2} = \frac{8\text{ m}}{2} = 4\text{ m}$$
+       * **提升倍数**：$\frac{2000\text{ m}}{4\text{ m}} = 500$ 倍！
+
+---
+
+## 模块四：数字图像量化、DN 值—辐射亮度—表观反射率转换模板
+
+### 1. 核心公式体系
+1. **灰度量化比特数 $n$ 与量化等级数 $M$**：
+   $$M = 2^n$$
+   当把原始动态范围 $[g_{\min}, g_{\max}]$ 重新线性映射到新的 $n$ 比特灰度范围 $[0, 2^n - 1]$ 时：
+   $$DN_{\text{new}} = \frac{g - g_{\min}}{g_{\max} - g_{\min}} \times (2^n - 1)$$
+2. **绝对辐射亮度 $L$ 与无量纲数字量化值 $DN$ 的相互转换**：
+   * **由辐射亮度 $L$ 量化为 $DN$ 值（讲义 Page 133 公式）**：
+     $$DN = \frac{L - L_{\min}}{L_{\max} - L_{\min}} \times Q_{\text{cal,max}}$$
+     （注：$Q_{\text{cal,max}}$ 为量化级数，如 8 bit 时讲义取 $256$ 或严格取 $255$，考场上若分母为 $0.14$ 且分子为 $0.07$，乘以 $256$ 恰好得整数 $128$）。
+   * **辐射定标逆转换（由 $DN$ 还原为入瞳辐射亮度 $L_\lambda$）**：
+     $$L_\lambda = \frac{L_{\max} - L_{\min}}{Q_{\text{cal,max}} - Q_{\text{cal,min}}} \cdot (DN - Q_{\text{cal,min}}) + L_{\min} = Gain \cdot DN + Bias$$
+3. **辐射亮度 $L_\lambda$ 转换为大气顶层表观反射率（TOA Reflectance, $\rho_{\text{TOA}}$）**：
+   $$\rho_{\text{TOA}} = \frac{\pi \cdot L_\lambda \cdot d^2}{ESUN_\lambda \cdot \cos\theta_s} = \frac{\pi \cdot L_\lambda \cdot d^2}{ESUN_\lambda \cdot \sin\theta_e}$$
+   式中：$L_\lambda$ 为波段辐射亮度；$d$ 为日地天文单位距离因子（约在 $0.983 \sim 1.017$ 之间）；$ESUN_\lambda$ 为大气上界平均太阳光谱辐照度；$\theta_s$ 为太阳天顶角，$\theta_e$ 为太阳高度角（$\theta_s + \theta_e = 90^\circ$，故 $\cos\theta_s = \sin\theta_e$）。
+
+### 2. 课程经典例题与解题模板
+* **【例题 4.1】（讲义第6章 Page 132 & 133 原题合集）比特量化与 DN 值转换计算**
+  > **题目**：
+  > （1）假设一幅图像从黑到白共有 $0, 1, 2, 3$ 四个灰度级，计算该图像是用几个 bit 进行量化的？如果把该图的灰度用 $8\text{ bit}$ 进行线性拉伸量化，请写出这四个灰度值对应的新灰度值。
+  > （2）已知某传感器波段饱和辐射亮度 $L_{\max} = 0.17\text{ mW}\cdot\text{cm}^{-2}\cdot\text{sr}^{-1}$，最小辐射亮度 $L_{\min} = 0.03\text{ mW}\cdot\text{cm}^{-2}\cdot\text{sr}^{-1}$，设量化灰度级为 $256$。试计算入射辐射亮度 $L = 0.10\text{ mW}\cdot\text{cm}^{-2}\cdot\text{sr}^{-1}$ 时对应的 $DN$ 值。
+  * **【标准解答】**：
+    1. 因为 $2^2 = 4$，故原始图像是用 **$2\text{ bit}$** 进行量化的。
+       若用 $8\text{ bit}$ 进行量化，则共有 $2^8 = 256$ 个灰阶，取值范围为 $[0, 255]$。新的灰度值计算如下：
+       $$g'_k = \frac{255}{3 - 0} \times k = 85 \times k \quad (k = 0, 1, 2, 3)$$
+       代入得四个新灰度值分别为：**$0, 85, 170, 255$**。
+    2. 代入辐射亮度转 $DN$ 值公式：
+       $$DN = \frac{L - L_{\min}}{L_{\max} - L_{\min}} \times \text{灰度级} = \frac{0.10 - 0.03}{0.17 - 0.03} \times 256 = \frac{0.07}{0.14} \times 256 = 0.5 \times 256 = 128$$
+
+---
+
+## 模块五：光谱指数（NDVI / RVI / DVI / NDWI / MNDWI / EVI / FAI）计算与物理意义
+
+### 1. 七大核心遥感光谱指数汇总表（公式 + 阈值 + 物理机制）
+| 指数名称 | 英文缩写 | 标准计算公式 | 取值范围与地物判别阈值 | 核心物理意义与优缺点 |
+| :--- | :--- | :--- | :--- | :--- |
+| **归一化差值植被指数** | **NDVI** | $$NDVI = \frac{\rho_{\text{NIR}} - \rho_{\text{Red}}}{\rho_{\text{NIR}} + \rho_{\text{Red}}}$$ | 取值范围 **$[-1, 1]$**：<br>• **$< 0$**：水体、云、冰雪；<br>• **$\approx 0$（$0 \sim 0.1$）**：裸土、岩石、人工建筑；<br>• **$0.2 \sim 0.8$**：绿色植被（值越大植被覆盖度 $FVC$ 越高、生物量越大）。 | 利用健康植被在**近红外（NIR）细胞结构强反射**与**红光（Red）叶绿素强吸收**的巨大反差构建；归一化消除了大部分地形阴影、太阳高度角和大气辐射变化影响。<br>**缺点**：在高植被覆盖区（如浓密森林，$LAI > 3$）易发生**饱和现象**；在低覆盖区易受土壤背景干扰。 |
+| **比值植被指数** | **RVI** | $$RVI = \frac{\rho_{\text{NIR}}}{\rho_{\text{Red}}}$$ | 取值范围 $(0, +\infty)$：裸土与水体在 $1$ 附近，健康绿色植被通常 $> 2$（可达 $10$ 以上）。 | 对高覆盖度浓密植被非常敏感，与生物量线性相关性好；但在植被覆盖度很低（$< 30\%$）时对土壤背景噪声敏感且受大气影响较大。 |
+| **差值植被指数** | **DVI** | $$DVI = \rho_{\text{NIR}} - \rho_{\text{Red}}$$ | 对土壤背景变化极为敏感。 | 计算最简单，在中低植被覆盖区识别效果好，但未归一化，受地形阴影和光照强度影响大。 |
+| **增强型植被指数** | **EVI** | $$EVI = 2.5 \times \frac{\rho_{\text{NIR}} - \rho_{\text{Red}}}{\rho_{\text{NIR}} + 6\rho_{\text{Red}} - 7.5\rho_{\text{Blue}} + 1}$$<br>（通用形式：$G \frac{\rho_{\text{NIR}} - \rho_{\text{Red}}}{\rho_{\text{NIR}} + C_1\rho_{\text{Red}} - C_2\rho_{\text{Blue}} + L}$，标准系数 $G=2.5, C_1=6, C_2=7.5, L=1$） | 取值范围一般为 $[-1, 1]$，健康植被通常在 $0.2 \sim 0.8$。 | 在 NDVI 基础上同时引入了**土壤调节参数 $L=1$** 和**蓝光波段气溶胶散射修正项 $\rho_{\text{Blue}}$**：**有效克服了 NDVI 在高生物量区的饱和问题**，同时大幅削弱了土壤背景与大气气溶胶散射的干扰（MODIS 标准植被产品）。 |
+| **归一化差值水体指数（McFeeters）** | **NDWI** | $$NDWI = \frac{\rho_{\text{Green}} - \rho_{\text{NIR}}}{\rho_{\text{Green}} + \rho_{\text{NIR}}}$$ | 取值范围 $[-1, 1]$：<br>• **$> 0$（或 $> 0.1$）**：水体；<br>• **$< 0$**：植被与干裸土。 | 利用水体在**绿光波段反射率相对较高**而在**近红外波段强烈吸收（反射率趋于 $0$）**的特征，最大化突出水体并强烈抑制高近红外反射的陆生植被。<br>**缺点**：城市建筑物在绿光与近红外反射率相近，难以有效抑制建成区建筑阴影噪声。 |
+| **改进型归一化差值水体指数（徐涵秋）** | **MNDWI** | $$MNDWI = \frac{\rho_{\text{Green}} - \rho_{\text{SWIR}}}{\rho_{\text{Green}} + \rho_{\text{SWIR}}}$$ | 城市水体提取中 $> 0$ 即可干净提取水体。 | 将 NDWI 中的近红外替换为**短波红外（SWIR，如 TM5 / OLI6）**。因为建筑物和土壤在 SWIR 波段的反射率远高于绿光波段（使建筑物 MNDWI 变为明显负值），从而**完美解决了城市水体提取中建筑物与阴影的混淆问题**。 |
+| **浮游藻类指数（讲义第9章原式）** | **FAI** | $$FAI = R_{\text{NIR}} - \left[ R_{\text{Red}} + (R_{\text{SWIR}} - R_{\text{Red}}) \cdot \frac{\lambda_{\text{NIR}} - \lambda_{\text{Red}}}{\lambda_{\text{SWIR}} - \lambda_{\text{Red}}} \right]$$ | 对黄海浒苔（绿潮）、太湖蓝藻水华等大于阈值（如 $> 0$）的区域极为敏感。 | 计算近红外波段反射率相对于红光与短波红外连线基线的抬升高度。相比 NDVI，FAI 对薄云、气溶胶和太阳耀光具有极强的鲁棒性。 |
+
+---
+
+## 模块六：空间滤波卷积、频谱幅度、PCA 贡献率与 CNN 卷积计算模板
+
+### 1. 空间域平滑（中值滤波）与锐化（拉普拉斯 / Sobel）手工计算模板
+* **【例题 6.1】（讲义第7章 Page 84 & Page 88 原题）中值滤波与拉普拉斯算子中心输出计算**
+  > **题目**：
+  > （1）已知 $3 \times 3$ 图像窗口像素矩阵为 $\begin{bmatrix} 23 & 7 & 5 \\ 19 & 120 & 64 \\ 35 & 5 & 9 \end{bmatrix}$，求 $3 \times 3$ 中值滤波后中心像素的输出值。
+  > （2）已知 $3 \times 3$ 图像窗口像素矩阵为 $\begin{bmatrix} 70 & 80 & 83 \\ 85 & 70 & 60 \\ 105 & 88 & 110 \end{bmatrix}$，利用四邻域拉普拉斯（Laplace）算子 $\nabla^2 f(x,y) = f(x+1,y) + f(x-1,y) + f(x,y+1) + f(x,y-1) - 4f(x,y)$ 进行边缘检测，计算中心位置的输出值。
+  * **【标准解答】**：
+    1. **中值滤波计算**：
+       将 $3 \times 3$ 窗口内的 9 个灰度值按从小到大排序：
+       $$5,\ 5,\ 7,\ 9,\ \mathbf{19},\ 23,\ 35,\ 64,\ 120$$
+       取正中间第 5 个数（中位数），得中心像素新灰度值为 **$19$**（可见孤立高亮脉冲噪声 $120$ 被彻底滤除！）。
+    2. **拉普拉斯（Laplace）算子计算**：
+       四邻域拉普拉斯模板为 $\begin{bmatrix} 0 & 1 & 0 \\ 1 & -4 & 1 \\ 0 & 1 & 0 \end{bmatrix}$。将中心像素 $f(x,y)=70$ 及其上下左右四个邻域像素（上 $80$、下 $88$、左 $85$、右 $60$）代入公式：
+       $$\nabla^2 f(x,y) = 80 + 85 + 60 + 88 - 4 \times 70 = 313 - 280 = 33$$
+       故中心位置拉普拉斯边缘检测输出值为 **$33$**。
+
+### 2. 傅立叶谱（幅度谱）计算模板
+* **【例题 6.2】（讲义第6章 Page 142 原题）**
+  > **题目**：已知实函数的傅立叶变换结果为复数 $F(u) = R(u) + jI(u)$。现有复数 $Z = 1 - 2j$，计算其傅立叶谱（幅度）。
+  * **【标准解答】**：
+    由傅立叶幅度谱公式 $|F(u)| = \sqrt{R(u)^2 + I(u)^2}$ 得：
+    $$|Z| = \sqrt{1^2 + (-2)^2} = \sqrt{1 + 4} = \sqrt{5}$$
+
+### 3. 主成分分析（PCA / K-L 变换）特征值方差贡献率计算模板
+1. **数学步骤**：
+   * 设 $n$ 个波段图像的协方差矩阵为 $\Sigma$，由特征方程 $|\Sigma - \lambda I| = 0$ 解出 $n$ 个特征值，按从大到小排列为 $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_n \ge 0$。
+   * **第 $k$ 主分量的方差（信息量）即等于第 $k$ 个特征值 $\lambda_k$**，且变换前后总方差守恒：$\sum_{k=1}^n \sigma_{ii}^2 = \sum_{k=1}^n \lambda_k$。
+   * **第 $k$ 主分量的方差贡献率（占总信息量百分比）$P_k$**：
+     $$P_k = \frac{\lambda_k}{\sum_{i=1}^{n} \lambda_i} \times 100\%$$
+   * **前 $m$ 个主分量的累计方差贡献率 $CP_m$**：
+     $$CP_m = \frac{\sum_{k=1}^{m} \lambda_k}{\sum_{i=1}^{n} \lambda_i} \times 100\%$$
+* **【例题 6.3】（讲义第7章 Page 81 数据）MSS 4波段 PCA 贡献率计算**
+  > **题目**：某 MSS 4 波段影像各原始波段方差分别为 $74.2, 94.1, 37.3, 44.5$（总方差为 $250.1$）。经 K-L 变换后得到 4 个主分量的特征值（方差）分别为 $\lambda_1 = 219.5$，$\lambda_2 = 29.9$，$\lambda_3 = 0.6$，$\lambda_4 = 0.2$。求各主分量的信息量贡献率及前两个主分量的累计贡献率。
+  * **【标准解答】**：
+    * 总特征值之和：$\sum_{i=1}^4 \lambda_i = 219.5 + 29.9 + 0.6 + 0.2 = 250.2$（与原波段总方差守恒，微差 $0.1$ 为四舍五入所致）。
+    * 第一主分量贡献率：$P_1 = \frac{219.5}{250.2} \times 100\% \approx 87.73\%$；
+    * 第二主分量贡献率：$P_2 = \frac{29.9}{250.2} \times 100\% \approx 11.95\%$；
+    * 第三、四主分量贡献率：$P_3 \approx 0.24\%$，$P_4 \approx 0.08\%$；
+    * **前两个主分量累计贡献率**：$CP_2 = P_1 + P_2 \approx 99.68\%$。因此仅保留 $PC_1$ 和 $PC_2$ 即可压缩一半数据量并保留 $99.68\%$ 的有效信息，同时剔除后两个分量的噪声。
+
+### 4. 卷积神经网络（CNN）特征图尺寸、卷积与 Softmax 计算模板
+1. **卷积/池化输出特征图尺寸公式**：
+   设输入图像尺寸为 $H_{\text{in}} \times W_{\text{in}} \times C_{\text{in}}$，卷积核（Filter）尺寸为 $K \times K \times C_{\text{in}}$，卷积核个数为 $N_{\text{filters}}$，边缘填充圈数为 $P$（Padding），滑动步长为 $S$（Stride），则输出特征图尺寸 $H_{\text{out}} \times W_{\text{out}} \times C_{\text{out}}$ 为：
+   $$H_{\text{out}} = \left\lfloor \frac{H_{\text{in}} - K + 2P}{S} \right\rfloor + 1, \quad W_{\text{out}} = \left\lfloor \frac{W_{\text{in}} - K + 2P}{S} \right\rfloor + 1, \quad C_{\text{out}} = N_{\text{filters}}$$
+   * **讲义 Page 154 验证**：输入 $5 \times 5 \times 3$，加一圈填充 $P = 1$ 变为 $7 \times 7 \times 3$，采用 $2$ 个 $3 \times 3 \times 3$ 卷积核（$K=3, N_{\text{filters}}=2$），步长 $S = 2$，则输出宽高为 $\frac{5 - 3 + 2\times 1}{2} + 1 = 3$，最终输出尺寸为 **$3 \times 3 \times 2$**！
+2. **Softmax 输出层多分类概率归一化公式（讲义 Page 158 原题）**：
+   $$y_i = \frac{e^{z_i}}{\sum_{j=1}^{C} e^{z_j}}$$
+   * **讲义例题**：全连接层输出三个值 $z_1 = 3, z_2 = 1, z_3 = -3$，由于 $e^3 \approx 20, e^1 \approx 2.7, e^{-3} \approx 0.05$，总和 $\sum e^{z_j} \approx 22.75$，则三类输出概率分别为 $y_1 = \frac{20}{22.75} \approx 0.88$，$y_2 = \frac{2.7}{22.75} \approx 0.12$，$y_3 = \frac{0.05}{22.75} \approx 0.002$，满足 $\sum y_i = 1$。
+
+---
+
+## 模块七：贝叶斯（最大似然）分类与混淆矩阵 Kappa 系数计算模板（大题必考）
+
+### 1. 贝叶斯后验概率判别计算模板
+* **【例题 7.1】（讲义第8章 Page 127-128 原题）基于贝叶斯公式的类别判决**
+  > **题目**：某水产加工厂利用鱼的长度特征 $x$ 对鲈鱼（$\omega_1$）和鲑鱼（$\omega_2$）进行自动识别分类。已知先验概率（捕获比率）：鲈鱼 $P(\omega_1) = \frac{1}{3}$，鲑鱼 $P(\omega_2) = 1 - P(\omega_1) = \frac{2}{3}$。由概率密度曲线测得当长度 $x = 10$ 时的类条件概率密度分别为：$p(x=10|\omega_1) = 0.05$，$p(x=10|\omega_2) = 0.50$。求当观测到一条鱼长度为 $x = 10$ 时的后验概率 $P(\omega_1|x=10)$ 和 $P(\omega_2|x=10)$，并判断该鱼属于哪个类别？
+  * **【标准解答】**：
+    1. 根据全概率公式计算 $p(x=10)$：
+       $$p(x=10) = p(x=10|\omega_1)P(\omega_1) + p(x=10|\omega_2)P(\omega_2) = 0.05 \times \frac{1}{3} + 0.50 \times \frac{2}{3} = \frac{1.05}{3} = 0.35$$
+    2. 根据贝叶斯（Bayes）公式计算属于 $\omega_1$（鲈鱼）的后验概率：
+       $$P(\omega_1|x=10) = \frac{p(x=10|\omega_1)P(\omega_1)}{p(x=10)} = \frac{0.05 \times \frac{1}{3}}{0.05 \times \frac{1}{3} + 0.50 \times \frac{2}{3}} = \frac{0.05}{1.05} \approx 0.048$$
+    3. 计算属于 $\omega_2$（鲑鱼）的后验概率：
+       $$P(\omega_2|x=10) = 1 - P(\omega_1|x=10) = 1 - 0.048 = 0.952$$
+    4. **类别判决**：因为 $P(\omega_2|x=10) > P(\omega_1|x=10)$，故判决当 $x=10$ 时该样本属于 $\omega_2$ 类（即**鲑鱼**）。
+
+### 2. 混淆矩阵总体精度、Kappa 系数与条件 Kappa 系数计算模板
+* **【例题 7.2】（讲义第8章 Page 24-28 原题）混淆矩阵精度评定完整计算**
+  > **题目**：对某地区遥感影像进行土地覆盖分类后，抽取 $N = 284$ 个检验样本构建混淆矩阵如下表所示（行为实际类，列为分类类）。试计算：
+  > （1）总体分类精度 $p_c$；
+  > （2）总体 Kappa 系数 $K$；
+  > （3）“玉米”类别的条件 Kappa 系数 $K_{\text{玉米}}$，并评价分类质量等级。
+  >
+  > | 实际类 \ 分类类 | 玉米 | 大豆 | 森林 | 其他类 | 行总和（$x_{i+}$） |
+  > | :--- | :---: | :---: | :---: | :---: | :---: |
+  > | **玉米** | **25** | 5 | 10 | 3 | **43** |
+  > | **大豆** | 3 | **50** | 6 | 4 | **63** |
+  > | **森林** | 2 | 4 | **60** | 6 | **72** |
+  > | **其他类** | 2 | 2 | 2 | **100** | **106** |
+  > | **列总和（$x_{+i}$）** | **32** | **61** | **78** | **113** | **284（$N$）** |
+
+  * **【标准解答】**：
+    1. **计算总体分类精度 $p_c$**：
+       主对角线上被正确分类的样本总数：
+       $$\sum_{k=1}^{4} x_{kk} = 25 + 50 + 60 + 100 = 235$$
+       总体分类精度：
+       $$p_c = \frac{\sum_{k=1}^{4} x_{kk}}{N} = \frac{235}{284} \approx 0.8275 = 82.75\%$$
+    2. **计算总体 Kappa 系数 $K$**：
+       先计算各类的行总和与列总和乘积之和 $\sum_{i=1}^{4} (x_{i+} \cdot x_{+i})$：
+       $$\sum_{i=1}^{4} (x_{i+} \cdot x_{+i}) = 43 \times 32 + 63 \times 61 + 72 \times 78 + 106 \times 113 = 1376 + 3843 + 5616 + 11978 = 22813$$
+       代入 Kappa 系数公式：
+       $$K = \frac{N \sum_{i=1}^{4} x_{ii} - \sum_{i=1}^{4} (x_{i+} \cdot x_{+i})}{N^2 - \sum_{i=1}^{4} (x_{i+} \cdot x_{+i})} = \frac{284 \times 235 - 22813}{284^2 - 22813} = \frac{66740 - 22813}{80656 - 22813} = \frac{43927}{57843} \approx 0.7594 = 75.94\%$$
+    3. **计算“玉米”类的条件 Kappa 系数 $K_{\text{玉米}}$**：
+       已知 $N = 284$，玉米对角线正确数 $x_{11} = 25$，行和 $x_{1+} = 43$，列和 $x_{+1} = 32$，代入讲义公式：
+       $$K_{\text{玉米}} = \frac{N \cdot x_{11} - x_{1+} \cdot x_{+1}}{N \cdot x_{+1} - x_{1+} \cdot x_{+1}} = \frac{284 \times 25 - 43 \times 32}{284 \times 32 - 43 \times 32} = \frac{7100 - 1376}{9088 - 1376} = \frac{5724}{7712} \approx 0.7422 = 74.22\%$$
+    4. **分类质量评价**：由于总体 Kappa 系数 $K = 0.7594 \in [0.60, 0.80]$，根据 Kappa 质量评价标准，本次遥感分类质量等级为**“很好”**。
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const raw = document.getElementById("md-raw").textContent;
+    document.getElementById("content").innerHTML = marked.parse(raw);
+    renderMathInElement(document.getElementById("content"), {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

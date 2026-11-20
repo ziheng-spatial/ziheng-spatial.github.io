@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03_数字摄影测量综合计算题25分专项模板</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.75; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .nav-bar { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+  .nav-bar a { color: #00ff80; text-decoration: none; font-weight: 600; font-size: 0.95em; }
+  h1, h2, h3 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin-top: 28px; }
+  h1 { color: #00ff80; font-size: 1.7em; }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; min-width: 110px; }
+  th { background: #161b22; color: #58a6ff; }
+  tr:nth-child(even) { background: #12171f; }
+  code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
+  blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
+  strong { color: #ffa657; }
+</style>
+</head>
+<body>
+<div class="nav-bar"><a href="../index.html">← 返回复习总目录</a></div>
+<div id="content"></div>
+<script type="text/plain" id="md-raw"># 03 数字摄影测量综合计算题 25 分专项模板
+
+> **适用课程与考纲**：山东理工大学（SDUT）《数字摄影测量学》期末冲刺（已剥离模拟测图与非考纲内容，整合解析基础 + 数字核心计算）
+> **题型分值**：综合计算题共 **2 题（12 分 + 13 分 = 25 分，难度偏基础）**
+> **阅卷给分规律**：综合题按“**公式列写（40%）+ 代数中间量（30%）+ 最终数值与单位（30%）**”分步给分。即使某一步算错数值，只要把对应模板的标准公式完整默写出来，依然能稳拿一半以上步骤分！
+
+---
+
+## 零、考场 25 分计算题生死线：五大单位换算与五大正负号排雷表
+
+| 类别 | 高危易错点 | 典型错误写法 | 考场满分防错铁律 |
+| :--- | :--- | :--- | :--- |
+| **单位 1** | 焦距 $f(\mathrm{mm})$、像元 $d(\mu\mathrm{m})$ 与航高 $H(\mathrm{m})$ 混算 | 直接用 $2400 / 120$ 算比例尺分母 $m$ | 牢记 $1\ \mathrm{m} = 10^3\ \mathrm{mm} = 10^6\ \mu\mathrm{m}$；比例尺分母 $m = \dfrac{H(\mathrm{m}) \times 1000}{f(\mathrm{mm})}$；$\mathrm{GSD}(\mathrm{m}) = m \cdot d(\mu\mathrm{m}) \times 10^{-6}$。 |
+| **单位 2** | 航速 $v(\mathrm{km/h})$ 直接除基线算曝光间隔 | 用 $B(\mathrm{m}) / 288$ 算 $\Delta t$ | 先除以 $3.6$ 化为米每秒：$v(\mathrm{m/s}) = \dfrac{v(\mathrm{km/h})}{3.6}$，再算 $\Delta t = \dfrac{B}{v}$。 |
+| **单位 3** | 后方交会误差方程 $V = A\Delta X - L$ 量纲 | 搞不清解出的线/角改正数单位 | 统一令 $x, y, f, l_x, l_y$ 用 $\mathrm{mm}$，令 $X, Y, Z, \bar{Z}$ 用 $\mathrm{m}$，则解出的 $\Delta X_S\sim\Delta Z_S$ 为 **$\mathrm{m}$**，$\Delta\varphi\sim\Delta\kappa$ 天然为 **弧度（$\mathrm{rad}$）**！ |
+| **单位 4** | 角度度数（$^\circ$）直接代入微分线性化公式 | 代入 $\Delta\varphi = 2^\circ$ 算像点位移 | 一切泰勒展开与微倾公式中的角度均为**弧度**！换算常数 $\rho'' = \dfrac{180}{\pi}\times 3600 \approx 206265''$。 |
+| **单位 5** | 航带数与单带像片数四舍五入漏进一 | $8.2$ 条航带算成 $8$ 条 | 凡除不尽**一律向上进一取整 $\lceil \cdot \rceil$**，防止航摄漏洞，并按题意加上安全外扩片。 |
+| **符号 1** | 大地高斯左旋系直接代共线方程 | 把 $(X_{\text{北}}, Y_{\text{东}})$ 原样当摄测右旋系 | 若题目注明“高斯平面坐标”，先令 $X = Y_{\text{东}},\ Y = X_{\text{北}},\ Z = H_{\text{高程}}$ 转为右旋系再算。 |
+| **符号 2** | 下视航空摄影把分母 $\bar{Z}$ 算成正数 | 代入 $\bar{Z} = +H$ | 像空间恒有 $z = -f$；下视摄影地面低于镜头（$Z < Z_S$），必有 **$\bar{Z} \approx Z - Z_S = -H < 0$**！ |
+| **符号 3** | 后方交会常数项 $L$ 减法顺序颠倒 | 写成 $l_x = (x)_{\text{近似}} - x_{\text{观测}}$ | 标准式 $V = A\Delta X - L$ 中，常数项必为**观测值减近似计算值**：**$l_x = x - (x),\ l_y = y - (y)$**。 |
+| **符号 4** | 照搬原教材偏导数印刷笔误 | 把 $a_{26}$ 写成 $+(x - x_0)$ | 严密与近似偏导数中恒有 **$a_{16} = +(y - y_0)$**，而 **$a_{26} = -(x - x_0)$**！ |
+| **符号 5** | 立体像对大高差直接套平坦近似式 | $\Delta h = \frac{H}{b}\Delta p$ 产生米级偏差 | 优先使用严密高差公式：**$\Delta h_{AC} = Z_A - Z_C = \dfrac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}}$**（点越高，左右视差 $p$ 越大）。 |
+
+---
+
+## 模板一：航摄技术设计、投影差测高与正直立体像对视差计算（基础必拿分）
+
+### 1. 标准解题步骤与公式链
+1. **像幅尺寸与地面采样距离 GSD**：
+   $$l_x = N_x \cdot d, \qquad l_y = N_y \cdot d, \qquad \frac{1}{m} = \frac{f}{H} = \frac{d}{\mathrm{GSD}} \implies H = m \cdot f,\quad H_{\mathrm{abs}} = H + Z_{\mathrm{avg}}$$
+2. **地面覆盖、摄影基线 $B$、航线间距 $D$ 与曝光间隔 $\Delta t$**：
+   $$L_X = m \cdot l_x = N_x \cdot \mathrm{GSD}, \qquad L_Y = m \cdot l_y = N_y \cdot \mathrm{GSD}$$
+   $$B = L_X(1 - P_x), \qquad D = L_Y(1 - P_y), \qquad \Delta t = \frac{B}{v}, \qquad \delta_{\text{像移}} = \frac{v \cdot t_{\mathrm{exp}}}{m}$$
+3. **航带数与总像片数**：
+   $$N_{\text{航带}} = \left\lceil \frac{W_Y}{D} \right\rceil + 1, \qquad N_{\text{单带}} = \left\lceil \frac{W_X}{B} \right\rceil + 1 + N_{\text{外扩}}\ (\text{或基线数 } + 4), \qquad N_{\text{总}} = N_{\text{航带}} \times N_{\text{单带}}$$
+4. **单张铅垂像片投影差测高**（区分已知塔顶向径 $r_{\text{顶}}$ 与塔底向径 $r_{\text{底}}$）：
+   $$\Delta h = \frac{\delta_h \cdot H}{r_{\text{顶}}} = \frac{\delta_h \cdot H}{r_{\text{底}} + \delta_h} \qquad (\text{其中 } \delta_h = r_{\text{顶}} - r_{\text{底}})$$
+5. **理想正直立体像对（$\varphi=\omega=\kappa=0,\ B_Y=B_Z=0,\ B_X=B$）三维坐标、严密高差与高程中误差**：
+   $$p = x_1 - x_2, \qquad q = y_1 - y_2 = 0, \qquad H_A = Z_{S_1} - Z_A = \frac{B \cdot f}{p_A}$$
+   $$X_A = X_{S_1} + \frac{B}{p_A}x_{1A}, \qquad Y_A = Y_{S_1} + \frac{B}{p_A}y_{1A}, \qquad Z_A = Z_{S_1} - \frac{B \cdot f}{p_A}$$
+   $$\Delta h_{AC} = Z_A - Z_C = \frac{H_C \cdot (p_A - p_C)}{p_C + (p_A - p_C)} = \frac{H_C \cdot \Delta p_{AC}}{p_A}, \qquad m_Z = \frac{H}{B} \cdot \frac{H}{f} \cdot m_p = \frac{m}{B/H} \cdot m_p$$
+
+---
+
+### 2. 【典型例题 1】数字航摄参数设计与立体像对视差测高综合计算（12 分标准题）
+
+> **【题目】**：某数字航空摄影工程相机焦距 $f = 150.00\ \mathrm{mm}$，像元尺寸 $d = 6\ \mu\mathrm{m}$，像主点 $x_0 = y_0 = 0$。已知理想正直立体像对左摄站坐标 $(X_{S_1}, Y_{S_1}, Z_{S_1}) = (1000.00, 2000.00, 1650.00)\ \mathrm{m}$，右摄站坐标 $(X_{S_2}, Y_{S_2}, Z_{S_2}) = (1600.00, 2000.00, 1650.00)\ \mathrm{m}$。
+> (1) 量得待定点 $A$ 的左片像坐标 $(x_{1A}, y_{1A}) = (42.50, -30.00)\ \mathrm{mm}$，右片像坐标 $(x_{2A}, y_{2A}) = (-32.50, -30.00)\ \mathrm{mm}$，求摄影基线 $B$、$A$ 点左右视差 $p_A$、地面三维坐标 $(X_A, Y_A, Z_A)$ 及 $A$ 点高程面上的地面采样距离 $\mathrm{GSD}_A$；
+> (2) 已知地面基准点 $C$ 的左右视差 $p_C = 72.00\ \mathrm{mm}$，求 $A$ 相对于 $C$ 的严密高差 $\Delta h_{AC}$；若左右视差量测中误差为 $m_p = \pm 0.5\ \text{像素}$，求 $C$ 点处的高程量测中误差 $m_Z$。
+
+**【满分分步解答】**：
+1. **求解基线、左右视差、三维地面坐标与 $\mathrm{GSD}_A$（6 分）**：
+   - 摄影基线：$B = X_{S_2} - X_{S_1} = 1600.00 - 1000.00 = 600.00\ \mathrm{m}$（且 $B_Y = B_Z = 0$）；
+   - $A$ 点左右视差与相对航高：
+     $$p_A = x_{1A} - x_{2A} = 42.50 - (-32.50) = 75.00\ \mathrm{mm}, \qquad H_A = \frac{B \cdot f}{p_A} = \frac{600.00 \times 150.00}{75.00} = 1200.00\ \mathrm{m}$$
+   - 点投影系数 $N_A = \dfrac{B}{p_A} = \dfrac{600.00\ \mathrm{m}}{75.00\ \mathrm{mm}} = 8.00\ \mathrm{m/mm}$，代入正直立体像对坐标公式：
+     $$X_A = 1000.00 + 8.00 \times 42.50 = \mathbf{1340.00\ \mathrm{m}}, \qquad Y_A = 2000.00 + 8.00 \times (-30.00) = \mathbf{1760.00\ \mathrm{m}}$$
+     $$Z_A = Z_{S_1} - H_A = 1650.00 - 1200.00 = \mathbf{450.00\ \mathrm{m}}$$
+   - $A$ 点所在高程面的地面采样距离：
+     $$\mathrm{GSD}_A = \frac{H_A}{f} \cdot d = \frac{1200.00\ \mathrm{m}}{0.150\ \mathrm{m}} \times 6 \times 10^{-6}\ \mathrm{m} = 8000 \times 6 \times 10^{-6}\ \mathrm{m} = \mathbf{0.048\ \mathrm{m} = 4.8\ \mathrm{cm}}$$
+2. **求解严密高差 $\Delta h_{AC}$ 与高程中误差 $m_Z$（6 分）**：
+   - 基准点 $C$ 相对航高：$H_C = \dfrac{B \cdot f}{p_C} = \dfrac{600.00 \times 150.00}{72.00} = 1250.00\ \mathrm{m}$；
+   - 视差较 $\Delta p_{AC} = p_A - p_C = 75.00 - 72.00 = +3.00\ \mathrm{mm}$，代入严密高差公式：
+     $$\Delta h_{AC} = \frac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}} = \frac{1250.00 \times 3.00}{72.00 + 3.00} = \mathbf{+50.00\ \mathrm{m}}$$
+   - 视差量测物理中误差 $m_p = 0.5 \times 6\ \mu\mathrm{m} = 3.0\ \mu\mathrm{m} = 0.003\ \mathrm{mm}$，代入高程误差传播公式：
+     $$m_Z = \frac{H_C}{B} \cdot \frac{H_C}{f} \cdot m_p = \frac{1250.00}{600.00} \times \frac{1250.00\ \mathrm{m}}{150.00\ \mathrm{mm}} \times 0.003\ \mathrm{mm} = 2.0833 \times 8.3333 \times 0.003 = \mathbf{\pm 0.052\ \mathrm{m}}$$
+
+---
+
+## 模板二：旋转矩阵 $R$、共线条件方程与单像空间后方交会列式（解析核心）
+
+### 1. 标准解题步骤与公式链
+1. **以 $Y$ 轴为主轴的 $\varphi\text{--}\omega\text{--}\kappa$ 正交旋转矩阵 $R$ 及微倾近似式**：
+   $$R = R_\varphi R_\omega R_\kappa = \begin{bmatrix} \cos\varphi\cos\kappa - \sin\varphi\sin\omega\sin\kappa & -\cos\varphi\sin\kappa - \sin\varphi\sin\omega\cos\kappa & -\sin\varphi\cos\omega \\ \cos\omega\sin\kappa & \cos\omega\cos\kappa & -\sin\omega \\ \sin\varphi\cos\kappa + \cos\varphi\sin\omega\sin\kappa & -\sin\varphi\sin\kappa + \cos\varphi\sin\omega\cos\kappa & \cos\varphi\cos\omega \end{bmatrix} \approx \begin{bmatrix} 1 & -\kappa & -\varphi \\ \kappa & 1 & -\omega \\ \varphi & \omega & 1 \end{bmatrix}$$
+   - **由 $R$ 反求角元素**：$\omega = \arcsin(-b_3),\quad \varphi = \operatorname{atan2}(-a_3, c_3),\quad \kappa = \operatorname{atan2}(b_1, b_2)$。
+2. **共线条件方程正算式（物方 $\to$ 像方）与反算式（像方 + 高程 $Z \to$ 物方平面）**：
+   $$\begin{bmatrix} \bar{X} \\ \bar{Y} \\ \bar{Z} \end{bmatrix} = R^{\mathrm{T}} \begin{bmatrix} X - X_S \\ Y - Y_S \\ Z - Z_S \end{bmatrix} \implies \text{正算：}\left\{ \begin{aligned} x - x_0 &= -f \frac{\bar{X}}{\bar{Z}} \\[4pt] y - y_0 &= -f \frac{\bar{Y}}{\bar{Z}} \end{aligned} \right., \qquad \text{反算：}\left\{ \begin{aligned} X &= X_S + (Z - Z_S)\frac{X_a}{Z_a} \\[4pt] Y &= Y_S + (Z - Z_S)\frac{Y_a}{Z_a} \end{aligned} \right.$$
+   （其中 $[X_a, Y_a, Z_a]^{\mathrm{T}} = R[x - x_0,\ y - y_0,\ -f]^{\mathrm{T}}$。）
+3. **单像空间后方交会线性化误差方程与考场手算偏导数矩阵**（最少 $n \ge 3$ 个不共线平高点，多余观测 $r = 2n - 6$）：
+   - **初值设定**：$\varphi^0 = \omega^0 = \kappa^0 = 0$，$X_S^0 = \dfrac{1}{n}\sum X_i,\ Y_S^0 = \dfrac{1}{n}\sum Y_i,\ Z_S^0 = \dfrac{1}{n}\sum Z_i + m f$；
+   - **误差方程与常数项**：$v_x = \sum_{j=1}^6 a_{1j}\Delta X_j - l_x,\ v_y = \sum_{j=1}^6 a_{2j}\Delta X_j - l_y$，其中 **$l_x = x - (x),\ l_y = y - (y)$**；
+   - **竖直微倾首轮近似偏导数矩阵**（当 $\varphi^0 = \omega^0 = \kappa^0 = 0,\ x_0 = y_0 = 0,\ H_i = Z_S^0 - Z_i = -\bar{Z}_i^0 > 0$ 时，考场手算列矩阵必背！）：
+     $$A_i = \begin{bmatrix} a_{11} & a_{12} & a_{13} & a_{14} & a_{15} & a_{16} \\ a_{21} & a_{22} & a_{23} & a_{24} & a_{25} & a_{26} \end{bmatrix} = \begin{bmatrix} -\dfrac{f}{H_i} & 0 & -\dfrac{\tilde{x}_i}{H_i} & -\left(f + \dfrac{\tilde{x}_i^2}{f}\right) & -\dfrac{\tilde{x}_i \tilde{y}_i}{f} & \tilde{y}_i \\[10pt] 0 & -\dfrac{f}{H_i} & -\dfrac{\tilde{y}_i}{H_i} & -\dfrac{\tilde{x}_i \tilde{y}_i}{f} & -\left(f + \dfrac{\tilde{y}_i^2}{f}\right) & -\tilde{x}_i \end{bmatrix}$$
+   - **最小二乘解与精度评定**：$\Delta X = (A^{\mathrm{T}}A)^{-1}A^{\mathrm{T}}L$，$\sigma_0 = \sqrt{\dfrac{V^{\mathrm{T}}V}{2n - 6}}$，$m_k = \sigma_0\sqrt{Q_{kk}}$。
+
+---
+
+### 2. 【典型例题 2】单像空间后方交会初值设定与首轮误差方程列立（13 分标准题）
+
+> **【题目】**：已知某竖直航空像片内方位元素 $f = 150.00\ \mathrm{mm},\ x_0 = y_0 = 0$，摄影比例尺约为 $1:10000$，像片四角布设了 4 个平高控制点，其地面摄影测量坐标平均值为 $(\bar{X}, \bar{Y}, \bar{Z}) = (5000.00, 8000.00, 200.00)\ \mathrm{m}$。其中 1 号控制点地面坐标为 $(X_1, Y_1, Z_1) = (4400.00, 7500.00, 200.00)\ \mathrm{m}$，实测像平面坐标为 $(x_1, y_1) = (-61.20, -49.50)\ \mathrm{mm}$。
+> (1) 指出该后方交会的观测方程总数、未知数个数与多余观测数 $r$，并确定 6 个外方位元素的迭代初值；
+> (2) 计算第 1 次迭代时 1 号控制点的近似像平面坐标 $(x_1)^0, (y_1)^0$、常数项 $l_{x_1}^0, l_{y_1}^0$ 以及 $2 \times 6$ 偏导数系数矩阵 $A_1^{(1)}$；
+> (3) 写出后续最小二乘迭代求解及验后单位权中误差评定公式。
+
+**【满分分步解答】**：
+1. **自由度清点与外方位元素初值确定（4 分）**：
+   - 共有 $n = 4$ 个平高控制点，独立观测方程总数 $N = 2 \times 4 = \mathbf{8}$ 个，待求外方位未知数 $u = \mathbf{6}$ 个，多余观测数 $r = 8 - 6 = \mathbf{2}$。
+   - 角元素初值取 $\varphi^0 = \omega^0 = \kappa^0 = \mathbf{0\ \mathrm{rad}}$（此时初始旋转矩阵 $R^0 = I_3$）；
+   - 线元素初值（注意将 $f = 150.00\ \mathrm{mm} = 0.150\ \mathrm{m}$ 换算为米）：
+     $$X_S^0 = 5000.00\ \mathrm{m}, \qquad Y_S^0 = 8000.00\ \mathrm{m}, \qquad Z_S^0 = 200.00 + 10000 \times 0.150 = \mathbf{1700.00\ \mathrm{m}}$$
+2. **计算 1 号点首轮近似像坐标、常数项与系数子块 $A_1^{(1)}$（6 分）**：
+   - 在 $R^0 = I_3$ 下计算辅助坐标：
+     $$\bar{X}_1^0 = 4400.00 - 5000.00 = -600.00\ \mathrm{m}, \quad \bar{Y}_1^0 = 7500.00 - 8000.00 = -500.00\ \mathrm{m}, \quad \bar{Z}_1^0 = 200.00 - 1700.00 = -1500.00\ \mathrm{m}$$
+     （即相对航高 $H_1 = -\bar{Z}_1^0 = 1500.00\ \mathrm{m}$。）
+   - 代入共线方程求近似像坐标 $(\tilde{x}_1, \tilde{y}_1)$ 与常数项 $l_{x_1}^0, l_{y_1}^0$：
+     $$\tilde{x}_1 = (x_1)^0 = -150.00 \times \frac{-600.00}{-1500.00} = \mathbf{-60.00\ \mathrm{mm}}, \qquad \tilde{y}_1 = (y_1)^0 = -150.00 \times \frac{-500.00}{-1500.00} = \mathbf{-50.00\ \mathrm{mm}}$$
+     $$l_{x_1}^0 = x_1 - (x_1)^0 = -61.20 - (-60.00) = \mathbf{-1.20\ \mathrm{mm}}, \qquad l_{y_1}^0 = y_1 - (y_1)^0 = -49.50 - (-50.00) = \mathbf{+0.50\ \mathrm{mm}}$$
+   - 代入微倾偏导数公式计算 $A_1^{(1)}$ 各项（量纲：前 3 列为 $\mathrm{mm/m}$，后 3 列为 $\mathrm{mm/rad}$）：
+     - $a_{11} = -\dfrac{150.00}{1500.00} = -0.1000,\quad a_{12} = 0,\quad a_{13} = -\dfrac{-60.00}{1500.00} = +0.0400$；
+     - $a_{14} = -\left(150.00 + \dfrac{(-60.00)^2}{150.00}\right) = -(150.00 + 24.00) = -174.00,\quad a_{15} = -\dfrac{(-60.00)(-50.00)}{150.00} = -20.00,\quad a_{16} = -50.00$；
+     - $a_{21} = 0,\quad a_{22} = -0.1000,\quad a_{23} = -\dfrac{-50.00}{1500.00} = +0.0333$；
+     - $a_{24} = -20.00,\quad a_{25} = -\left(150.00 + \dfrac{(-50.00)^2}{150.00}\right) = -166.67,\quad a_{26} = -(-60.00) = +60.00$。
+     故 1 号点系数矩阵为：
+     $$A_1^{(1)} = \begin{bmatrix} -0.1000 & 0 & +0.0400 & -174.00 & -20.00 & -50.00 \\ 0 & -0.1000 & +0.0333 & -20.00 & -166.67 & +60.00 \end{bmatrix}$$
+3. **迭代解算与精度评定公式（3 分）**：
+   合并 4 个点组成 $8 \times 6$ 矩阵 $A$ 与 $8 \times 1$ 常数向量 $L$，按 $\Delta X = (A^{\mathrm{T}}A)^{-1}A^{\mathrm{T}}L$ 求改正数并更新 $X^{(k+1)} = X^{(k)} + \Delta X^{(k)}$，循环迭代直至 $\lvert \Delta\varphi \rvert, \lvert \Delta\omega \rvert, \lvert \Delta\kappa \rvert < 10^{-5}\ \mathrm{rad}$；收敛后计算残差 $V = A\Delta X - L$，单位权中误差 $\sigma_0 = \sqrt{\dfrac{V^{\mathrm{T}}V}{2}}$，第 $k$ 个参数中误差 $m_k = \sigma_0\sqrt{Q_{kk}}$。
+
+---
+
+## 模板三：点投影系数前方交会、相对定向与区域网多余观测数清点
+
+### 1. 标准解题步骤与公式链
+1. **一般倾斜像对“点投影系数法”空间前方交会四步模板**（4 方程解 3 未知数，$r = 1$）：
+   - ① 基线三分量：$B_X = X_{S_2} - X_{S_1},\ B_Y = Y_{S_2} - Y_{S_1},\ B_Z = Z_{S_2} - Z_{S_1}$；
+   - ② 像空间辅助坐标：$[X_1, Y_1, Z_1]^{\mathrm{T}} = R_1[x_1 - x_0, y_1 - y_0, -f]^{\mathrm{T}}$，$[X_2, Y_2, Z_2]^{\mathrm{T}} = R_2[x_2 - x_0, y_2 - y_0, -f]^{\mathrm{T}}$；
+   - ③ 点投影系数：$N_1 = \dfrac{B_X Z_2 - B_Z X_2}{X_1 Z_2 - Z_1 X_2},\quad N_2 = \dfrac{B_X Z_1 - B_Z X_1}{X_1 Z_2 - Z_1 X_2}$；
+   - ④ 地面三维坐标与模型残余上下视差 $Q$：
+     $$X = X_{S_1} + N_1 X_1, \quad Y = Y_{S_1} + \frac{1}{2}(N_1 Y_1 + N_2 Y_2 + B_Y), \quad Z = Z_{S_1} + N_1 Z_1, \quad Q = N_1 Y_1 - N_2 Y_2 - B_Y$$
+2. **两类相对定向 5 元素像方简化误差方程**（标准冯·格鲁伯 6 点位，$r = n - 5 = 1$）：
+   - **连续法** $(\Delta\mu, \Delta\nu, \Delta\varphi_2, \Delta\omega_2, \Delta\kappa_2)$：$v_q = b\Delta\mu + \dfrac{y_2}{f}b\Delta\nu + \dfrac{x_2 y_2}{f}\Delta\varphi_2 + \left(f + \dfrac{y_2^2}{f}\right)\Delta\omega_2 - x_2\Delta\kappa_2 - q^0$；
+   - **单独法** $(\Delta\varphi_1, \Delta\kappa_1, \Delta\varphi_2, \Delta\omega_2, \Delta\kappa_2)$：$v_q = -\dfrac{x_1 y_1}{f}\Delta\varphi_1 - x_1\Delta\kappa_1 + \dfrac{x_2 y_2}{f}\Delta\varphi_2 + \left(f + \dfrac{y_2^2}{f}\right)\Delta\omega_2 + x_2\Delta\kappa_2 - q^0$。
+3. **光束法区域网平差“方程数 / 未知数 / 多余观测数 $r$”万能清点公式**：
+   设 $m$ 张像片共量测了 $K_{\text{像点}}$ 个像点，地面点含 $n_{\text{平高}}$ 个平高点、$n_{\text{仅平}}$ 个平面点、$n_{\text{仅高}}$ 个高程点、$n_{\text{加密}}$ 个未知连接点（控制点作无误差真值；若作带权虚拟观测值，观测数与未知数同加已知坐标分量数，$r$ 恒定不变！）：
+   $$N_{\mathrm{obs}} = 2 K_{\text{像点}}, \qquad U_{\mathrm{unk}} = 6m + 0\cdot n_{\text{平高}} + 1\cdot n_{\text{仅平}} + 2\cdot n_{\text{仅高}} + 3\cdot n_{\text{加密}}, \qquad r = N_{\mathrm{obs}} - U_{\mathrm{unk}}$$
+
+---
+
+### 2. 【典型例题 3】光束法区域网平差自由度清点与改化法方程阶数计算（12 分标准题）
+
+> **【题目】**：一条航带由 $P_1, P_2, P_3$ 共 3 张航片组成。在重叠区内共布设 9 个地面点：左列 3 个点位于两度重叠区（在 $P_1, P_2$ 上成像，含 2 个平高控制点、1 个未知连接点）；中列 3 个点位于三度重叠区（在 $P_1, P_2, P_3$ 三片上均成像，含 1 个高程控制点、2 个未知连接点）；右列 3 个点位于两度重叠区（在 $P_2, P_3$ 上成像，含 2 个平高控制点、1 个未知连接点）。
+> (1) 将控制点视为无误差真值，求光束法平差的观测方程总数 $N_{\mathrm{obs}}$、未知数总数 $U_{\mathrm{unk}}$ 及多余观测数 $r$；
+> (2) 若将地面控制点已知坐标改作带权虚拟观测值参与平差，求新的方程总数、未知数总数与多余观测数；
+> (3) 消去地面点未知数后，所得“改化法方程”的阶数是多少？
+
+**【满分分步解答】**：
+1. **控制点作无误差真值方案（5 分）**：
+   - 总量测像点数 $K = 3\times 2 + 3\times 3 + 3\times 2 = 6 + 9 + 6 = 21$ 个 $\implies$ 共线误差方程数 **$N_{\mathrm{obs}} = 2 \times 21 = 42$ 个**；
+   - 未知数清点：3 张像片外方位元素 $6 \times 3 = 18$ 个；4 个平高点未知数为 $0$；1 个高程点（$Z$ 已知，$X,Y$ 未知）含 $2 \times 1 = 2$ 个未知数；4 个未知连接点含 $3 \times 4 = 12$ 个未知数 $\implies$ 总未知数 **$U_{\mathrm{unk}} = 18 + 0 + 2 + 12 = 32$ 个**；
+   - 多余观测数：**$r = 42 - 32 = 10$**。
+2. **控制点作带权虚拟观测值方案（5 分）**：
+   - 已知地面坐标分量数 $C = 4 \times 3 + 1 \times 1 = 13$ 个；
+   - 新观测方程总数 $N'_{\mathrm{obs}} = 42 + 13 = \mathbf{55}$ 个；新未知数总数 $U'_{\mathrm{unk}} = 32 + 13 = \mathbf{45}$ 个；
+   - 新多余观测数 **$r' = 55 - 45 = 10$**（与无误差方案严格相等）。
+3. **改化法方程阶数（2 分）**：
+   消去全部地面点三维坐标未知数后，改化法方程仅保留 3 张像片的外方位元素改正数，阶数为 **$6 \times 3 = 18$ 阶**。
+
+---
+
+## 模板四：双线性灰度重采样与数字微分纠正正反算（第 5、8、9 章综合压轴）
+
+### 1. 标准解题步骤与公式链
+1. **反解法（间接法：由地面算影像）单像素全链路五步计算模板**：
+   - **① 正射格网点平面坐标**：已知 DOM 左下角起点 $(X_0, Y_0)$ 与地面采样间隔 $M$（即 GSD），对行列号 $(I, J)$ 算：
+     $$X_P = X_0 + I \cdot M, \qquad Y_P = Y_0 + J \cdot M$$
+   - **② 由规则格网 DEM 双线性内插地面高程 $Z_P$**：设 $(X_P, Y_P)$ 落入起点 $(X_{D0}, Y_{D0})$、步距 $(\Delta X_D, \Delta Y_D)$ 的 DEM 单元内，归一化偏移 $u = \dfrac{X_P - X_{D0}}{\Delta X_D},\ v = \dfrac{Y_P - Y_{D0}}{\Delta Y_D}$，四角高程 $Z_{00}, Z_{10}, Z_{01}, Z_{11}$：
+     $$Z_P = (1 - u)(1 - v)Z_{00} + u(1 - v)Z_{10} + (1 - u)v Z_{01} + u v Z_{11}$$
+   - **③ 共线条件正算原片像平面坐标 $(x_p, y_p)$**：将 $(X_P, Y_P, Z_P)$ 与像片内外方位元素代入 $x_p = x_0 - f\dfrac{\bar{X}}{\bar{Z}},\ y_p = y_0 - f\dfrac{\bar{Y}}{\bar{Z}}$（无需迭代！）；
+   - **④ 换算为原始数字影像浮点像素坐标 $(c, r)$**：设像元尺寸为 $d$，像主点像素位置为 $(c_0, r_0)$（经典摄影测量左下角原点：$c = c_0 + \dfrac{x_p - x_0}{d},\ r = r_0 + \dfrac{y_p - y_0}{d}$；若计算机视觉左上角原点 $y$ 向下则 $r = r_0 - \dfrac{y_p - y_0}{d}$）；
+   - **⑤ 原始影像双线性灰度重采样赋值**：记 $i = \lfloor c \rfloor,\ j = \lfloor r \rfloor$，小数部分 $\Delta c = c - i,\ \Delta r = r - j$：
+     $$G(I, J) = g(c, r) = (1 - \Delta c)(1 - \Delta r)g(i,j) + \Delta c(1 - \Delta r)g(i+1,j) + (1 - \Delta c)\Delta r\,g(i,j+1) + \Delta c\Delta r\,g(i+1,j+1)$$
+2. **正解法（直接法 / 单像修测：由影像算地面）高程迭代与艾特肯加速模板**：
+   - 先算辅助向量 $[X_a, Y_a, Z_a]^{\mathrm{T}} = R[x - x_0, y - y_0, -f]^{\mathrm{T}}$；
+   - 给定初始高程 $Z^{(0)}$（如测区平均高程），按 $k = 0, 1, 2, \dots$ 循环迭代直至 $\lvert Z^{(k+1)} - Z^{(k)} \rvert < \varepsilon$：
+     $$X^{(k+1)} = X_S + \big(Z^{(k)} - Z_S\big)\frac{X_a}{Z_a}, \quad Y^{(k+1)} = Y_S + \big(Z^{(k)} - Z_S\big)\frac{Y_a}{Z_a}, \quad Z^{(k+1)} = \mathrm{DEM}\big(X^{(k+1)}, Y^{(k+1)}\big)$$
+   - **艾特肯（Aitken）三点加速外推公式**：$Z^* = \dfrac{Z^{(0)}Z^{(2)} - \big(Z^{(1)}\big)^2}{Z^{(0)} + Z^{(2)} - 2Z^{(1)}}$。
+
+---
+
+### 2. 【典型例题 4A】反解法数字微分纠正 + 双线性内插全流程手算（13 分高命中母题）
+
+> **【题目】**：利用反解法制作数字正射影像（DOM），设定 DOM 左下角起点地面坐标 $(X_0, Y_0) = (1000.0, 2000.0)\ \mathrm{m}$，输出分辨率 $M = \mathrm{GSD} = 0.5\ \mathrm{m}$。已知：
+> - **DEM 数据**：左下角起点同为 $(1000.0, 2000.0)\ \mathrm{m}$，格网间距 $\Delta X_D = \Delta Y_D = 5.0\ \mathrm{m}$（DOM 分辨率的 10 倍），首格网四角高程为 $Z(0,0) = 100.0\ \mathrm{m},\ Z(1,0) = 105.0\ \mathrm{m},\ Z(0,1) = 110.0\ \mathrm{m},\ Z(1,1) = 115.0\ \mathrm{m}$；
+> - **原始航片参数**：竖直摄影 $\varphi = \omega = \kappa = 0$，摄站 $(X_S, Y_S, Z_S) = (1000.0, 2000.0, 1108.0)\ \mathrm{m}$，焦距 $f = 150.0\ \mathrm{mm}$，$x_0 = y_0 = 0$，像元大小 $d = 8\ \mu\mathrm{m} = 0.008\ \mathrm{mm}$，像主点位于左下角像素系 $(c_0, r_0) = (500.0, 500.0)$；
+> - **原片局部灰度**：$g(537, 556) = 120,\ g(538, 556) = 140,\ g(537, 557) = 160,\ g(538, 557) = 200$。
+> 试求输出 DOM 上像素点 $(I, J) = (4, 6)$ 处的地面三维坐标 $(X_P, Y_P, Z_P)$、反投原片浮点像素坐标 $(c, r)$，并分别给出最邻近法与双线性插值法的重采样灰度值。
+
+**【满分分步解答】**：
+1. **计算正射像素 $(4, 6)$ 的平面坐标与双线性 DEM 高程（4 分）**：
+   - 地面平面坐标：$X_P = 1000.0 + 4 \times 0.5 = \mathbf{1002.0\ \mathrm{m}}$，$Y_P = 2000.0 + 6 \times 0.5 = \mathbf{2003.0\ \mathrm{m}}$；
+   - 在 $5.0\ \mathrm{m}$ 间距 DEM 格网中的归一化偏移：$u = \dfrac{1002.0 - 1000.0}{5.0} = 0.4$，$v = \dfrac{2003.0 - 2000.0}{5.0} = 0.6$；
+   - 双线性内插地面高程 $Z_P$：
+     $$Z_P = (0.6)(0.4)\times 100.0 + (0.4)(0.4)\times 105.0 + (0.6)(0.6)\times 110.0 + (0.4)(0.6)\times 115.0 = 24.0 + 16.8 + 39.6 + 27.6 = \mathbf{108.0\ \mathrm{m}}$$
+2. **共线方程正算原始航片像平面坐标与浮点像素坐标（5 分）**：
+   - 因 $\varphi = \omega = \kappa = 0 \implies R = I_3$，计算相对摄站坐标差：
+     $$\bar{X} = 1002.0 - 1000.0 = +2.0\ \mathrm{m}, \quad \bar{Y} = 2003.0 - 2000.0 = +3.0\ \mathrm{m}, \quad \bar{Z} = 108.0 - 1108.0 = -1000.0\ \mathrm{m}$$
+   - 代入共线条件方程正算式：
+     $$x_p = -150.0 \times \frac{2.0}{-1000.0} = \mathbf{+0.300\ \mathrm{mm}}, \qquad y_p = -150.0 \times \frac{3.0}{-1000.0} = \mathbf{+0.450\ \mathrm{mm}}$$
+   - 换算为左下角原点浮点像素坐标（$d = 0.008\ \mathrm{mm}$）：
+     $$c = 500.0 + \frac{0.300}{0.008} = 500.0 + 37.5 = \mathbf{537.5}, \qquad r = 500.0 + \frac{0.450}{0.008} = 500.0 + 56.25 = \mathbf{556.25}$$
+3. **执行灰度重采样并赋给正射影像（4 分）**：
+   - **最邻近法**：四舍五入取整 $\operatorname{round}(537.5) = 538,\ \operatorname{round}(556.25) = 556 \implies G_{\mathrm{NN}}(4,6) = g(538, 556) = \mathbf{140}$；
+   - **双线性插值法**：整数角点 $(i, j) = (537, 556)$，小数权重偏移 $\Delta c = 0.5,\ \Delta r = 0.25$：
+     $$\begin{aligned}
+     G_{\mathrm{Bil}}(4,6) &= (1 - 0.5)(1 - 0.25)\times 120 + (0.5)(1 - 0.25)\times 140 + (1 - 0.5)(0.25)\times 160 + (0.5)(0.25)\times 200 \\
+     &= 0.375 \times 120 + 0.375 \times 140 + 0.125 \times 160 + 0.125 \times 200 \\
+     &= 45.0 + 52.5 + 20.0 + 25.0 = \mathbf{142.5}\ (\text{量化取整为 }\mathbf{143})
+     \end{aligned}$$
+
+---
+
+### 3. 【典型例题 4B】正解法纠正（单像修测）光线与 DEM 迭代求交计算
+
+> **【题目】**：已知某竖直航片 $\varphi = \omega = \kappa = 0$，摄站 $(X_S, Y_S, Z_S) = (1000.0, 2000.0, 1100.0)\ \mathrm{m}$，焦距 $f = 100.0\ \mathrm{mm},\ x_0 = y_0 = 0$。量得新增地物像点 $(x, y) = (20.0, 10.0)\ \mathrm{mm}$，该处局部倾斜地面 DEM 满足 $Z_{\mathrm{DEM}}(X, Y) = 80.0 + 0.10(X - 1000.0)$（单位：$\mathrm{m}$）。取初值 $Z^{(0)} = 80.0\ \mathrm{m}$，收敛阈值 $\varepsilon = 0.01\ \mathrm{m}$，求该地物的地面三维坐标并验证艾特肯加速结果。
+
+**【满分分步解答】**：
+1. **建立共线反算迭代关系式**：因 $R = I_3$，$[X_a, Y_a, Z_a]^{\mathrm{T}} = [20.0, 10.0, -100.0]^{\mathrm{T}}\ \mathrm{mm}$，故：
+   $$X = 1000.0 + (Z - 1100.0)\frac{20.0}{-100.0} = 1000.0 - 0.20(Z - 1100.0), \qquad Y = 2000.0 - 0.10(Z - 1100.0)$$
+2. **逐次迭代计算**：
+   - **第 1 次**（代 $Z^{(0)} = 80.000\ \mathrm{m}$）：$X^{(1)} = 1000.0 - 0.20(-1020.0) = 1204.000\ \mathrm{m},\ Y^{(1)} = 2102.000\ \mathrm{m} \implies Z^{(1)} = 80.0 + 0.10(204.0) = 100.400\ \mathrm{m}$（$\lvert Z^{(1)} - Z^{(0)} \rvert = 20.400\ \mathrm{m} > 0.01\ \mathrm{m}$）；
+   - **第 2 次**（代 $Z^{(1)} = 100.400\ \mathrm{m}$）：$X^{(2)} = 1000.0 - 0.20(-999.600) = 1199.920\ \mathrm{m},\ Y^{(2)} = 2099.960\ \mathrm{m} \implies Z^{(2)} = 80.0 + 0.10(199.920) = 99.992\ \mathrm{m}$（$\lvert Z^{(2)} - Z^{(1)} \rvert = 0.408\ \mathrm{m} > 0.01\ \mathrm{m}$）；
+   - **第 3 次**（代 $Z^{(2)} = 99.992\ \mathrm{m}$）：$X^{(3)} = \mathbf{1200.002\ \mathrm{m}},\ Y^{(3)} = \mathbf{2100.001\ \mathrm{m}} \implies Z^{(3)} = \mathbf{100.000\ \mathrm{m}}$（$\lvert Z^{(3)} - Z^{(2)} \rvert = 0.008\ \mathrm{m} < 0.01\ \mathrm{m}$，迭代收敛！）。
+3. **艾特肯三点加速验证**：将 $Z^{(0)} = 80.0,\ Z^{(1)} = 100.4,\ Z^{(2)} = 99.992$ 代入公式得：
+   $$Z^* = \frac{80.0 \times 99.992 - 100.4^2}{80.0 + 99.992 - 2 \times 100.4} = \frac{-2080.80}{-20.808} = \mathbf{100.000\ \mathrm{m}}$$
+   一步外推直接命中精确真值 $(1200.000,\ 2100.000,\ 100.000)\ \mathrm{m}$！
+
+---
+
+## 模板五：影像匹配（NCC / 抛物线拟合 / VLL / 一维 LSM）与点特征手算
+
+### 1. 标准解题步骤与公式链
+1. **单遍实用归一化相关系数（NCC）与线性辐射不变性三行证明**（窗口像素总数 $K = M \times N$）：
+   $$\rho = \frac{\displaystyle\sum g g' - \frac{1}{K}\left(\sum g\right)\left(\sum g'\right)}{\sqrt{\left[\displaystyle\sum g^2 - \frac{1}{K}\left(\sum g\right)^2\right]\left[\displaystyle\sum g'^2 - \frac{1}{K}\left(\sum g'\right)^2\right]}}$$
+   - **辐射不变性证明**：设 $g' = a g + b\ (a > 0)$，则均值 $\bar{g}' = a\bar{g} + b$，离差 $g' - \bar{g}' = a(g - \bar{g})$，代入定义式得 $\rho = \dfrac{a\sum(g-\bar{g})^2}{\lvert a \rvert\sum(g-\bar{g})^2} = \dfrac{a}{\lvert a \rvert} = +1$。
+2. **三点抛物线峰值拟合通用公式**（像方子像素横坐标 $x_{\mathrm{sub}}$ 与物方 VLL 铅垂线高程 $Z^*$ 完全同构！）：
+   $$x_{\mathrm{sub}} = x_0 + \frac{\rho_{-1} - \rho_{+1}}{2(\rho_{-1} - 2\rho_0 + \rho_{+1})}, \qquad Z_{\mathrm{VLL}}^* = Z_k + \frac{\rho_{k-1} - \rho_{k+1}}{2(\rho_{k-1} - 2\rho_k + \rho_{k+1})} \cdot \Delta Z$$
+3. **一维最小二乘匹配（LSM）子像素位移与定位精度评定**（中心差分梯度 $g'_{2x}(i) = \frac{1}{2}[g_2(i+1) - g_2(i-1)]$，$\Delta g_i = g_1(i) - g_2(i)$）：
+   $$\Delta x = \frac{\sum g'_{2x}\Delta g_i}{\sum (g'_{2x})^2}, \qquad \hat{\sigma}_0 = \sqrt{\frac{\sum (g'_{2x}\Delta x - \Delta g_i)^2}{K - 1}}, \qquad \hat{\sigma}_x = \frac{\hat{\sigma}_0}{\sqrt{\sum (g'_{2x})^2}}$$
+4. **点特征提取算子**：
+   - **Moravec 算子**：算窗口中心垂、主对角、平、副对角四方向相邻差平方和，取 $\mathrm{IV} = \min(V_1, V_2, V_3, V_4)$；
+   - **Förstner 算子**：Roberts 梯度 $g_u = g_{r+1,c+1} - g_{r,c},\ g_v = g_{r+1,c} - g_{r,c+1}$，法阵 $N = \begin{bmatrix}\sum g_u^2 & \sum g_u g_v \\ \sum g_u g_v & \sum g_v^2\end{bmatrix}$，圆度 $q = \dfrac{4\det N}{(\operatorname{tr} N)^2}$，权 $w = \dfrac{\det N}{\operatorname{tr} N}$。
+
+---
+
+### 2. 【典型例题 5】NCC 相关系数、抛物线子像素与 VLL 高程拟合综合手算（12 分标准题）
+
+> **【题目】**：
+> (1) 已知 $3 \times 3$ 左片目标窗口 $T = \begin{bmatrix}10 & 20 & 30 \\ 20 & 50 & 20 \\ 30 & 20 & 10\end{bmatrix}$ 与右片候选窗口 $S = \begin{bmatrix}22 & 42 & 62 \\ 40 & 102 & 42 \\ 62 & 40 & 22\end{bmatrix}$，试用相关系数实用公式求 $\rho$；
+> (2) 在核线一维相关搜索中，测得整数列 $x_0 = 15$ 处取得最大相关系数 $\rho(15) = 0.96$，相邻列 $\rho(14) = 0.86,\ \rho(16) = 0.91$，求抛物线拟合子像素坐标 $x_{\mathrm{sub}}$；
+> (3) 若改用物方铅垂线轨迹法（VLL）匹配某 DEM 格网点 $(X, Y)$，设起始最低高程 $Z_{\min} = 120.00\ \mathrm{m}$，步距 $\Delta Z = 0.50\ \mathrm{m}$，测得第 $k = 4$ 步取得相关峰值 $\rho_4 = 0.94$，且 $\rho_3 = 0.82,\ \rho_5 = 0.88$，求该地面点的拟合高程 $Z^*$。
+
+**【满分分步解答】**：
+1. **计算 $3 \times 3$ 窗口（$K = 9$）归一化相关系数 $\rho$（5 分）**：
+   - 五项累加统计量：$\sum g = 210$，$\sum g' = 434$，$\sum g^2 = 6100$，$\sum g'^2 = 25788$，$\sum g g' = 12540$；
+   - 分子项：$12540 - \dfrac{210 \times 434}{9} = 12540 - 10126.667 = 2413.333$；
+   - 分母两方差项：$\sum g^2 - \dfrac{210^2}{9} = 6100 - 4900 = 1200.000$；$\sum g'^2 - \dfrac{434^2}{9} = 25788 - 20928.444 = 4859.556$；
+   - 相关系数：$\rho = \dfrac{2413.333}{\sqrt{1200.000 \times 4859.556}} = \dfrac{2413.333}{2414.843} = \mathbf{0.9994}$。
+2. **像方核线三点抛物线子像素坐标拟合（3.5 分）**：
+   $$x_{\mathrm{sub}} = 15 + \frac{0.86 - 0.91}{2 \times (0.86 - 2 \times 0.96 + 0.91)} = 15 + \frac{-0.05}{2 \times (-0.15)} = 15 + 0.1667 = \mathbf{15.167\ \text{像素}}$$
+3. **物方 VLL 铅垂线轨迹抛物线高程拟合（3.5 分）**：
+   - 整数峰值步对应高程：$Z_4 = Z_{\min} + 4 \cdot \Delta Z = 120.00 + 4 \times 0.50 = 122.00\ \mathrm{m}$；
+   - 抛物线顶点子步距内插高程：
+     $$Z^* = 122.00 + \frac{0.82 - 0.88}{2 \times (0.82 - 2 \times 0.94 + 0.88)} \times 0.50 = 122.00 + \frac{-0.06}{-0.36} \times 0.50 = 122.00 + 0.083 = \mathbf{122.083\ \mathrm{m}}$$</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const raw = document.getElementById("md-raw").textContent;
+    document.getElementById("content").innerHTML = marked.parse(raw);
+    renderMathInElement(document.getElementById("content"), {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>
