@@ -35,92 +35,11 @@
 
 ---
 
-## 零、考场 25 分计算题生死线：五大单位换算与五大正负号排雷表
+## 模板一（考前必考置顶）：共线条件方程与共面条件方程核心计算
 
-| 类别 | 高危易错点 | 典型错误写法 | 考场满分防错铁律 |
-| :--- | :--- | :--- | :--- |
-| **单位 1** | 焦距 $f(\mathrm{mm})$、像元 $d(\mu\mathrm{m})$ 与航高 $H(\mathrm{m})$ 混算 | 直接用 $2400 / 120$ 算比例尺分母 $m$ | 牢记 $1\ \mathrm{m} = 10^3\ \mathrm{mm} = 10^6\ \mu\mathrm{m}$；比例尺分母 $m = \dfrac{H(\mathrm{m}) \times 1000}{f(\mathrm{mm})}$；$\mathrm{GSD}(\mathrm{m}) = m \cdot d(\mu\mathrm{m}) \times 10^{-6}$。 |
-| **单位 2** | 航速 $v(\mathrm{km/h})$ 直接除基线算曝光间隔 | 用 $B(\mathrm{m}) / 288$ 算 $\Delta t$ | 先除以 $3.6$ 化为米每秒：$v(\mathrm{m/s}) = \dfrac{v(\mathrm{km/h})}{3.6}$，再算 $\Delta t = \dfrac{B}{v}$。 |
-| **单位 3** | 后方交会误差方程 $V = A\Delta X - L$ 量纲 | 搞不清解出的线/角改正数单位 | 统一令 $x, y, f, l_x, l_y$ 用 $\mathrm{mm}$，令 $X, Y, Z, \bar{Z}$ 用 $\mathrm{m}$，则解出的 $\Delta X_S\sim\Delta Z_S$ 为 **$\mathrm{m}$**，$\Delta\varphi\sim\Delta\kappa$ 天然为 **弧度（$\mathrm{rad}$）**！ |
-| **单位 4** | 角度度数（$^\circ$）直接代入微分线性化公式 | 代入 $\Delta\varphi = 2^\circ$ 算像点位移 | 一切泰勒展开与微倾公式中的角度均为**弧度**！换算常数 $\rho'' = \dfrac{180}{\pi}\times 3600 \approx 206265''$。 |
-| **单位 5** | 航带数与单带像片数四舍五入漏进一 | $8.2$ 条航带算成 $8$ 条 | 凡除不尽**一律向上进一取整 $\lceil \cdot \rceil$**，防止航摄漏洞，并按题意加上安全外扩片。 |
-| **符号 1** | 大地高斯左旋系直接代共线方程 | 把 $(X_{\text{北}}, Y_{\text{东}})$ 原样当摄测右旋系 | 若题目注明“高斯平面坐标”，先令 $X = Y_{\text{东}},\ Y = X_{\text{北}},\ Z = H_{\text{高程}}$ 转为右旋系再算。 |
-| **符号 2** | 下视航空摄影把分母 $\bar{Z}$ 算成正数 | 代入 $\bar{Z} = +H$ | 像空间恒有 $z = -f$；下视摄影地面低于镜头（$Z < Z_S$），必有 **$\bar{Z} \approx Z - Z_S = -H < 0$**！ |
-| **符号 3** | 后方交会常数项 $L$ 减法顺序颠倒 | 写成 $l_x = (x)_{\text{近似}} - x_{\text{观测}}$ | 标准式 $V = A\Delta X - L$ 中，常数项必为**观测值减近似计算值**：**$l_x = x - (x),\ l_y = y - (y)$**。 |
-| **符号 4** | 照搬原教材偏导数印刷笔误 | 把 $a_{26}$ 写成 $+(x - x_0)$ | 严密与近似偏导数中恒有 **$a_{16} = +(y - y_0)$**，而 **$a_{26} = -(x - x_0)$**！ |
-| **符号 5** | 立体像对大高差直接套平坦近似式 | $\Delta h = \frac{H}{b}\Delta p$ 产生米级偏差 | 优先使用严密高差公式：**$\Delta h_{AC} = Z_A - Z_C = \dfrac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}}$**（点越高，左右视差 $p$ 越大）。 |
+### 第一部分：共线条件方程（Collinearity Equation）与单像空间后方交会
 
----
-
-## 模板一：航摄技术设计、投影差测高与正直立体像对视差计算（基础必拿分）
-
-### 1. 标准解题步骤与公式链
-1. **像幅尺寸与地面采样距离 GSD**：
-
-   $$l_x = N_x \cdot d, \qquad l_y = N_y \cdot d, \qquad \frac{1}{m} = \frac{f}{H} = \frac{d}{\mathrm{GSD}} \implies H = m \cdot f,\quad H_{\mathrm{abs}} = H + Z_{\mathrm{avg}}$$
-
-2. **地面覆盖、摄影基线 $B$、航线间距 $D$ 与曝光间隔 $\Delta t$**：
-
-   $$L_X = m \cdot l_x = N_x \cdot \mathrm{GSD}, \qquad L_Y = m \cdot l_y = N_y \cdot \mathrm{GSD}$$
-
-   $$B = L_X(1 - P_x), \qquad D = L_Y(1 - P_y), \qquad \Delta t = \frac{B}{v}, \qquad \delta_{\text{像移}} = \frac{v \cdot t_{\mathrm{exp}}}{m}$$
-
-3. **航带数与总像片数**：
-
-   $$N_{\text{航带}} = \left\lceil \frac{W_Y}{D} \right\rceil + 1, \qquad N_{\text{单带}} = \left\lceil \frac{W_X}{B} \right\rceil + 1 + N_{\text{外扩}}\ (\text{或基线数 } + 4), \qquad N_{\text{总}} = N_{\text{航带}} \times N_{\text{单带}}$$
-
-4. **单张铅垂像片投影差测高**（区分已知塔顶向径 $r_{\text{顶}}$ 与塔底向径 $r_{\text{底}}$）：
-
-   $$\Delta h = \frac{\delta_h \cdot H}{r_{\text{顶}}} = \frac{\delta_h \cdot H}{r_{\text{底}} + \delta_h} \qquad (\text{其中 } \delta_h = r_{\text{顶}} - r_{\text{底}})$$
-
-5. **理想正直立体像对（$\varphi=\omega=\kappa=0,\ B_Y=B_Z=0,\ B_X=B$）三维坐标、严密高差与高程中误差**：
-
-   $$p = x_1 - x_2, \qquad q = y_1 - y_2 = 0, \qquad H_A = Z_{S_1} - Z_A = \frac{B \cdot f}{p_A}$$
-
-   $$X_A = X_{S_1} + \frac{B}{p_A}x_{1A}, \qquad Y_A = Y_{S_1} + \frac{B}{p_A}y_{1A}, \qquad Z_A = Z_{S_1} - \frac{B \cdot f}{p_A}$$
-
-   $$\Delta h_{AC} = Z_A - Z_C = \frac{H_C \cdot (p_A - p_C)}{p_C + (p_A - p_C)} = \frac{H_C \cdot \Delta p_{AC}}{p_A}, \qquad m_Z = \frac{H}{B} \cdot \frac{H}{f} \cdot m_p = \frac{m}{B/H} \cdot m_p$$
-
----
-
-### 2. 【典型例题 1】数字航摄参数设计与立体像对视差测高综合计算（12 分标准题）
-
-> **【题目】**：某数字航空摄影工程相机焦距 $f = 150.00\ \mathrm{mm}$，像元尺寸 $d = 6\ \mu\mathrm{m}$，像主点 $x_0 = y_0 = 0$。已知理想正直立体像对左摄站坐标 $(X_{S_1}, Y_{S_1}, Z_{S_1}) = (1000.00, 2000.00, 1650.00)\ \mathrm{m}$，右摄站坐标 $(X_{S_2}, Y_{S_2}, Z_{S_2}) = (1600.00, 2000.00, 1650.00)\ \mathrm{m}$。
-> (1) 量得待定点 $A$ 的左片像坐标 $(x_{1A}, y_{1A}) = (42.50, -30.00)\ \mathrm{mm}$，右片像坐标 $(x_{2A}, y_{2A}) = (-32.50, -30.00)\ \mathrm{mm}$，求摄影基线 $B$、$A$ 点左右视差 $p_A$、地面三维坐标 $(X_A, Y_A, Z_A)$ 及 $A$ 点高程面上的地面采样距离 $\mathrm{GSD}_A$；
-> (2) 已知地面基准点 $C$ 的左右视差 $p_C = 72.00\ \mathrm{mm}$，求 $A$ 相对于 $C$ 的严密高差 $\Delta h_{AC}$；若左右视差量测中误差为 $m_p = \pm 0.5\ \text{像素}$，求 $C$ 点处的高程量测中误差 $m_Z$。
-
-**【满分分步解答】**：
-1. **求解基线、左右视差、三维地面坐标与 $\mathrm{GSD}_A$（6 分）**：
-   - 摄影基线：$B = X_{S_2} - X_{S_1} = 1600.00 - 1000.00 = 600.00\ \mathrm{m}$（且 $B_Y = B_Z = 0$）；
-   - $A$ 点左右视差与相对航高：
-
-     $$p_A = x_{1A} - x_{2A} = 42.50 - (-32.50) = 75.00\ \mathrm{mm}, \qquad H_A = \frac{B \cdot f}{p_A} = \frac{600.00 \times 150.00}{75.00} = 1200.00\ \mathrm{m}$$
-
-   - 点投影系数 $N_A = \dfrac{B}{p_A} = \dfrac{600.00\ \mathrm{m}}{75.00\ \mathrm{mm}} = 8.00\ \mathrm{m/mm}$，代入正直立体像对坐标公式：
-
-     $$X_A = 1000.00 + 8.00 \times 42.50 = \mathbf{1340.00\ \mathrm{m}}, \qquad Y_A = 2000.00 + 8.00 \times (-30.00) = \mathbf{1760.00\ \mathrm{m}}$$
-
-     $$Z_A = Z_{S_1} - H_A = 1650.00 - 1200.00 = \mathbf{450.00\ \mathrm{m}}$$
-
-   - $A$ 点所在高程面的地面采样距离：
-
-     $$\mathrm{GSD}_A = \frac{H_A}{f} \cdot d = \frac{1200.00\ \mathrm{m}}{0.150\ \mathrm{m}} \times 6 \times 10^{-6}\ \mathrm{m} = 8000 \times 6 \times 10^{-6}\ \mathrm{m} = \mathbf{0.048\ \mathrm{m} = 4.8\ \mathrm{cm}}$$
-
-2. **求解严密高差 $\Delta h_{AC}$ 与高程中误差 $m_Z$（6 分）**：
-   - 基准点 $C$ 相对航高：$H_C = \dfrac{B \cdot f}{p_C} = \dfrac{600.00 \times 150.00}{72.00} = 1250.00\ \mathrm{m}$；
-   - 视差较 $\Delta p_{AC} = p_A - p_C = 75.00 - 72.00 = +3.00\ \mathrm{mm}$，代入严密高差公式：
-
-     $$\Delta h_{AC} = \frac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}} = \frac{1250.00 \times 3.00}{72.00 + 3.00} = \mathbf{+50.00\ \mathrm{m}}$$
-
-   - 视差量测物理中误差 $m_p = 0.5 \times 6\ \mu\mathrm{m} = 3.0\ \mu\mathrm{m} = 0.003\ \mathrm{mm}$，代入高程误差传播公式：
-
-     $$m_Z = \frac{H_C}{B} \cdot \frac{H_C}{f} \cdot m_p = \frac{1250.00}{600.00} \times \frac{1250.00\ \mathrm{m}}{150.00\ \mathrm{mm}} \times 0.003\ \mathrm{mm} = 2.0833 \times 8.3333 \times 0.003 = \mathbf{\pm 0.052\ \mathrm{m}}$$
-
----
-
-## 模板二：旋转矩阵 $R$、共线条件方程与单像空间后方交会列式（解析核心）
-
-### 1. 标准解题步骤与公式链
+#### 1. 标准解题步骤与公式链
 1. **以 $Y$ 轴为主轴的 $\varphi\text{--}\omega\text{--}\kappa$ 正交旋转矩阵 $R$ 及微倾近似式**：
 
    $$R = R_\varphi R_\omega R_\kappa = \begin{bmatrix} \cos\varphi\cos\kappa - \sin\varphi\sin\omega\sin\kappa & -\cos\varphi\sin\kappa - \sin\varphi\sin\omega\cos\kappa & -\sin\varphi\cos\omega \\ \cos\omega\sin\kappa & \cos\omega\cos\kappa & -\sin\omega \\ \sin\varphi\cos\kappa + \cos\varphi\sin\omega\sin\kappa & -\sin\varphi\sin\kappa + \cos\varphi\sin\omega\cos\kappa & \cos\varphi\cos\omega \end{bmatrix} \approx \begin{bmatrix} 1 & -\kappa & -\varphi \\ \kappa & 1 & -\omega \\ \varphi & \omega & 1 \end{bmatrix}$$
@@ -140,9 +59,7 @@
 
    - **最小二乘解与精度评定**：$\Delta X = (A^{\mathrm{T}}A)^{-1}A^{\mathrm{T}}L$，$\sigma_0 = \sqrt{\dfrac{V^{\mathrm{T}}V}{2n - 6}}$，$m_k = \sigma_0\sqrt{Q_{kk}}$。
 
----
-
-### 2. 【典型例题 2】单像空间后方交会初值设定与首轮误差方程列立（13 分标准题）
+#### 2. 【典型例题 1A】单像空间后方交会初值设定与首轮误差方程列立（13 分标准题）
 
 > **【题目】**：已知某竖直航空像片内方位元素 $f = 150.00\ \mathrm{mm},\ x_0 = y_0 = 0$，摄影比例尺约为 $1:10000$，像片四角布设了 4 个平高控制点，其地面摄影测量坐标平均值为 $(\bar{X}, \bar{Y}, \bar{Z}) = (5000.00, 8000.00, 200.00)\ \mathrm{m}$。其中 1 号控制点地面坐标为 $(X_1, Y_1, Z_1) = (4400.00, 7500.00, 200.00)\ \mathrm{m}$，实测像平面坐标为 $(x_1, y_1) = (-61.20, -49.50)\ \mathrm{mm}$。
 > (1) 指出该后方交会的观测方程总数、未知数个数与多余观测数 $r$，并确定 6 个外方位元素的迭代初值；
@@ -184,7 +101,176 @@
 
 ---
 
-## 模板三：点投影系数前方交会、相对定向与区域网多余观测数清点
+### 第二部分：共面条件方程（Coplanarity Equation）与立体像对相对定向
+
+#### 1. 标准解题步骤与公式链
+1. **核面共面几何条件（矢量混合积形式、三阶行列式形式及与模型上下视差 $Q$ 的等价性）**：
+   - 设摄影基线向量 $\mathbf{B} = \overrightarrow{S_1 S_2} = [B_X, B_Y, B_Z]^{\mathrm{T}}$，左、右同名光线在统一像空间辅助坐标系中的方向向量分别为 $\mathbf{S}_1\mathbf{a}_1 = [X_1, Y_1, Z_1]^{\mathrm{T}} = R_1[x_1 - x_0,\ y_1 - y_0,\ -f]^{\mathrm{T}}$ 与 $\mathbf{S}_2\mathbf{a}_2 = [X_2, Y_2, Z_2]^{\mathrm{T}} = R_2[x_2 - x_0,\ y_2 - y_0,\ -f]^{\mathrm{T}}$。
+   - **共面条件方程（三向量共处于同一核平面）**：矢量混合积形式与三阶行列式展开式为
+
+     $$\mathbf{B} \cdot (\mathbf{S}_1 \mathbf{a}_1 \times \mathbf{S}_2 \mathbf{a}_2) = 0 \iff F = \begin{vmatrix} B_X & B_Y & B_Z \\ X_1 & Y_1 & Z_1 \\ X_2 & Y_2 & Z_2 \end{vmatrix} = B_X(Y_1 Z_2 - Z_1 Y_2) + B_Y(Z_1 X_2 - X_1 Z_2) + B_Z(X_1 Y_2 - Y_1 X_2) = 0$$
+
+   - **与模型上下视差 $Q = 0$ 的严格等价性**：结合点投影系数 $N_1 = \dfrac{B_X Z_2 - B_Z X_2}{X_1 Z_2 - Z_1 X_2}$、$N_2 = \dfrac{B_X Z_1 - B_Z X_1}{X_1 Z_2 - Z_1 X_2}$，模型上下视差 $Q$ 与共面行列式 $F$ 严格成比例：
+
+     $$Q = N_1 Y_1 - N_2 Y_2 - B_Y = \frac{F}{X_1 Z_2 - Z_1 X_2} = 0$$
+
+   - **核线退化特例**：当以摄影基线为 $X$ 轴（$B_Y = B_Z = 0,\ B_X \neq 0$）时，上式简化为 $B_X(Y_1 Z_2 - Z_1 Y_2) = 0$，得到同一核面上的**核线不变量** $\dfrac{Y_1}{Z_1} = \dfrac{Y_2}{Z_2} = K$（常数）。
+2. **立体像对两类相对定向 5 元素体系**（无需地面控制点，最少 $n \ge 5$ 对同名像点，标准布设冯·格鲁伯 6 点位，多余观测 $r = n - 5$）：
+
+| 定向方案 | 辅助坐标系与固定零参数 | 待求 5 个相对定向元素 | 工程适用场景与特点 |
+| :--- | :--- | :--- | :--- |
+| **连续像对法**（Dependent RO） | 以左像空间系为辅助系，$\varphi_1 = \omega_1 = \kappa_1 = 0\ (R_1 = I)$，预先给定主基线 $B_X$ | $\varphi, \omega, \kappa, \mu, \nu$（其中 $B_Y = B_X\tan\mu \approx B_X\mu,\ B_Z = B_X\tan\nu \approx B_X\nu$） | 固定左片连续接边，最适合单航带自由网逐片拼接 |
+| **单独像对法**（Independent RO） | 以摄影基线为 $X$ 轴、左片主垂面为 $XZ$ 平面，恒有 $B_Y = B_Z = \omega_1 = 0$ | $\varphi_1, \kappa_1, \varphi_2, \omega_2, \kappa_2$（全部为两片姿态角元素） | 定向后基线天然平行于 $X$ 轴，直接用于核线重排列与独立模型法 |
+
+3. **竖直视差 $q = y_1' - y_2'$ 线性化误差方程 $v_q$ 与上下视差残差检验**：
+   - **水平像面投影纵坐标与竖直视差定义**：令 $y_1' = -f\dfrac{Y_1}{Z_1},\ y_2' = -f\dfrac{Y_2}{Z_2}$，定义竖直（上下）视差 $q = y_1' - y_2'$。在水平像对首轮初值（所有相对定向元素初值为 $0$，即 $R_1^0 = R_2^0 = I$）下，$q^0 = y_1 - y_2$，像片基线长 $b = x_1 - x_2 = \dfrac{f}{H}B_X$，且模型上下视差 $Q^0 = N q^0$（其中 $N = \dfrac{B_X}{b} = \dfrac{H}{f} > 0$）。
+   - **连续像对法**（待求改正数向量 $\Delta X = [\Delta\mu,\ \Delta\nu,\ \Delta\varphi,\ \Delta\omega,\ \Delta\kappa]^{\mathrm{T}}$）水平近似像方误差方程与模型空间对应式：
+
+     $$v_q = b\Delta\mu + \frac{y_2}{f}b\Delta\nu + \frac{x_2 y_2}{f}\Delta\varphi + \left(f + \frac{y_2^2}{f}\right)\Delta\omega + x_2\Delta\kappa - q^0$$
+
+     $$v_Q = B_X\Delta\mu - \frac{\bar{Y}_2}{\bar{Z}_2}B_X\Delta\nu - \frac{\bar{X}_2 \bar{Y}_2}{\bar{Z}_2}\Delta\varphi - \left(\bar{Z}_2 + \frac{\bar{Y}_2^2}{\bar{Z}_2}\right)\Delta\omega + \bar{X}_2\Delta\kappa - Q^0$$
+
+   - **单独像对法**（待求改正数向量 $\Delta X = [\Delta\varphi_1,\ \Delta\kappa_1,\ \Delta\varphi_2,\ \Delta\omega_2,\ \Delta\kappa_2]^{\mathrm{T}}$）水平近似像方误差方程与模型空间对应式：
+
+     $$v_q = -\frac{x_1 y_1}{f}\Delta\varphi_1 - x_1\Delta\kappa_1 + \frac{x_2 y_2}{f}\Delta\varphi_2 + \left(f + \frac{y_2^2}{f}\right)\Delta\omega_2 + x_2\Delta\kappa_2 - q^0$$
+
+     $$v_Q = \frac{\bar{X}_1 \bar{Y}_1}{\bar{Z}_1}\Delta\varphi_1 - \bar{X}_1\Delta\kappa_1 - \frac{\bar{X}_2 \bar{Y}_2}{\bar{Z}_2}\Delta\varphi_2 - \left(\bar{Z}_2 + \frac{\bar{Y}_2^2}{\bar{Z}_2}\right)\Delta\omega_2 + \bar{X}_2\Delta\kappa_2 - Q^0$$
+
+   - **最小二乘解算与上下视差残差检验**：合并 $n$ 对同名点构成 $V_q = A\Delta X - L_q$（其中 $L_q = [q_1^0, q_2^0, \dots, q_n^0]^{\mathrm{T}}$），按 $\Delta X = (A^{\mathrm{T}}A)^{-1}A^{\mathrm{T}}L_q$ 累加更新至角改正数 $< 10^{-5}\ \mathrm{rad}$；收敛后计算验后上下视差中误差 $\sigma_q$ 与参数中误差 $m_k$（其中 $\bar{X}_i = N_i X_i,\ \bar{Y}_i = N_i Y_i,\ \bar{Z}_i = N_i Z_i < 0$）：
+
+     $$\sigma_q = \sqrt{\frac{V_q^{\mathrm{T}}V_q}{n - 5}} = \sqrt{\frac{\sum_{i=1}^n v_{q_i}^2}{n - 5}}, \qquad Q_{xx} = (A^{\mathrm{T}}A)^{-1}, \qquad m_k = \sigma_q\sqrt{Q_{kk}}$$
+
+   - **合格检验判据**：常规航摄相对定向收敛后，一般要求上下视差中误差 $\sigma_q \le 0.5\text{--}1.0\ \text{像素}$（或 $\le 0.01\ \mathrm{mm}$），且最大残余上下视差 $\lvert v_{q_i} \rvert_{\max} \le 2\sigma_q$（确认无粗差残留）。
+
+#### 2. 【典型例题 1B】共面条件判别、相对定向误差方程列立与上下视差手算（12 分标准题）
+
+> **【题目】**：某竖直航空数字摄影测量立体像对，相机焦距 $f = 150.00\ \mathrm{mm},\ x_0 = y_0 = 0$，像元尺寸 $d = 10\ \mu\mathrm{m} = 0.010\ \mathrm{mm}$。
+> (1) 在某像空间辅助坐标系中，测得基线向量 $\mathbf{B} = [600.00,\ 14.00,\ 15.00]^{\mathrm{T}}\ \mathrm{m}$，某同名点的左、右光线辅助方向向量分别为 $\mathbf{S}_1\mathbf{a}_1 = [30.00,\ 60.00,\ -150.00]^{\mathrm{T}}\ \mathrm{mm}$、$\mathbf{S}_2\mathbf{a}_2 = [-30.00,\ 58.00,\ -150.00]^{\mathrm{T}}\ \mathrm{mm}$。试由共面条件三阶行列式 $F$ 判别两光线是否严格共面相交，并求该点处的模型上下视差 $Q$（同时用点投影系数 $N_1, N_2$ 交叉验算）；
+> (2) 对该像对在水平初值（所有相对定向元素初值为 $0$）下布设标准像片基线 $b = 60.00\ \mathrm{mm}$，量测某同名像点左片坐标 $(x_1, y_1) = (+45.00,\ +60.50)\ \mathrm{mm}$、右片坐标 $(x_2, y_2) = (-15.00,\ +60.00)\ \mathrm{mm}$，求初始竖直视差 $q^0$，并分别列立**连续像对法**与**单独像对法**的首轮线性化误差方程 $v_q$；
+> (3) 采用冯·格鲁伯标准 6 点位完成相对定向迭代收敛后，测得 6 个点的残余上下视差依次为 $v_{q_1} = +0.005,\ v_{q_2} = -0.004,\ v_{q_3} = -0.003,\ v_{q_4} = +0.003,\ v_{q_5} = -0.002,\ v_{q_6} = +0.001$（单位：$\mathrm{mm}$）。求多余观测数 $r$ 与上下视差中误差 $\sigma_q$（同时换算为像素），并依据“$\sigma_q \le 1.0\ \text{像素}$ 且 $\lvert v_{q_i} \rvert_{\max} \le 2\sigma_q$”判断定向精度是否合格。
+
+**【满分分步解答】**：
+1. **共面条件三阶行列式判别与模型上下视差计算（5 分）**：
+   - 代入三阶行列式并按第一行展开计算三个二阶余子式：
+
+     $$F = \begin{vmatrix} B_X & B_Y & B_Z \\ X_1 & Y_1 & Z_1 \\ X_2 & Y_2 & Z_2 \end{vmatrix} = \begin{vmatrix} 600.00 & 14.00 & 15.00 \\ 30.00 & 60.00 & -150.00 \\ -30.00 & 58.00 & -150.00 \end{vmatrix}$$
+
+   - 计算三项代数余子式分量：
+     - $Y_1 Z_2 - Z_1 Y_2 = 60.00\times(-150.00) - (-150.00)\times 58.00 = -9000.00 + 8700.00 = -300.00\ \mathrm{mm}^2$；
+     - $Z_1 X_2 - X_1 Z_2 = (-150.00)\times(-30.00) - 30.00\times(-150.00) = 4500.00 + 4500.00 = +9000.00\ \mathrm{mm}^2$；
+     - $X_1 Y_2 - Y_1 X_2 = 30.00\times 58.00 - 60.00\times(-30.00) = 1740.00 + 1800.00 = +3540.00\ \mathrm{mm}^2$。
+   - 求得共面行列式值并判别：
+
+     $$F = 600.00\times(-300.00) + 14.00\times 9000.00 + 15.00\times 3540.00 = -180000.00 + 126000.00 + 53100.00 = \mathbf{-900.00\ \mathrm{m\cdot mm}^2} \neq 0$$
+
+     因 $F \neq 0$，故**两同名光线不严格共面（空间存在微小异面偏差）**。
+   - 由等价式求模型上下视差 $Q$（分母 $X_1 Z_2 - Z_1 X_2 = 30.00\times(-150.00) - (-150.00)\times(-30.00) = -9000.00\ \mathrm{mm}^2$）：
+
+     $$Q = \frac{F}{X_1 Z_2 - Z_1 X_2} = \frac{-900.00}{-9000.00} = \mathbf{+0.100\ \mathrm{m}}$$
+
+   - **点投影系数交叉验算**：
+
+     $$N_1 = \frac{B_X Z_2 - B_Z X_2}{X_1 Z_2 - Z_1 X_2} = \frac{600.00\times(-150.00) - 15.00\times(-30.00)}{-9000.00} = \frac{-89550.00}{-9000.00} = 9.950\ \mathrm{m/mm}$$
+
+     $$N_2 = \frac{B_X Z_1 - B_Z X_1}{X_1 Z_2 - Z_1 X_2} = \frac{600.00\times(-150.00) - 15.00\times 30.00}{-9000.00} = \frac{-90450.00}{-9000.00} = 10.050\ \mathrm{m/mm}$$
+
+     $$Q = N_1 Y_1 - N_2 Y_2 - B_Y = 9.950\times 60.00 - 10.050\times 58.00 - 14.00 = 597.00 - 582.90 - 14.00 = \mathbf{+0.100\ \mathrm{m}}$$
+
+     两法结果完全一致！
+2. **计算初始竖直视差并列立两类相对定向首轮误差方程（4 分）**：
+   - 校验左右视差 $p = x_1 - x_2 = 45.00 - (-15.00) = 60.00\ \mathrm{mm} = b$；初始竖直视差：
+
+     $$q^0 = y_1 - y_2 = 60.50 - 60.00 = \mathbf{+0.50\ \mathrm{mm}}$$
+
+   - **连续像对法**（代入 $b = 60.00,\ f = 150.00,\ x_2 = -15.00,\ y_2 = 60.00\ \mathrm{mm}$）：
+     算得 $\dfrac{y_2}{f}b = \dfrac{60.00}{150.00}\times 60.00 = +24.00$，$\dfrac{x_2 y_2}{f} = \dfrac{(-15.00)\times 60.00}{150.00} = -6.00$，$f + \dfrac{y_2^2}{f} = 150.00 + \dfrac{60.00^2}{150.00} = +174.00$，$+x_2 = -15.00$，故连续法首轮误差方程为：
+
+     $$v_q = 60.00\Delta\mu + 24.00\Delta\nu - 6.00\Delta\varphi + 174.00\Delta\omega - 15.00\Delta\kappa - 0.50$$
+
+   - **单独像对法**（额外代入 $x_1 = +45.00,\ y_1 = +60.50\ \mathrm{mm}$）：
+     算得 $-\dfrac{x_1 y_1}{f} = -\dfrac{45.00\times 60.50}{150.00} = -18.15$，$-x_1 = -45.00$；右片三项系数与连续法相同（$-6.00,\ +174.00,\ -15.00$），故单独法首轮误差方程为：
+
+     $$v_q = -18.15\Delta\varphi_1 - 45.00\Delta\kappa_1 - 6.00\Delta\varphi_2 + 174.00\Delta\omega_2 - 15.00\Delta\kappa_2 - 0.50$$
+
+     （量纲说明：两式中各待求角参数系数单位均为 $\mathrm{mm/rad}$，常数项 $q^0$ 单位为 $\mathrm{mm}$，联立解出的各改正数单位天然为 $\mathrm{rad}$。）
+3. **多余观测数、上下视差中误差与精度合格评定（3 分）**：
+   - 冯·格鲁伯标准 6 点（$n = 6$）平差 5 个相对定向元素，多余观测数 **$r = n - 5 = 6 - 5 = 1$**；
+   - 残差平方和 $\sum_{i=1}^6 v_{q_i}^2 = 0.005^2 + 0.004^2 + 0.003^2 + 0.003^2 + 0.002^2 + 0.001^2 = (25 + 16 + 9 + 9 + 4 + 1)\times 10^{-6} = \mathbf{64\times 10^{-6}\ \mathrm{mm}^2}$；
+   - 上下视差中误差（含像素换算，$d = 0.010\ \mathrm{mm}$）：
+
+     $$\sigma_q = \sqrt{\frac{\sum_{i=1}^6 v_{q_i}^2}{r}} = \sqrt{\frac{64\times 10^{-6}}{1}} = \mathbf{\pm 0.008\ \mathrm{mm}} = \pm\frac{0.008}{0.010} = \mathbf{\pm 0.8\ \text{像素}} \le 1.0\ \text{像素}$$
+
+   - 最大残余上下视差 $\lvert v_{q_i} \rvert_{\max} = \lvert v_{q_1} \rvert = 0.005\ \mathrm{mm} = 0.5\ \text{像素} < 2\sigma_q = 0.016\ \mathrm{mm}$，无粗差残留，故**该相对定向精度合格**。
+
+---
+
+## 模板二：航摄技术设计、投影差测高与正直立体像对视差计算（基础必拿分）
+
+### 1. 标准解题步骤与公式链
+1. **像幅尺寸与地面采样距离 GSD**：
+
+   $$l_x = N_x \cdot d, \qquad l_y = N_y \cdot d, \qquad \frac{1}{m} = \frac{f}{H} = \frac{d}{\mathrm{GSD}} \implies H = m \cdot f,\quad H_{\mathrm{abs}} = H + Z_{\mathrm{avg}}$$
+
+2. **地面覆盖、摄影基线 $B$、航线间距 $D$ 与曝光间隔 $\Delta t$**：
+
+   $$L_X = m \cdot l_x = N_x \cdot \mathrm{GSD}, \qquad L_Y = m \cdot l_y = N_y \cdot \mathrm{GSD}$$
+
+   $$B = L_X(1 - P_x), \qquad D = L_Y(1 - P_y), \qquad \Delta t = \frac{B}{v}, \qquad \delta_{\text{像移}} = \frac{v \cdot t_{\mathrm{exp}}}{m}$$
+
+3. **航带数与总像片数**：
+
+   $$N_{\text{航带}} = \left\lceil \frac{W_Y}{D} \right\rceil + 1, \qquad N_{\text{单带}} = \left\lceil \frac{W_X}{B} \right\rceil + 1 + N_{\text{外扩}}\ (\text{或基线数 } + 4), \qquad N_{\text{总}} = N_{\text{航带}} \times N_{\text{单带}}$$
+
+4. **单张铅垂像片投影差测高**（区分已知塔顶向径 $r_{\text{顶}}$ 与塔底向径 $r_{\text{底}}$）：
+
+   $$\Delta h = \frac{\delta_h \cdot H}{r_{\text{顶}}} = \frac{\delta_h \cdot H}{r_{\text{底}} + \delta_h} \qquad (\text{其中 } \delta_h = r_{\text{顶}} - r_{\text{底}})$$
+
+5. **理想正直立体像对（$\varphi=\omega=\kappa=0,\ B_Y=B_Z=0,\ B_X=B$）三维坐标、严密高差与高程中误差**：
+
+   $$p = x_1 - x_2, \qquad q = y_1 - y_2 = 0, \qquad H_A = Z_{S_1} - Z_A = \frac{B \cdot f}{p_A}$$
+
+   $$X_A = X_{S_1} + \frac{B}{p_A}x_{1A}, \qquad Y_A = Y_{S_1} + \frac{B}{p_A}y_{1A}, \qquad Z_A = Z_{S_1} - \frac{B \cdot f}{p_A}$$
+
+   $$\Delta h_{AC} = Z_A - Z_C = \frac{H_C \cdot (p_A - p_C)}{p_C + (p_A - p_C)} = \frac{H_C \cdot \Delta p_{AC}}{p_A}, \qquad m_Z = \frac{H}{B} \cdot \frac{H}{f} \cdot m_p = \frac{m}{B/H} \cdot m_p$$
+
+---
+
+### 2. 【典型例题 2】数字航摄参数设计与立体像对视差测高综合计算（12 分标准题）
+
+> **【题目】**：某数字航空摄影工程相机焦距 $f = 150.00\ \mathrm{mm}$，像元尺寸 $d = 6\ \mu\mathrm{m}$，像主点 $x_0 = y_0 = 0$。已知理想正直立体像对左摄站坐标 $(X_{S_1}, Y_{S_1}, Z_{S_1}) = (1000.00, 2000.00, 1650.00)\ \mathrm{m}$，右摄站坐标 $(X_{S_2}, Y_{S_2}, Z_{S_2}) = (1600.00, 2000.00, 1650.00)\ \mathrm{m}$。
+> (1) 量得待定点 $A$ 的左片像坐标 $(x_{1A}, y_{1A}) = (42.50, -30.00)\ \mathrm{mm}$，右片像坐标 $(x_{2A}, y_{2A}) = (-32.50, -30.00)\ \mathrm{mm}$，求摄影基线 $B$、$A$ 点左右视差 $p_A$、地面三维坐标 $(X_A, Y_A, Z_A)$ 及 $A$ 点高程面上的地面采样距离 $\mathrm{GSD}_A$；
+> (2) 已知地面基准点 $C$ 的左右视差 $p_C = 72.00\ \mathrm{mm}$，求 $A$ 相对于 $C$ 的严密高差 $\Delta h_{AC}$；若左右视差量测中误差为 $m_p = \pm 0.5\ \text{像素}$，求 $C$ 点处的高程量测中误差 $m_Z$。
+
+**【满分分步解答】**：
+1. **求解基线、左右视差、三维地面坐标与 $\mathrm{GSD}_A$（6 分）**：
+   - 摄影基线：$B = X_{S_2} - X_{S_1} = 1600.00 - 1000.00 = 600.00\ \mathrm{m}$（且 $B_Y = B_Z = 0$）；
+   - $A$ 点左右视差与相对航高：
+
+     $$p_A = x_{1A} - x_{2A} = 42.50 - (-32.50) = 75.00\ \mathrm{mm}, \qquad H_A = \frac{B \cdot f}{p_A} = \frac{600.00 \times 150.00}{75.00} = 1200.00\ \mathrm{m}$$
+
+   - 点投影系数 $N_A = \dfrac{B}{p_A} = \dfrac{600.00\ \mathrm{m}}{75.00\ \mathrm{mm}} = 8.00\ \mathrm{m/mm}$，代入正直立体像对坐标公式：
+
+     $$X_A = 1000.00 + 8.00 \times 42.50 = \mathbf{1340.00\ \mathrm{m}}, \qquad Y_A = 2000.00 + 8.00 \times (-30.00) = \mathbf{1760.00\ \mathrm{m}}$$
+
+     $$Z_A = Z_{S_1} - H_A = 1650.00 - 1200.00 = \mathbf{450.00\ \mathrm{m}}$$
+
+   - $A$ 点所在高程面的地面采样距离：
+
+     $$\mathrm{GSD}_A = \frac{H_A}{f} \cdot d = \frac{1200.00\ \mathrm{m}}{0.150\ \mathrm{m}} \times 6 \times 10^{-6}\ \mathrm{m} = 8000 \times 6 \times 10^{-6}\ \mathrm{m} = \mathbf{0.048\ \mathrm{m} = 4.8\ \mathrm{cm}}$$
+
+2. **求解严密高差 $\Delta h_{AC}$ 与高程中误差 $m_Z$（6 分）**：
+   - 基准点 $C$ 相对航高：$H_C = \dfrac{B \cdot f}{p_C} = \dfrac{600.00 \times 150.00}{72.00} = 1250.00\ \mathrm{m}$；
+   - 视差较 $\Delta p_{AC} = p_A - p_C = 75.00 - 72.00 = +3.00\ \mathrm{mm}$，代入严密高差公式：
+
+     $$\Delta h_{AC} = \frac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}} = \frac{1250.00 \times 3.00}{72.00 + 3.00} = \mathbf{+50.00\ \mathrm{m}}$$
+
+   - 视差量测物理中误差 $m_p = 0.5 \times 6\ \mu\mathrm{m} = 3.0\ \mu\mathrm{m} = 0.003\ \mathrm{mm}$，代入高程误差传播公式：
+
+     $$m_Z = \frac{H_C}{B} \cdot \frac{H_C}{f} \cdot m_p = \frac{1250.00}{600.00} \times \frac{1250.00\ \mathrm{m}}{150.00\ \mathrm{mm}} \times 0.003\ \mathrm{mm} = 2.0833 \times 8.3333 \times 0.003 = \mathbf{\pm 0.052\ \mathrm{m}}$$
+
+---
+
+## 模板三：点投影系数空间前方交会与光束法区域网平差多余观测数清点
 
 ### 1. 标准解题步骤与公式链
 1. **一般倾斜像对“点投影系数法”空间前方交会四步模板**（4 方程解 3 未知数，$r = 1$）：
@@ -195,10 +281,8 @@
 
      $$X = X_{S_1} + N_1 X_1, \quad Y = Y_{S_1} + \frac{1}{2}(N_1 Y_1 + N_2 Y_2 + B_Y), \quad Z = Z_{S_1} + N_1 Z_1, \quad Q = N_1 Y_1 - N_2 Y_2 - B_Y$$
 
-2. **两类相对定向 5 元素像方简化误差方程**（标准冯·格鲁伯 6 点位，$r = n - 5 = 1$）：
-   - **连续法** $(\Delta\mu, \Delta\nu, \Delta\varphi_2, \Delta\omega_2, \Delta\kappa_2)$：$v_q = b\Delta\mu + \dfrac{y_2}{f}b\Delta\nu + \dfrac{x_2 y_2}{f}\Delta\varphi_2 + \left(f + \dfrac{y_2^2}{f}\right)\Delta\omega_2 - x_2\Delta\kappa_2 - q^0$；
-   - **单独法** $(\Delta\varphi_1, \Delta\kappa_1, \Delta\varphi_2, \Delta\omega_2, \Delta\kappa_2)$：$v_q = -\dfrac{x_1 y_1}{f}\Delta\varphi_1 - x_1\Delta\kappa_1 + \dfrac{x_2 y_2}{f}\Delta\varphi_2 + \left(f + \dfrac{y_2^2}{f}\right)\Delta\omega_2 + x_2\Delta\kappa_2 - q^0$。
-3. **光束法区域网平差“方程数 / 未知数 / 多余观测数 $r$”万能清点公式**：
+   （*注：两类相对定向 5 元素误差方程与手算例题已整体并入置顶的【模板一·第二部分】。*）
+2. **光束法区域网平差“方程数 / 未知数 / 多余观测数 $r$”万能清点公式**：
    设 $m$ 张像片共量测了 $K_{\text{像点}}$ 个像点，地面点含 $n_{\text{平高}}$ 个平高点、$n_{\text{仅平}}$ 个平面点、$n_{\text{仅高}}$ 个高程点、$n_{\text{加密}}$ 个未知连接点（控制点作无误差真值；若作带权虚拟观测值，观测数与未知数同加已知坐标分量数，$r$ 恒定不变！）：
 
    $$N_{\mathrm{obs}} = 2 K_{\text{像点}}, \qquad U_{\mathrm{unk}} = 6m + 0\cdot n_{\text{平高}} + 1\cdot n_{\text{仅平}} + 2\cdot n_{\text{仅高}} + 3\cdot n_{\text{加密}}, \qquad r = N_{\mathrm{obs}} - U_{\mathrm{unk}}$$
@@ -359,7 +443,24 @@
    - 整数峰值步对应高程：$Z_4 = Z_{\min} + 4 \cdot \Delta Z = 120.00 + 4 \times 0.50 = 122.00\ \mathrm{m}$；
    - 抛物线顶点子步距内插高程：
 
-     $$Z^* = 122.00 + \frac{0.82 - 0.88}{2 \times (0.82 - 2 \times 0.94 + 0.88)} \times 0.50 = 122.00 + \frac{-0.06}{-0.36} \times 0.50 = 122.00 + 0.083 = \mathbf{122.083\ \mathrm{m}}$$</script>
+     $$Z^* = 122.00 + \frac{0.82 - 0.88}{2 \times (0.82 - 2 \times 0.94 + 0.88)} \times 0.50 = 122.00 + \frac{-0.06}{-0.36} \times 0.50 = 122.00 + 0.083 = \mathbf{122.083\ \mathrm{m}}$$
+
+---
+
+## 附表：考场 25 分计算题生死线——五大单位换算与五大正负号排雷表
+
+| 类别 | 高危易错点 | 典型错误写法 | 考场满分防错铁律 |
+| :--- | :--- | :--- | :--- |
+| **单位 1** | 焦距 $f(\mathrm{mm})$、像元 $d(\mu\mathrm{m})$ 与航高 $H(\mathrm{m})$ 混算 | 直接用 $2400 / 120$ 算比例尺分母 $m$ | 牢记 $1\ \mathrm{m} = 10^3\ \mathrm{mm} = 10^6\ \mu\mathrm{m}$；比例尺分母 $m = \dfrac{H(\mathrm{m}) \times 1000}{f(\mathrm{mm})}$；$\mathrm{GSD}(\mathrm{m}) = m \cdot d(\mu\mathrm{m}) \times 10^{-6}$。 |
+| **单位 2** | 航速 $v(\mathrm{km/h})$ 直接除基线算曝光间隔 | 用 $B(\mathrm{m}) / 288$ 算 $\Delta t$ | 先除以 $3.6$ 化为米每秒：$v(\mathrm{m/s}) = \dfrac{v(\mathrm{km/h})}{3.6}$，再算 $\Delta t = \dfrac{B}{v}$。 |
+| **单位 3** | 后方交会误差方程 $V = A\Delta X - L$ 量纲 | 搞不清解出的线/角改正数单位 | 统一令 $x, y, f, l_x, l_y$ 用 $\mathrm{mm}$，令 $X, Y, Z, \bar{Z}$ 用 $\mathrm{m}$，则解出的 $\Delta X_S\sim\Delta Z_S$ 为 **$\mathrm{m}$**，$\Delta\varphi\sim\Delta\kappa$ 天然为 **弧度（$\mathrm{rad}$）**！ |
+| **单位 4** | 角度度数（$^\circ$）直接代入微分线性化公式 | 代入 $\Delta\varphi = 2^\circ$ 算像点位移 | 一切泰勒展开与微倾公式中的角度均为**弧度**！换算常数 $\rho'' = \dfrac{180}{\pi}\times 3600 \approx 206265''$。 |
+| **单位 5** | 航带数与单带像片数四舍五入漏进一 | $8.2$ 条航带算成 $8$ 条 | 凡除不尽**一律向上进一取整 $\lceil \cdot \rceil$**，防止航摄漏洞，并按题意加上安全外扩片。 |
+| **符号 1** | 大地高斯左旋系直接代共线方程 | 把 $(X_{\text{北}}, Y_{\text{东}})$ 原样当摄测右旋系 | 若题目注明“高斯平面坐标”，先令 $X = Y_{\text{东}},\ Y = X_{\text{北}},\ Z = H_{\text{高程}}$ 转为右旋系再算。 |
+| **符号 2** | 下视航空摄影把分母 $\bar{Z}$ 算成正数 | 代入 $\bar{Z} = +H$ | 像空间恒有 $z = -f$；下视摄影地面低于镜头（$Z < Z_S$），必有 **$\bar{Z} \approx Z - Z_S = -H < 0$**！ |
+| **符号 3** | 后方交会常数项 $L$ 减法顺序颠倒 | 写成 $l_x = (x)_{\text{近似}} - x_{\text{观测}}$ | 标准式 $V = A\Delta X - L$ 中，常数项必为**观测值减近似计算值**：**$l_x = x - (x),\ l_y = y - (y)$**。 |
+| **符号 4** | 照搬原教材偏导数印刷笔误 | 把 $a_{26}$ 写成 $+(x - x_0)$ | 严密与近似偏导数中恒有 **$a_{16} = +(y - y_0)$**，而 **$a_{26} = -(x - x_0)$**！ |
+| **符号 5** | 立体像对大高差直接套平坦近似式 | $\Delta h = \frac{H}{b}\Delta p$ 产生米级偏差 | 优先使用严密高差公式：**$\Delta h_{AC} = Z_A - Z_C = \dfrac{H_C \cdot \Delta p_{AC}}{p_C + \Delta p_{AC}}$**（点越高，左右视差 $p$ 越大）。 |</script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
