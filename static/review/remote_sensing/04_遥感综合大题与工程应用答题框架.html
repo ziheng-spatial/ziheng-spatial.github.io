@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -121,7 +122,9 @@
 3. **核心遥感参数提取与建模反演**：
    * **计算植被指数**：基于健康植被在红光叶绿素强吸收、近红外细胞结构强反射的物理机制，计算归一化植被指数 $NDVI = \frac{\rho_{\text{NIR}} - \rho_{\text{Red}}}{\rho_{\text{NIR}} + \rho_{\text{Red}}}$（若在濃密林区为克服饱和效应，改用增强型植被指数 $EVI$ 或比值植被指数 $RVI$）。
    * **估算植被覆盖度（FVC，像元二分模型）**：
+
      $$FVC = \frac{NDVI - NDVI_{\text{soil}}}{NDVI_{\text{veg}} - NDVI_{\text{soil}}}$$
+
      （式中 $NDVI_{\text{soil}}$ 为纯裸土像元值，$NDVI_{\text{veg}}$ 为全植被覆盖像元值）。
    * **多特征融合森林蓄积量反演（讲义第9章标准流程）**：综合提取**单波段光谱反射率、植被指数（NDVI/RVI）、灰度共生矩阵纹理因子（均值、对比度、熵）以及 DEM 地形因子（海拔、坡度、坡向）**作为自变量，以样地实测蓄积量为因变量，构建**多元逐步线性回归模型、BP 神经网络模型或随机森林（Random Forest）非线性回归模型**进行全区蓄积量空间反演。
 4. **精度验证與成果输出**：
@@ -140,9 +143,13 @@
 3. **水体/灾害目标核心提取方法**：
    * **路径 A：光学水体指数法（晴空水体提取）**
      * 针对自然郊区水体，利用水体在绿光反射率较高、近红外强吸收（反射率近 $0$）特性，计算 **McFeeters 归一化水体指数**：
+
        $$NDWI = \frac{\rho_{\text{Green}} - \rho_{\text{NIR}}}{\rho_{\text{Green}} + \rho_{\text{NIR}}}$$
+
      * 针对**城市内部水体**，为消除建筑群及阴影在 NIR 波段的混淆噪声，改用短波红外波段（SWIR，如 OLI Band 6）计算**改进型水体指数**：
+
        $$MNDWI = \frac{\rho_{\text{Green}} - \rho_{\text{SWIR}}}{\rho_{\text{Green}} + \rho_{\text{SWIR}}}$$
+
      * 结合直方图双峰法（Otsu 最大类间方差法）设定阈值（如 $MNDWI > 0$）实现水陆二值分割。
    * **路径 B：SAR 后向散射阈值与变化检测法（洪涝淹没区与海上溢油提取）**
      * **物理机制**：平静开阔水体表面光滑，对入射雷达微波产生**镜面反射**，回波功率极弱，在 SAR 图像上呈均匀极暗区（$\sigma^0$ 极低）；而陆地植被与建筑呈亮色。
@@ -151,7 +158,9 @@
    * **路径 C：海洋绿潮（浒苔）灾害提取（讲义第9章青岛胶州湾/黄海案例）**
      * 漂浮在海面的密集浒苔具有与陆生绿色植物完全相同的“红光吸收谷、近红外高反射陡坡（红边）”特征，在标准假彩色合成图（Sentinel-3 OLCI 的 Oa20/Oa11/Oa06）上呈鲜红色条带；
      * 采用 **$NDVI > 0.2$** 阈值法，或计算抗薄云与耀光干扰更强的**浮游藻类指数（FAI）**：
+
        $$FAI = R_{\text{NIR}} - \left[ R_{\text{Red}} + (R_{\text{SWIR}} - R_{\text{Red}}) \cdot \frac{\lambda_{\text{NIR}} - \lambda_{\text{Red}}}{\lambda_{\text{SWIR}} - \lambda_{\text{Red}}} \right]$$
+
        提取浒苔分布面积、密集度及漂移轨迹。
 
 ---
@@ -168,13 +177,19 @@
      * 依据基尔霍夫定律，实际地物并非绝对黑体。将地表划分为水体像元（$\varepsilon \approx 0.995$）、自然表面混合像元（由植被 $\varepsilon_v \approx 0.986$ 与裸土 $\varepsilon_s \approx 0.970$ 按植被覆盖度 $FVC$ 加权合成）和城镇建筑混合像元，生成全区比辐射率 $\varepsilon$ 分布图。
    * **第三步：扣除大气效应，求解黑体辐射亮度 $B(T_s)$**
      * 根据热红外辐射传输方程，传感器接收的热辐射亮度 $L_\lambda$ 由三部分组成（地面辐射透射项 + 大气上行辐射 $L^\uparrow$ + 大气下行辐射 $L^\downarrow$ 经地表反射项）：
+
        $$L_\lambda = \left[ \varepsilon \cdot B(T_s) + (1 - \varepsilon) L^\downarrow \right] \cdot \tau + L^\uparrow$$
+
      * 反解出真实温度为 $T_s$ 的黑体辐射亮度 $B(T_s)$：
+
        $$B(T_s) = \frac{L_\lambda - L^\uparrow - \tau (1 - \varepsilon) L^\downarrow}{\tau \cdot \varepsilon}$$
+
        （式中 $\tau$ 为热红外波段大气透过率；若采用 TIRS Band 10 与 Band 11 两个相邻热红外通道，则可利用两通道大气吸收差异直接通过**劈窗算法 Split-Window** 消除大气水汽影响，无需同步大气剖面参数）。
    * **第四步：普朗克公式逆运算求解真实地表温度 $T_s$**
      * 代入普朗克逆函数常量 $K_1, K_2$（从元数据头文件获取），计算开尔文温度并转为摄氏温度：
+
        $$T_s(\text{K}) = \frac{K_2}{\ln\left( \frac{K_1}{B(T_s)} + 1 \right)}, \quad t_s(^\circ\text{C}) = T_s(\text{K}) - 273.15$$
+
    * **第五步：城市热岛强度（UHII）分级与分析**
      * 采用**均值-标准差法**将地表温度场正规化并划分为低温区、次低温区、中温区、次高温区、高温区（热岛核心区）5个等级；
      * 结合土地利用图、不透水面比例（ISA）与植被指数（NDVI）、水体分布进行空间叠加相关性分析（揭示“水泥建筑/工业区呈高温热岛，公园绿地与水体呈低温冷岛”的规律），提出城市通风廊道与绿地降温规划建议。
@@ -221,8 +236,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

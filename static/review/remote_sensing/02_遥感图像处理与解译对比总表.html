@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -161,8 +162,8 @@
 | **非监督分类** | **K-均值算法（K-Means）** | ① 任选 $m$ 个初始聚类中心；② 按最小欧氏距离准则将所有像元分配给最近的中心（使误差平方和最小）；③ 重新计算各类的均值中心；④ 循环迭代直至聚类中心不再变化。 | 算法极其简单、收敛快、易于编程实现。 | **类别数 $m$ 一旦设定在迭代中固定不变**；结果严重依赖初始中心选择、样本输入次序和数据几何形状，易陷入局部最优。 | 类别数明确、点群呈球状紧凑分布的简单图像聚类。 |
 | **非监督分类** | **ISODATA 算法（迭代自组织数据分析）** | K-均值的全面改进版：① 每次将**全部样本调整完毕后**才统一重算均值；② 引入**“合并（Merge）”**（当两类中心距离过近或样本过少时合并）和**“分裂（Split）”**（当某类内部方差过大且样本过多时分裂）机制，动态调整类别总数。 | 克服了 K-均值类别数僵化的缺陷，能根据数据自身分布动态获得更合理的聚类数与中心位置。 | 需人为设定的控制参数较多（期望类别数、最小样本数、最大标准差、最小中心距、最大迭代次数），计算耗时较长。 | **遥感软件中最主流、最常用的非监督分类标准算法**。 |
 | **监督分类（Supervised，先训练后判别）** | **宏观共性** | **基于先验知识**：先在已知地物区选取代表性**训练样区（ROI）**，统计各类光谱特征以确定**判别函数和判别准则**（训练/学习阶段）；再将全图未知像元代入判别函数逐一判定归属类别。 | **可根据应用目的有选择地指定所需信息类别**；可人工控制训练样本质量；可通过检验训练样本预估分类精度；避免了非监督分类事后繁琐的光谱类重归并。 | 训练样本获取与提纯耗费大量人力物力；受混合像元影响样本代表性可能不足；**只能识别训练集中已定义的类别**，未定义类别会被强行错分遗漏。 | 测区先验知识充足、有明确专题制图分类体系（如三调土地利用分类）的工程任务。 |
-| **监督分类** | **最小距离分类法（Minimum Distance）** | 用训练样本求出各类均值中心 $M_i$，计算未知像元 $X$ 到各类中心的距离 $d_i(X)$，距离最小者即为归属类：<br>• **计程距离（曼哈顿）**：$d = \sum \|x_k - \mu_k\|$（无乘法开方，最快）；<br>• **欧氏距离**：$d = \|X - M_i\|_2$（假定各波段独立且方差相等）；<br>• **马氏距离**：$d^2 = (X - M_i)^T \Sigma_i^{-1} (X - M_i)$（考虑了协方差相关性）。 | 原理直观、**计算速度极快**；对训练样本数量要求不高（不会因样本少导致协方差矩阵奇异）。 | 欧氏/计程距离**完全忽略了各类别点群的方差（离散程度）和波段间协方差**，也未考虑各类别出现的先验概率，当各类分布方差差异大时分类精度较低。 | 快速粗分类、类别间均值距离远且点群方差相近的场景。 |
-| **监督分类** | **最大似然分类法（Maximum Likelihood, MLC / 贝叶斯分类器）** | 基于**贝叶斯准则**（将先验概率 $P(\omega_i)$ 与类条件概率密度 $p(X\|\omega_i)$ 转化为后验概率 $P(\omega_i\|X)$）。**假定各类光谱特征服从多元正态分布**，取对数判别函数：<br>$d_i(X) = \ln P(\omega_i) - \frac{1}{2}\ln\|\Sigma_i\| - \frac{1}{2}(X - M_i)^T \Sigma_i^{-1}(X - M_i)$<br>取 $d_i(X)$ 最大者所属类别。 | 同时考虑了均值向量、协方差矩阵（点群形状与方向）和先验概率，较好平衡了“存真”与“弃伪”错误概率，是**统计学理论上分类精度最优（总错分概率最小）的分类器**。 | **强假设数据必须服从多元正态分布**（实际地物如城镇常呈多峰偏态分布）；计算量大；需计算协方差逆矩阵 $\Sigma_i^{-1}$，要求每类训练样本数必须足够多（否则出现奇异矩阵或休斯现象）。 | 传统多光谱遥感像素级监督分类的基准高精度算法。 |
+| **监督分类** | **最小距离分类法（Minimum Distance）** | 用训练样本求出各类均值中心 $M_i$，计算未知像元 $X$ 到各类中心的距离 $d_i(X)$，距离最小者即为归属类：<br>• **计程距离（曼哈顿）**：$d = \sum \lvert x_k - \mu_k \rvert$（无乘法开方，最快）；<br>• **欧氏距离**：$d = \|X - M_i\|_2$（假定各波段独立且方差相等）；<br>• **马氏距离**：$d^2 = (X - M_i)^T \Sigma_i^{-1} (X - M_i)$（考虑了协方差相关性）。 | 原理直观、**计算速度极快**；对训练样本数量要求不高（不会因样本少导致协方差矩阵奇异）。 | 欧氏/计程距离**完全忽略了各类别点群的方差（离散程度）和波段间协方差**，也未考虑各类别出现的先验概率，当各类分布方差差异大时分类精度较低。 | 快速粗分类、类别间均值距离远且点群方差相近的场景。 |
+| **监督分类** | **最大似然分类法（Maximum Likelihood, MLC / 贝叶斯分类器）** | 基于**贝叶斯准则**（将先验概率 $P(\omega_i)$ 与类条件概率密度 $p(X \mid \omega_i)$ 转化为后验概率 $P(\omega_i \mid X)$）。**假定各类光谱特征服从多元正态分布**，取对数判别函数：<br>$d_i(X) = \ln P(\omega_i) - \frac{1}{2}\ln\lvert\Sigma_i\rvert - \frac{1}{2}(X - M_i)^T \Sigma_i^{-1}(X - M_i)$<br>取 $d_i(X)$ 最大者所属类别。 | 同时考虑了均值向量、协方差矩阵（点群形状与方向）和先验概率，较好平衡了“存真”与“弃伪”错误概率，是**统计学理论上分类精度最优（总错分概率最小）的分类器**。 | **强假设数据必须服从多元正态分布**（实际地物如城镇常呈多峰偏态分布）；计算量大；需计算协方差逆矩阵 $\Sigma_i^{-1}$，要求每类训练样本数必须足够多（否则出现奇异矩阵或休斯现象）。 | 传统多光谱遥感像素级监督分类的基准高精度算法。 |
 | **现代机器学习与智能分类** | **支持向量机（SVM）** | 基于统计学习理论与结构风险最小化准则，寻找使两类样本边界支持向量**分类间隔（Margin）最大化**的最优分类超平面；对非线性可分问题通过**核函数（Kernel Trick）**映射至高维特征空间实现线性分割。 | **彻底摆脱正态分布假设**；天生擅长解决**小样本、非线性、高维数据（如高光谱数百波段）**分类问题，泛化能力极强。 | 对核函数类型及惩罚参数选择较敏感，超大样本集下核矩阵计算内存开销大。 | 高光谱遥感分类、训练样本稀缺条件下的高精度分类。 |
 | **现代机器学习与智能分类** | **决策树（Decision Tree）与专家系统** | **决策树**：由根节点、分枝节点、叶节点构成，通过阈值规则（如 `Band4 < 0.1128`、`NDVI > 0.56`、`SLOPE < 8.18°`）逐级二分或多分；<br>**专家系统**：由**知识库**（地物光谱/空间/经验/多源规则）和**推理机**（正向/反向推理，`IF...AND...THEN...`）组成。 | 规则透明可解释（白盒模型），**极易融合非遥感辅助数据（DEM 坡度、坡向、距离道路远近、物候历）**，有效破解“同物异谱、异物同谱”。 | 单棵决策树易过拟合（工程中常集成多棵树构建**随机森林 Random Forest**）；专家系统知识库构建依赖领域专家经验。 | 复杂地形区多源数据协同分类、宏观生态制图。 |
 | **现代机器学习与智能分类** | **模糊聚类 / 软分类（Fuzzy Classification）** | 针对中低分辨率影像中普遍存在的**混合像元**（一个像元内包含房屋、草地、道路等多种地物），不再将像元硬性归入唯一类别，而是计算其对所有类别的**隶属度向量** $a_{ij} \in [0, 1]$，且满足 $\sum_j a_{ij} = 1$。 | 真实反映了混合像元内各类地物的丰度比例，避免了硬分类的信息丢失与边界武断。 | 隶属度函数确定较复杂，结果需解译或设阈值才能转回传统矢量图斑。 | 中低分辨率影像亚像元丰度分解、过渡带生态边界提取。 |
@@ -192,8 +193,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -43,14 +44,18 @@
    GNSS 涉及的坐标转换按物理性质分为两大类：一是用于卫星定轨与位置归算的**“协议天球坐标系（GCRS）与协议地球坐标系（ITRS）之间的转换”**；二是用于工程成果交付的**“不同地球（地心/参心/平面）坐标系之间的转换”**。
 2. **天球系（GCRS）转至地球系（ITRS）的四步旋转矩阵链（2分）**：
    必须依次扣除**岁差、章动、地球自转和极移**四项空间运动，矩阵变换公式为：
+
    $$\begin{pmatrix} X \\ Y \\ Z \end{pmatrix}_{\mathrm{ITRS}} = [\boldsymbol{W}]^{-1}[\boldsymbol{R}]^{-1}[\boldsymbol{N}]^{-1}[\boldsymbol{P}]^{-1}\begin{pmatrix} X \\ Y \\ Z \end{pmatrix}_{\mathrm{GCRS}}$$
+
    具体四步物理路径：`J2000.0 协议天球系` $\xrightarrow{\text{岁差 } \boldsymbol{P}^{-1}}$ `瞬时平天球系` $\xrightarrow{\text{章动 } \boldsymbol{N}^{-1}}$ `瞬时真天球系` $\xrightarrow{\text{地球自转 } \boldsymbol{R}_Z(\mathrm{GAST})}$ `瞬时真地球系` $\xrightarrow{\text{极移 } \boldsymbol{W}^{-1}(X_p,Y_p)}$ `协议地球系（ITRS / WGS-84）`。
 3. **同一参考椭球下不同坐标表达形式的严密数学换算（2分）**：
    - **大地坐标 $(B, L, H)$ 与空间直角坐标 $(X, Y, Z)$ 互换**：利用卯酉圈曲率半径 $N = \dfrac{a}{\sqrt{1 - e^2\sin^2 B}}$ 正算 $X = (N+H)\cos B\cos L,\ Y = (N+H)\cos B\sin L,\ Z = [N(1-e^2)+H]\sin B$，反算通过迭代求纬度 $B$；
    - **大地经纬度 $(B, L)$ 与高斯平面直角坐标 $(x, y)$ 互换**：按高斯-克吕格正反算投影公式（指定 $3^\circ$ 或 $6^\circ$ 带中央子午线 $L_0$）严密换算。
 4. **不同三维空间直角坐标系间的转换——布尔莎（Bursa-Wolf）七参数模型（2分）**：
    用于地心系（WGS-84 / CGCS2000）与参心系（北京 54 / 西安 80）或不同 ITRF 框架间的三维基准转换，包含 **3 个平移参数** $(T_X, T_Y, T_Z)$、**3 个微小旋转角** $(\omega_X, \omega_Y, \omega_Z)$ 和 **1 个尺度因子** $m$：
+
    $$\boldsymbol{X}_A = \boldsymbol{T} + (1 + m)\boldsymbol{R}(\omega_X, \omega_Y, \omega_Z)\boldsymbol{X}_B$$
+
    至少需在测区四周均匀选取 **$3$ 个以上不共线的三维公共控制点**按最小二乘法求解（小区域且旋转尺度极小时可简化为三参数平移模型）。
 5. **不同二维平面坐标系间的转换——平面四参数相似变换模型（2分）**：
    当中小测区（$<15\ \mathrm{km}$）旧控制点仅有高斯平面坐标而缺乏高精度大地高时，先将 GNSS 大地经纬度高斯投影至平面，采用含 **2 个平面平移量 $(\Delta X_0, \Delta Y_0)$、1 个平面旋转角 $\alpha$、1 个尺度因子 $m$** 的二维四参数模型转换（最少需 **2 个**公共平面点，工程常取 $\ge 3$ 个检核粗差）。
@@ -272,11 +277,15 @@
    将两个或多个同类型的原始非差观测值相减所得的线性组合虚拟观测值称为**差分观测值**。包含**接收机间求差（站间差）、卫星间求差（星间差）、历元间求差（时差）**三种基本方式。其原理是利用公共钟差参数的严格一致性及星历、大气误差在**空间和时间上的强相关性**，通过相减彻底消除公共参数并大幅削弱系统误差。
 2. **单差观测值（SD：接收机间一次差 $\Delta\varphi_{ij}^p$）构造与效果（2分）**：
    同一历元两台接收机 $i, j$ 对同一颗卫星 $p$ 的观测值相减：
+
    $$\Delta\varphi_{ij}^p(t_1) = \frac{f}{c}\Delta\rho_{ij}^p(t_1) - f V_{t_{ij}}(t_1) - \big[\Delta N_{ij}^p - (\varphi_{0,j} - \varphi_{0,i})\big] - \frac{f}{c}(V_{\mathrm{ion}})_{ij}^p - \frac{f}{c}(V_{\mathrm{trop}})_{ij}^p$$
+
    **完全消除了卫星钟差 $V_{t^p}$ 与卫星端硬件延迟**，大幅削弱星历、电离层与对流层误差；但残留两站相对接收机钟差 $V_{t_{ij}}$ 及机端硬件延迟差，单差模糊度非整数。
 3. **双差观测值（DD：站间星间二次差 $\Delta\varphi_{ij}^{pq}$）构造与恢复整数性原理（2分）**：
    将同历元两颗卫星 $p, q$ 的站间单差再相减：
+
    $$\Delta\varphi_{ij}^{pq}(t_1) = \frac{f}{c}\Delta\rho_{ij}^{pq}(t_1) - \Delta N_{ij}^{pq} - \frac{f}{c}(V_{\mathrm{ion}})_{ij}^{pq} - \frac{f}{c}(V_{\mathrm{trop}})_{ij}^{pq}$$
+
    因同历元不同同频卫星共用完全相同的接收机相对钟差 $-f V_{t_{ij}}(t_1)$ 和机端通道硬件延迟差 $(\varphi_{0,j}-\varphi_{0,i})$，相减后**彻底消除了接收机钟差与机端硬件延迟，使双差模糊度 $\Delta N_{ij}^{pq} \in \mathbb{Z}$ 严格恢复整数特性**，成为精密相对定位与 RTK 最核心的基本观测值。
 4. **三差观测值（TD：站间星间历元间三次差 $\Delta\varphi_{ij}^{pq}(t_1, t_2)$）构造与用途（2分）**：
    将相邻两历元 $t_1, t_2$ 的双差观测值再次相减。在连续跟踪无周跳时，$\Delta N_{ij}^{pq}(t_2) = \Delta N_{ij}^{pq}(t_1)$，相减后**完全消去了双差整周模糊度未知数**；若 $[t_1, t_2]$ 发生周跳，持续的阶跃偏差在三差序列中仅表现为一个单历元孤立尖峰粗差，故三差专门用于**周跳探测修复与求取基线初始近似坐标**。
@@ -305,7 +314,9 @@
    - **M-W 宽巷码相组合**（宽巷相位减窄巷伪距求 $N_\Delta = N_1 - N_2$）：同时消去几何距离、钟差、对流层及一阶电离层延迟，不受动态与采样率限制，但存在**等值周跳盲区 $\Delta N_1 = \Delta N_2$**！
 6. **“M-W + GF”双组合盲区正交互补与唯一解算原理（TurboEdit 核心）（2分）**：
    M-W 的盲区（$\Delta N_1 - \Delta N_2 = 0$）在 GF 中必产生剧烈跳变，GF 的盲区（$\Delta N_1 - \frac{f_1}{f_2}\Delta N_2 = 0$）在 M-W 中必产生显著跳变！将两方程联立：
+
    $$\begin{cases} \Delta N_1 - \Delta N_2 = \Delta N_\Delta \\ \Delta N_1 - \dfrac{f_1}{f_2}\Delta N_2 = \Delta\varphi_{nm} \end{cases}$$
+
    系数行列式 $1 - f_1/f_2 \neq 0$ 恒满秩，不仅彻底消除了探测盲区，还能单站非差直接唯一反解出双频各自独立的整数周跳 $(\Delta N_1, \Delta N_2)$ 完成精确修复。
 
 ---
@@ -323,7 +334,9 @@
    短时段或单历元 RTK 观测卫星几何变化极小，导致浮点模糊度各分量强相关，原始搜索超椭球 $(\hat{\boldsymbol{N}}-\boldsymbol{N})^{\mathrm{T}}\boldsymbol{Q}_{\hat{\boldsymbol{N}}}^{-1}(\hat{\boldsymbol{N}}-\boldsymbol{N}) \le \chi^2$ **极度狭长倾斜**，直接搜索极慢。**LAMBDA 算法**引入变换 $\bar{\boldsymbol{N}} = \boldsymbol{Z}^{\mathrm{T}}\hat{\boldsymbol{N}},\ \boldsymbol{Q}_{\bar{\boldsymbol{N}}} = \boldsymbol{Z}^{\mathrm{T}}\boldsymbol{Q}_{\hat{\boldsymbol{N}}}\boldsymbol{Z}$（保体积整数矩阵 $\boldsymbol{Z}$ 须满足 **① 元素全为整数、② $\lvert \det\boldsymbol{Z} \rvert = 1$**），将狭长椭球变换为近似正交的类球形空间，大幅压缩搜索耗时。
 5. **第三步：条件最小二乘序贯搜索与第四步 Ratio 显著性检验（2分）**：
    在降相关后的正交空间内按条件方差序贯收缩搜索半径，快速找出距离浮点解马氏距离最小的**最优整数候选组 $\boldsymbol{N}_{\mathrm{opt}}^0$** 和**次优整数候选组 $\boldsymbol{N}_{\mathrm{sub}}^0$**，并执行 **Ratio 检验**：
+
    $$\mathrm{Ratio} = \frac{\mu_{\text{次最小}}^2}{\mu_{\min}^2} \ge k_{\text{阈值}} \quad (\text{工程常取 } 2.0 \sim 3.0)$$
+
    确保最优整数解显著优于次优备选解，防止“错误固定（假固定）”。
 6. **回代整数真值输出高精度“固定解（Fixed Solution）”（2分）**：
    一旦通过 Ratio 检验，即将 $\boldsymbol{N}_{\mathrm{opt}}^0$ 作为**精确无误差的已知整数常数**代回原双差方程消去模糊度未知数，按 $\check{\boldsymbol{b}} = \hat{\boldsymbol{b}} - \boldsymbol{Q}_{\hat{\boldsymbol{b}}\hat{\boldsymbol{N}}}\boldsymbol{Q}_{\hat{\boldsymbol{N}}}^{-1}(\hat{\boldsymbol{N}} - \boldsymbol{N}_{\mathrm{opt}}^0)$ 修正基线向量，坐标协方差阵同步大幅收缩，定位精度一举从分米级跃升至**厘米级（动态 RTK）乃至毫米级（静态网）固定解**。
@@ -441,8 +454,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -77,7 +78,9 @@
 
 ### 7. 共线条件方程（Collinearity Condition Equations）
 * **标准定义**：表达理想中心投影构像瞬间，**摄影中心 $S$、像点 $a$ 及其对应物方地面点 $A$ 三点严格位于同一条空间直线上**的解析方程：
+
   $$x - x_0 = -f \frac{a_1(X-X_S)+b_1(Y-Y_S)+c_1(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}, \quad y - y_0 = -f \frac{a_2(X-X_S)+b_2(Y-Y_S)+c_2(Z-Z_S)}{a_3(X-X_S)+b_3(Y-Y_S)+c_3(Z-Z_S)}$$
+
   它是解析与数字摄影测量最核心的基础方程，空间后方交会、前方交会、光束法区域网平差与数字微分纠正均建立在其之上。
 * **【4分采分点】**：① 投影中心 $S$、像点 $a$、地面点 $A$ 三点共线；② 准确写出分式构像方程形式；③ 联系像方坐标、内外方位元素与物方三维坐标共 12 个量；④ 空三与数字微分纠正的通用基础模型。
 
@@ -223,8 +226,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

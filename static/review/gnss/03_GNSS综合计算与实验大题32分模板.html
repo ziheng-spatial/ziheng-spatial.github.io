@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -55,11 +56,17 @@
 
 ### 1. 标准公式链（设全网共 $n$ 个点，$N$ 台接收机同步观测，每点设计设站 $m$ 次）
 1. **理论最少观测时段数与扩展连通时段数**：
+
    $$S_{\min} = \left\lceil \frac{n \cdot m}{N} \right\rceil, \qquad S_{\text{点连}} = \left\lceil \frac{n - 1}{N - 1} \right\rceil, \qquad S_{\text{边连}} = \left\lceil \frac{n - 2}{N - 2} \right\rceil, \qquad S_{\text{网连}} = \left\lceil \frac{n - k}{N - k} \right\rceil$$
+
 2. **四类基线数、设站效率 $e$ 与平均可靠性指标 $\eta$**（无特别说明时取实际时段数 $S = S_{\min}$）：
+
    $$B_A(\text{总基线}) = S \cdot \frac{N(N - 1)}{2}, \qquad B_I(\text{独立基线}) = S \cdot (N - 1)$$
+
    $$B_N(\text{必要基线}) = n - 1, \qquad B_R(\text{多余基线}) = B_I - B_N = S(N - 1) - (n - 1)$$
+
    $$e = \frac{S_{\min}}{S_D}, \qquad \eta = \frac{B_R}{B_I} = 1 - \frac{n - 1}{S(N - 1)}$$
+
 3. **基线向量弦长中误差与 GB/T 18314—2009 五大质量检核限差**（固定误差 $a[\mathrm{mm}]$，比例误差 $b[\mathrm{ppm}]$，平均边长 $d[\mathrm{km}]$）：
    - **弦长中误差**：$\sigma = \sqrt{a^2 + (b \cdot d)^2}\ (\mathrm{mm})$；
    - **三边同步环闭合差限差**：分量 $\lvert W_X \rvert, \lvert W_Y \rvert, \lvert W_Z \rvert \le \dfrac{\sqrt{3}}{5}\sigma$，全长 $W_S = \sqrt{W_X^2 + W_Y^2 + W_Z^2} \le \dfrac{3}{5}\sigma$；
@@ -82,12 +89,16 @@
    - 全网独立基线数：$B_I = 64 \times (5 - 1) = \mathbf{256\ (\text{条})}$；
    - 必要基线数：$B_N = 80 - 1 = \mathbf{79\ (\text{条})}$；
    - 多余基线数与平均可靠性指标：
+
      $$B_R = B_I - B_N = 256 - 79 = \mathbf{177\ (\text{条})}, \qquad \eta = \frac{177}{256} \approx \mathbf{69.14\%}$$
+
 2. **计算弦长中误差 $\sigma$ 与质量检核限差**（已知 $a = 5\ \mathrm{mm},\ b = 1\ \mathrm{ppm},\ d = 12\ \mathrm{km}$）：
    - 弦长中误差：$\sigma = \sqrt{5^2 + (1 \times 12)^2} = \sqrt{25 + 144} = \sqrt{169} = \mathbf{13.0\ \mathrm{mm}}$；
    - 三边同步环全长闭合差限差：$W_{S,\text{同步}} \le \dfrac{3}{5}\sigma = 0.6 \times 13.0 = \mathbf{7.80\ \mathrm{mm}}$（分量限差 $\dfrac{\sqrt{3}}{5}\sigma = \mathbf{4.50\ \mathrm{mm}}$）；
    - 四边异步环（$n_{\text{边}} = 4$）闭合差限差：
+
      $$\text{分量限差} = 3\sqrt{4} \times 13.0 = \mathbf{78.00\ \mathrm{mm}}, \qquad \text{全长限差} = 3\sqrt{3 \times 4} \times 13.0 = 6\sqrt{3} \times 13.0 = \mathbf{135.10\ \mathrm{mm}}$$
+
    - 复测基线长度较差限差：$d_{s,\text{限}} = 2\sqrt{2} \times 13.0 \approx 2.8284 \times 13.0 = \mathbf{36.77\ \mathrm{mm}}$。
 
 ---
@@ -96,14 +107,20 @@
 
 ### 1. 标准五步解题模板
 1. **核心高程转换公式**：
+
    $$H = H_g + N, \qquad H = H_\gamma + \zeta \quad \Longleftrightarrow \quad \zeta_i = H_i - H_{\gamma,i}, \qquad \hat{H}_{\gamma,P} = H_P - \hat{\zeta}_P$$
+
 2. **公共水准点平面坐标重心化归一化**（共 $m$ 个公共点，缩放常数常取 $S_0 = 1000\ \mathrm{m}$）：
+
    $$X_0 = \frac{1}{m}\sum_{i=1}^m X_i, \quad Y_0 = \frac{1}{m}\sum_{i=1}^m Y_i \implies \mathrm{d}X_i = \frac{X_i - X_0}{S_0}, \quad \mathrm{d}Y_i = \frac{Y_i - Y_0}{S_0}$$
+
 3. **建立多项式误差方程 $\boldsymbol{V} = \boldsymbol{B}\hat{\boldsymbol{x}} - \boldsymbol{l}$**：
    - **平面拟合**（$t = 3$ 参数，最少 **$m \ge 3$ 个不共线公共点**）：$\zeta_i = a_0 + a_1\,\mathrm{d}X_i + a_2\,\mathrm{d}Y_i$；
    - **二次曲面拟合**（$t = 6$ 参数，最少 **$m \ge 6$ 个公共点**）：$\zeta_i = a_0 + a_1\,\mathrm{d}X_i + a_2\,\mathrm{d}Y_i + a_3\,\mathrm{d}X_i^2 + a_4\,\mathrm{d}Y_i^2 + a_5\,\mathrm{d}X_i\mathrm{d}Y_i$。
 4. **最小二乘解算与内/外符合精度评定**：
+
    $$\hat{\boldsymbol{x}} = (\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{B})^{-1}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{l}, \qquad \hat{\sigma}_{\text{内}} = \pm\sqrt{\frac{\boldsymbol{V}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{V}}{m - t}}, \qquad \mu_{\text{外}} = \pm\sqrt{\frac{\sum_{j=1}^k (\hat{\zeta}_j - \zeta_j^{\text{实测}})^2}{k}}$$
+
    *（附：平原地区四等水准测量高差闭合差限差为 **$f_{h\text{容}} = \pm 20\sqrt{L}\ \mathrm{mm}$**，$L$ 为路线长 $\mathrm{km}$；如 $L = 2\ \mathrm{km}$ 时容许闭合差为 $\pm 28.3\ \mathrm{mm}$。）*
 5. **内插待定点 $P$ 的正常高**：用公共点重心 $(X_0, Y_0)$ 算 $(\mathrm{d}X_P, \mathrm{d}Y_P) \to$ 代入求 $\hat{\zeta}_P \to \hat{H}_{\gamma,P} = H_P - \hat{\zeta}_P$。
 
@@ -122,16 +139,25 @@
 
 **【满分分步解答】**：
 1. **重心化坐标计算**（取 $S_0 = 1000\ \mathrm{m}$）：
+
    $$X_0 = \frac{1000+3000+3000+1000}{4} = 2000\ \mathrm{m}, \qquad Y_0 = \frac{2000+2000+4000+4000}{4} = 3000\ \mathrm{m}$$
+
    得 $(\mathrm{d}X_i, \mathrm{d}Y_i)$ 依次为：$A(-1, -1),\ B(+1, -1),\ C(+1, +1),\ D(-1, +1)$。
 2. **列立误差方程并最小二乘解算参数**（等权 $\boldsymbol{P} = \boldsymbol{I}$）：
+
    $$\boldsymbol{B} = \begin{bmatrix} 1 & -1 & -1 \\ 1 & +1 & -1 \\ 1 & +1 & +1 \\ 1 & -1 & +1 \end{bmatrix}, \quad \boldsymbol{l} = \begin{bmatrix} -5.196 \\ -5.172 \\ -5.160 \\ -5.188 \end{bmatrix} \implies \boldsymbol{B}^{\mathrm{T}}\boldsymbol{B} = 4\boldsymbol{I}_3, \quad \boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} -20.716 \\ +0.052 \\ +0.020 \end{bmatrix}$$
+
    $$\hat{\boldsymbol{x}} = \frac{1}{4}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} \hat{a}_0 \\ \hat{a}_1 \\ \hat{a}_2 \end{bmatrix} = \begin{bmatrix} \mathbf{-5.179\ \mathrm{m}} \\ \mathbf{+0.013\ \mathrm{m/km}} \\ \mathbf{+0.005\ \mathrm{m/km}} \end{bmatrix} \implies \hat{\zeta} = -5.179 + 0.013\,\mathrm{d}X + 0.005\,\mathrm{d}Y$$
+
 3. **评定内符合拟合中误差**（多余观测 $f = m - t = 4 - 3 = 1$）：
    代回求残差 $v_i = \hat{\zeta}_i - \zeta_i$ 得 $v_A = -1\ \mathrm{mm},\ v_B = +1\ \mathrm{mm},\ v_C = -1\ \mathrm{mm},\ v_D = +1\ \mathrm{mm}$，故：
+
    $$\hat{\sigma}_0 = \pm\sqrt{\frac{(-1)^2 + 1^2 + (-1)^2 + 1^2}{4 - 3}} = \mathbf{\pm 2.0\ \mathrm{mm}}$$
+
 4. **推算待定点 $P$ 的正常高**：
+
    $$\mathrm{d}X_P = \frac{2500 - 2000}{1000} = +0.5\ \mathrm{km}, \qquad \mathrm{d}Y_P = \frac{3400 - 3000}{1000} = +0.4\ \mathrm{km}$$
+
    $$\hat{\zeta}_P = -5.179 + 0.013(0.5) + 0.005(0.4) = -5.1705\ \mathrm{m} \implies \hat{H}_{\gamma,P} = 47.650 - (-5.1705) = \mathbf{52.821\ \mathrm{m}}$$
 
 ---
@@ -140,8 +166,11 @@
 
 ### 1. 时间换算链与 16 参数广播星历十步公式速查
 1. **时间系统固定常数关系**（现行跳秒 $\mathrm{TAI} - \mathrm{UTC} = 37\ \mathrm{s}$；若题目另给跳秒数 $\Delta t_{\mathrm{AT}}$ 则按题给值计算）：
+
    $$\mathrm{UTC} = \text{北京时间} - 8^{\mathrm{h}}, \qquad \mathrm{TAI} - \mathrm{GPST} \equiv 19\ \mathrm{s}, \qquad \mathrm{TAI} - \mathrm{BDT} \equiv 33\ \mathrm{s}, \qquad \mathrm{GPST} - \mathrm{BDT} \equiv 14\ \mathrm{s}$$
+
    $$\mathrm{GPST} = \mathrm{UTC} + 18\ \mathrm{s}, \qquad \mathrm{BDT} = \mathrm{UTC} + 4\ \mathrm{s}, \qquad \mathrm{SOW} = D \times 86400 + \text{时}\times 3600 + \text{分}\times 60 + \text{秒}\ (\text{周日 } D=0)$$
+
 2. **16 参数广播星历解算卫星地固三维坐标标准十步法**：
    - **① 长半轴与平均角速度**：$A = (\sqrt{A})^2,\quad n_0 = \sqrt{GM / A^3},\quad n = n_0 + \Delta n$；
    - **② 归化时间与平近点角**：$t_k = t - t_{oe}$（超 $\pm 302400\ \mathrm{s}$ 加减 $604800\ \mathrm{s}$），$M_k = M_0 + n t_k$；
@@ -151,7 +180,9 @@
    - **⑥ 改正后升交距角、向径与轨道倾角**：$u_k = \phi_k + \delta u_k,\quad r_k = A(1 - e\cos E_k) + \delta r_k,\quad i_k = i_0 + \mathrm{IDOT}\cdot t_k + \delta i_k$；
    - **⑦ 轨道平面直角坐标**：$x_k = r_k\cos u_k,\quad y_k = r_k\sin u_k$；
    - **⑧ GPS 及北斗 MEO/IGSO 升交点经度与地固坐标**：
+
      $$\Omega_k = \Omega_0 + (\dot{\Omega} - \dot{\Omega}_e)t_k - \dot{\Omega}_e t_{oe}, \qquad \begin{bmatrix} X_k \\ Y_k \\ Z_k \end{bmatrix} = \begin{bmatrix} x_k\cos\Omega_k - y_k\cos i_k\sin\Omega_k \\ x_k\sin\Omega_k + y_k\cos i_k\cos\Omega_k \\ y_k\sin i_k \end{bmatrix}$$
+
    - **⑨ 北斗 GEO 卫星专属修正**：令 $\Omega_k = \Omega_0 + \dot{\Omega}t_k - \dot{\Omega}_e t_{oe}$ 算出 $[X_{GK}, Y_{GK}, Z_{GK}]^{\mathrm{T}}$ 后，左乘 $\boldsymbol{R}_Z(\dot{\Omega}_e t_k)\boldsymbol{R}_X(-5^\circ)$ 转回 CGCS2000；
    - **⑩ 信号传播期间地球自转（Sagnac）改正**（$\alpha = \dot{\Omega}_e \tau$）：$X^S = X_k + \alpha Y_k,\ Y^S = Y_k - \alpha X_k,\ Z^S = Z_k$。
 
@@ -163,12 +194,19 @@
 
 **【满分分步解答】**：
 1. **换算至协调世界时 UTC**：
+
    $$\mathrm{UTC} = 10^{\mathrm{h}}30^{\mathrm{m}}00^{\mathrm{s}} - 8^{\mathrm{h}} = \mathbf{2026\text{年}11\text{月}19\text{日（星期四） }02^{\mathrm{h}}30^{\mathrm{m}}00^{\mathrm{s}}}$$
+
 2. **换算至 TAI、GPST 与 BDT 日内时刻**：
+
    $$\mathrm{TAI} = \mathrm{UTC} + 37\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}37^{\mathrm{s}}}$$
+
    $$\mathrm{GPST} = \mathrm{TAI} - 19\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}18^{\mathrm{s}}}, \qquad \mathrm{BDT} = \mathrm{TAI} - 33\ \mathrm{s} = \mathbf{02^{\mathrm{h}}30^{\mathrm{m}}04^{\mathrm{s}}}$$
+
 3. **计算周内秒 SOW**（星期四距本周起点星期日 $0^{\mathrm{h}}$ 已完整经过日、一、二、三共 $D = 4$ 整天）：
+
    $$\mathrm{SOW}_{\mathrm{GPS}} = 4 \times 86400 + 2 \times 3600 + 30 \times 60 + 18 = 345600 + 7200 + 1800 + 18 = \mathbf{354\,618\ \mathrm{s}}$$
+
    $$\mathrm{SOW}_{\mathrm{BDT}} = \mathrm{SOW}_{\mathrm{GPS}} - 14\ \mathrm{s} = \mathbf{354\,604\ \mathrm{s}}$$
 
 ---
@@ -180,10 +218,15 @@
    - 近似几何距离：$\rho_i^0 = \sqrt{(X^i - X^0)^2 + (Y^i - Y^0)^2 + (Z^i - Z^0)^2}$；
    - 方向余弦：$l_i = \dfrac{X^i - X^0}{\rho_i^0},\quad m_i = \dfrac{Y^i - Y^0}{\rho_i^0},\quad n_i = \dfrac{Z^i - Z^0}{\rho_i^0}$；
    - 线性化误差方程 $\boldsymbol{V} = \boldsymbol{B}\hat{\boldsymbol{x}} - \boldsymbol{l}$：
+
      $$\boldsymbol{B}_{k\times 4} = \begin{bmatrix} -l_1 & -m_1 & -n_1 & -1 \\ \vdots & \vdots & \vdots & \vdots \\ -l_k & -m_k & -n_k & -1 \end{bmatrix}, \qquad l_i = \tilde{\rho}_i - \rho_i^0 - cV_{t^S_i} + (V_{\mathrm{ion}})_i + (V_{\mathrm{trop}})_i$$
+
 2. **五大精度衰减因子（DOP）与恒等式**（站心地平系协因数阵 $\boldsymbol{Q}_{\mathrm{NEU}} = \boldsymbol{H}(\boldsymbol{B}^{\mathrm{T}}\boldsymbol{P}\boldsymbol{B})^{-1}\boldsymbol{H}^{\mathrm{T}}$）：
+
    $$\mathrm{HDOP} = \sqrt{q_{NN} + q_{EE}}, \qquad \mathrm{VDOP} = \sqrt{q_{UU}}, \qquad \mathrm{TDOP} = \sqrt{q_{TT}}$$
+
    $$\mathrm{PDOP} = \sqrt{q_{XX} + q_{YY} + q_{ZZ}} = \sqrt{\mathrm{HDOP}^2 + \mathrm{VDOP}^2}, \qquad \mathrm{GDOP} = \sqrt{\mathrm{PDOP}^2 + \mathrm{TDOP}^2}$$
+
    $$\text{平面中误差 } m_H = m_0 \cdot \mathrm{HDOP}, \qquad \text{高程中误差 } m_V = m_0 \cdot \mathrm{VDOP}$$
 
 ---
@@ -194,9 +237,13 @@
 
 **【满分分步解答】**：
 1. **列站心系设计矩阵 $\boldsymbol{B}$**（第 $i$ 行为 $[-\cos E_i\cos A_i,\ -\cos E_i\sin A_i,\ -\sin E_i,\ -1]$）：
+
    $$\boldsymbol{B} = \begin{bmatrix} 0 & 0 & -1 & -1 \\ -\frac{\sqrt{3}}{2} & 0 & -\frac{1}{2} & -1 \\ \frac{\sqrt{3}}{4} & -\frac{3}{4} & -\frac{1}{2} & -1 \\ \frac{\sqrt{3}}{4} & \frac{3}{4} & -\frac{1}{2} & -1 \end{bmatrix} \implies \boldsymbol{B}^{\mathrm{T}}\boldsymbol{B} = \begin{bmatrix} \frac{9}{8} & 0 & 0 & 0 \\ 0 & \frac{9}{8} & 0 & 0 \\ 0 & 0 & \frac{7}{4} & \frac{5}{2} \\ 0 & 0 & \frac{5}{2} & 4 \end{bmatrix}$$
+
 2. **求逆得协因数阵 $\boldsymbol{Q} = (\boldsymbol{B}^{\mathrm{T}}\boldsymbol{B})^{-1}$**：
+
    $$\boldsymbol{Q} = \begin{bmatrix} \frac{8}{9} & 0 & 0 & 0 \\ 0 & \frac{8}{9} & 0 & 0 \\ 0 & 0 & \frac{16}{3} & -\frac{10}{3} \\ 0 & 0 & -\frac{10}{3} & \frac{7}{3} \end{bmatrix}$$
+
 3. **计算五大 DOP 值与定位中误差**：
    - $\mathrm{HDOP} = \sqrt{\frac{8}{9} + \frac{8}{9}} = \dfrac{4}{3} \approx \mathbf{1.333} \implies m_H = 1.5 \times \dfrac{4}{3} = \mathbf{\pm 2.00\ \mathrm{m}}$；
    - $\mathrm{VDOP} = \sqrt{\frac{16}{3}} = \dfrac{4}{\sqrt{3}} \approx \mathbf{2.309} \implies m_V = 1.5 \times \dfrac{4}{\sqrt{3}} \approx \mathbf{\pm 3.46\ \mathrm{m}}$（验证 $\mathrm{VDOP} > \mathrm{HDOP}$）；
@@ -214,11 +261,14 @@
    - **历元三差 $\Delta\varphi_{ij}^{pq}(t_1, t_2)$**：相邻历元相减**彻底消去整周模糊度参数**，用于周跳探测与求初始基线解（噪声 $\sqrt{8}\sigma$）。
 2. **双频无电离层组合（IF/LC）系数推导**：
    令 $\rho_{\mathrm{IF}} = m\rho'_1 + n\rho'_2$ 满足 $m + n = 1$ 且 $\dfrac{m}{f_1^2} + \dfrac{n}{f_2^2} = 0$，解得（GPS $f_1 = 154 f_0,\ f_2 = 120 f_0$）：
+
    $$m = \frac{f_1^2}{f_1^2 - f_2^2} \approx +2.5457, \qquad n = -\frac{f_2^2}{f_1^2 - f_2^2} \approx -1.5457, \qquad \sigma_{\mathrm{IF}} = \sqrt{m^2 + n^2}\,\sigma_1 \approx 3.0\,\sigma_1$$
+
 3. **双频“M-W 宽巷 + GF 电离层残差”联立解算独立周跳 $(\Delta N_1, \Delta N_2)$**：
    - 宽巷等效波长 $\lambda_\Delta = \dfrac{c}{f_1 - f_2} \approx 86.19\ \mathrm{cm}$；M-W 组合测定宽巷跳变 $\Delta N_\Delta = \Delta N_1 - \Delta N_2$；
    - GF 组合 $\varphi_{nm} = \varphi_1 - \dfrac{f_1}{f_2}\varphi_2$ 测定历元间跳变 $\Delta\varphi_{nm} = \Delta N_1 - \dfrac{f_1}{f_2}\Delta N_2$；
    - 两式联立唯一解出：
+
      $$\Delta N_2 = \frac{f_2}{f_2 - f_1}\big(\Delta N_\Delta - \Delta\varphi_{nm}\big), \qquad \Delta N_1 = \Delta N_\Delta + \Delta N_2$$
 
 ---
@@ -229,9 +279,13 @@
 
 **【满分分步解答】**：
 1. **建立双频周跳联立方程组**：
+
    $$\begin{cases} \Delta N_1 - \Delta N_2 = +2.00 \\[4pt] \Delta N_1 - \dfrac{77}{60}\Delta N_2 = +1.15 \end{cases}$$
+
 2. **消元求解整数周跳**：用第 1 式减去第 2 式消去 $\Delta N_1$：
+
    $$\left(\frac{77}{60} - 1\right)\Delta N_2 = 2.00 - 1.15 \implies \frac{17}{60}\Delta N_2 = 0.85 \implies \Delta N_2 = 0.85 \times \frac{60}{17} = \mathbf{+3\ \text{周}}$$
+
    代回第 1 式得：$\Delta N_1 = 2 + 3 = \mathbf{+5\ \text{周}}$。随后将该历元及后续所有连续历元的 $\varphi_1, \varphi_2$ 分别减去 $5$ 周与 $3$ 周即完成精确修复。
 
 ---
@@ -240,8 +294,11 @@
 
 ### 1. 核心公式模板
 1. **布尔莎（Bursa-Wolf）三维七参数线性化模型**（至少 **$k \ge 3$ 个不共线三维公共点**，多余观测数 $f = 3k - 7$；正算前务必将旋转角除以 $\rho'' = 206264.8''$ 化弧度，尺度乘 $10^{-6}$）：
+
    $$\begin{bmatrix} X_i \\ Y_i \\ Z_i \end{bmatrix}_A = \begin{bmatrix} X_i \\ Y_i \\ Z_i \end{bmatrix}_B + \begin{bmatrix} 1 & 0 & 0 & 0 & -Z_{B_i} & +Y_{B_i} & X_{B_i} \\ 0 & 1 & 0 & +Z_{B_i} & 0 & -X_{B_i} & Y_{B_i} \\ 0 & 0 & 1 & -Y_{B_i} & +X_{B_i} & 0 & Z_{B_i} \end{bmatrix}\begin{bmatrix} T_X \\ T_Y \\ T_Z \\ \omega_X \\ \omega_Y \\ \omega_Z \\ m \end{bmatrix}$$
+
 2. **二维平面四参数线性直接解法**（至少 **$k \ge 2$ 个公共平面点**，工程取 $\ge 3$ 点，$f = 2k - 4$；令 $u = m\cos\alpha,\ v = m\sin\alpha$）：
+
    $$\begin{bmatrix} X_{B_i} \\ Y_{B_i} \end{bmatrix} = \begin{bmatrix} 1 & 0 & X_{A_i} & -Y_{A_i} \\ 0 & 1 & Y_{A_i} & X_{A_i} \end{bmatrix}\begin{bmatrix} \Delta X_0 \\ \Delta Y_0 \\ u \\ v \end{bmatrix} \implies m = \sqrt{\hat{u}^2 + \hat{v}^2}, \quad \alpha = \operatorname{atan2}(\hat{v}, \hat{u})$$
 
 ---
@@ -252,7 +309,9 @@
 
 **【满分分步解答】**：
 1. **统一单位化为弧度与无量纲小数**：
+
    $$\omega_X = +1.0\times 10^{-6}\ \mathrm{rad}, \quad \omega_Y = -2.0\times 10^{-6}\ \mathrm{rad}, \quad \omega_Z = +3.0\times 10^{-6}\ \mathrm{rad}, \quad m = +2.5\times 10^{-6}$$
+
 2. **计算三轴坐标增量 $(\Delta X, \Delta Y, \Delta Z)$ 并相加**：
    - $\Delta X = -12.500 + (2.5\times 10^{-6})(-2\times 10^6) - (3\times 10^6)(-2\times 10^{-6}) + (5\times 10^6)(3\times 10^{-6}) = -12.5 - 5.0 + 6.0 + 15.0 = +3.500\ \mathrm{m}$；
    - $\Delta Y = +18.200 + (2.5\times 10^{-6})(5\times 10^6) + (3\times 10^6)(1\times 10^{-6}) - (-2\times 10^6)(3\times 10^{-6}) = +18.2 + 12.5 + 3.0 + 6.0 = +39.700\ \mathrm{m}$；
@@ -334,8 +393,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

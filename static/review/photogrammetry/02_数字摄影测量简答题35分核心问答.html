@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -44,7 +45,9 @@
 2. **双线性插值（双曲抛物面插值）原理与公式（2.5分）**：
    - **核心思想**：取待插点 $(x, y)$ 周围最近的 **$2 \times 2 = 4$ 个相邻整数像素**，遵循**“离哪个已知像素位置越近，所赋权重越大”**的原则，先后沿行、列两个方向各做一次一阶线性内插。
    - **标准公式**：设浮点坐标整数部分为 $(i, j) = (\lfloor x \rfloor, \lfloor y \rfloor)$，局部归一化小数偏移量为 $\Delta x = x - i \in [0, 1),\ \Delta y = y - j \in [0, 1)$（局部四角记为 $(0,0),(1,0),(0,1),(1,1)$），则：
+
      $$g(x, y) = (1 - \Delta x)(1 - \Delta y)g(0,0) + \Delta x(1 - \Delta y)g(1,0) + (1 - \Delta x)\Delta y\,g(0,1) + \Delta x\Delta y\,g(1,1)$$
+
 3. **三种灰度重采样方法全方位对比（3分）**：
 
 | 对比维度 | 最邻近像元法（Nearest Neighbor） | 双线性内插法（Bilinear） | 双三次卷积法（Bicubic） |
@@ -67,7 +70,9 @@
    利用已知的双像外方位元素（或单独法相对定向元素），先通过二维中心射影变换将倾斜的原始左、右像片投影纠正为**严格平行于摄影基线的理想“水平像片”**；在水平像片上，所有核线天然互相平行且平行于摄影基线方向，只需沿基线方向按固定采样间隔 $\Delta$ 逐行映射回原始倾斜像片重采样即可。
 3. **方法二：利用共面条件方程生产核线影像（2分）**：
    - 在完成**单独像对相对定向**后，像空间辅助坐标系以摄影基线为 $X$ 轴（$B_Y = B_Z = 0,\ \omega_1 = 0$）。由共面条件行列式 $\mathbf{B} \cdot (\mathbf{R}_1 \times \mathbf{R}_2) = 0$ 化简得同一核面的不变量常数：
+
      $$K = \frac{Y_1}{Z_1} = \frac{Y_2}{Z_2} = \mathrm{const}$$
+
    - 以左片上给定像点 $p(x_p, y_p)$ 为例，先由 $[X_p, Y_p, Z_p]^{\mathrm{T}} = R_1 [x_p, y_p, -f]^{\mathrm{T}}$ 算出该核面的常数 $K = Y_p / Z_p$；代入左片辅助坐标关系 $Y_1 - K Z_1 = 0$（即 $(b_1 - K c_1)x_1 + (b_2 - K c_2)y_1 - (b_3 - K c_3)f = 0$，右片用 $R_2$ 同理），直接得到过该点的左、右同名核线在原始像平面上的**显式直线方程**，沿该核线直线轨迹按等步长采样坐标并双线性内插灰度即生成该行核线像素。
 4. **方法三：利用投影（旋转）矩阵生产核线影像（2分）**：
    核线重排列的几何本质是将左、右原始影像空间旋转重投影到同一个与基线 $AB$ 平行的虚拟像平面上。构造由三个正交单位向量组成的核线坐标基 $R_E = [\mathbf{X}, \mathbf{Y}, \mathbf{Z}]^{\mathrm{T}}$（令 $\mathbf{X}$ 沿基线向量 $\overrightarrow{AB}$ 方向，临时光轴 $\mathbf{Z}'$ 取两原始主光轴均值，经叉积 $\mathbf{Y} = \mathbf{X} \times \mathbf{Z}',\ \mathbf{Z} = \mathbf{X} \times \mathbf{Y}$ 正交归一化），结合左右原始旋转矩阵构成核线投影变换矩阵（如 $R_L = R_{\mathrm{aopL}} R_E,\ R_R = R_{\mathrm{aopR}} R_E$），按二维射影矩阵直接完成整图核线重采样。
@@ -147,7 +152,9 @@
    能够不经过像方同名点搜索再前方交会的分步过程，直接在物方三维空间建立待求点坐标与多幅影像窗口相似性函数、一步确定物体表面点三维坐标的方法称为**地面元影像匹配（基于物方的匹配）**。**铅垂线轨迹法（VLL，Vertical Line Locus）**利用“平面位置 $(X, Y)$ 已知的地面点必定位于过 $(X, Y)$ 的一条空间铅垂线上，该铅垂线段在左右像片上的中心投影为两条直线轨迹”的几何约束，沿铅垂线离散搜索高程 $Z$ 直至左右反投影像窗口相关系数达到极大值。
 2. **VLL 五步标准计算流程（4分）**：
    - **① 设定铅垂线高程搜索序列**：给定待求地面点（如规则 DEM 格网节点）的平面坐标 $(X, Y)$、测区近似最低高程 $Z_{\min}$、最高高程 $Z_{\max}$ 以及由目标高程精度决定的步距 $\Delta Z$，构造候选高程序列：
+
      $$Z_i = Z_{\min} + i \cdot \Delta Z \qquad (i = 0, 1, 2, \dots, n)$$
+
    - **② 共线方程正算左右像方投影坐标**：对当前高程步 $Z_i$，将三维物点 $(X, Y, Z_i)$ 与已知的左、右像片内外方位元素分别代入**共线条件方程**，直接计算出其在左、右原始像片上的对应像点坐标 $(x_i', y_i')$ 与 $(x_i'', y_i'')$；
    - **③ 提取灰度窗口计算相似性测度**：分别以 $(x_i', y_i')$ 和 $(x_i'', y_i'')$ 为中心，在左、右数字影像上开取局部影像窗口（经灰度重采样），计算两窗口的**归一化相关系数 $\rho_i$**；
    - **④ 搜索离散相关峰值**：令 $i$ 从 $0$ 遍历至 $n$ 重复步骤 ②～③，获得一维高程相关曲线 $\{\rho_0, \rho_1, \dots, \rho_n\}$，找出最大相关系数 $\rho_k = \max\{\rho_0, \rho_1, \dots, \rho_n\}$；
@@ -374,8 +381,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

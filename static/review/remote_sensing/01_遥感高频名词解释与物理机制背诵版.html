@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -119,19 +120,29 @@
 ### 1. 绝对黑体与实际物体辐射定律
 * **绝对黑体（Blackbody）**：对任何波长的入射电磁辐射都全部吸收、既不反射也不透射的理想物体，即光谱吸收率 $\alpha(\lambda, T) = 1$，光谱反射率 $\rho(\lambda, T) = 0$。自然界中黑色的烟煤（吸收率约 $99\%$）、恒星与太阳可近似看作黑体；实验室用带小孔的不透明空腔模拟绝对黑体。
 * **普朗克定律（Planck's Law，黑体辐射定律）**：描述绝对黑体的分谱辐射通量密度（出射度）$W(\lambda)$ 与波长 $\lambda$、绝对温度 $T$ 之间的定量关系：
+
   $$W(\lambda) = \frac{2\pi h c^2}{\lambda^5 \left( e^{\frac{hc}{\lambda k T}} - 1 \right)}$$
+
   **物理意义**：温度越高，各波长的辐射通量密度越大；同一温度下，辐射通量密度随波长先增大到峰值后减小，且不同温度的黑体辐射曲线互不相交。
 * **斯蒂芬-玻尔兹曼定律（Stefan-Boltzmann Law）**：对普朗克公式在全波长范围（$0 \rightarrow \infty$）积分，得到黑体总辐射通量密度 $W$ 与绝对温度 $T$ 的四次方成正比：
+
   $$W = \sigma T^4$$
+
   **物理意义**：总辐射能量随温度升高而急剧增加，微小温度变化即可引起显著的总辐射通量变化，是热红外遥感测温的能量基础。
 * **维恩位移定律（Wien's Displacement Law）**：对普朗克公式关于 $\lambda$ 求一阶导数并令其为 $0$，得到黑体辐射峰值波长 $\lambda_{\max}$ 与绝对温度 $T$ 成反比：
+
   $$\lambda_{\max} \cdot T = b = 2897.8\ \mu\text{m}\cdot\text{K}$$
+
   **物理意义**：随着物体温度升高，其辐射能量密度的峰值波长向短波方向移动。由此决定了常温地物（$300\text{ K}$）探测选用 $8 \sim 14\ \mu\text{m}$ 热红外窗口，而森林林火（$500 \sim 800^\circ\text{C}$，即 $773 \sim 1073\text{ K}$）探测选用 $3 \sim 5\ \mu\text{m}$ 中红外窗口。
 * **基尔霍夫定律（Kirchhoff's Law）与发射率（比辐射率 $\varepsilon$）**：
   * 实际物体的辐射出射度 $M(\lambda, T)$ 与同温度、同波长绝对黑体辐射出射度 $M_0(\lambda, T)$ 之比称为发射率（比辐射率）$\varepsilon(\lambda)$，且等于其吸收率 $\alpha(\lambda)$：
+
     $$M(\lambda, T) = \varepsilon(\lambda) \cdot M_0(\lambda, T), \quad \varepsilon(\lambda) = \alpha(\lambda)$$
+
   * **不透明物体能量守恒关系**：由于透射率 $\tau(\lambda) = 0$，故 $\alpha(\lambda) + \rho(\lambda) = 1$，从而：
+
     $$\varepsilon(\lambda) = 1 - \rho(\lambda)$$
+
     **遥感意义**：反射率越高的地物其发射率越低，因此可以通过测定不透明地物的反射波谱特征间接推算其热红外发射率。
 
 ### 2. 太阳辐射与地球辐射特征
@@ -256,8 +267,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}

@@ -21,6 +21,7 @@
   code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
   blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
   strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
 </style>
 </head>
 <body>
@@ -142,7 +143,9 @@
 
 ### 21. 四交模型（4IM）与九交模型（9IM）
 * **标准定义**：Egenhofer 等提出的形式化表达点集拓扑关系的数学模型。**四交模型（4IM）**将简单空间对象 $A$ 划分为**内部（$A^\circ$）**与**边界（$\partial A$）**两部分，构造 $2 \times 2$ 交集矩阵；**九交模型（9IM）**进一步引入**外部（$A^-$）**，通过比较对象 $A$ 和 $B$ 的内部、边界、外部两两交集是否为空（$\emptyset$ 或 $\neg\emptyset$）及维度（DE-9IM），构建 $3 \times 3$ 拓扑判断矩阵：
+
   $$R(A, B) = \begin{pmatrix} A^\circ \cap B^\circ & A^\circ \cap \partial B & A^\circ \cap B^- \\ \partial A \cap B^\circ & \partial A \cap \partial B & \partial A \cap B^- \\ A^- \cap B^\circ & A^- \cap \partial B & A^- \cap B^- \end{pmatrix}$$
+
   9IM 理论共 $2^9 = 512$ 种布尔组合，去除几何无意义状态后可精确区分二维简单面之间的 **8 种基本拓扑关系**（相离、相接、交叠、相等、包含、覆盖、被包含、被覆盖）。
 * **【4分采分点】**：① 将空间对象形式化划分为内部 $^\circ$、边界 $\partial$、外部 $^-$ 三个点集；② 4IM 为 $2\times 2$ 矩阵（仅内部与边界），9IM 为 $3\times 3$ 矩阵（引入外部完整刻画）；③ 通过矩阵元素空/非空（或维数扩展 DE-9IM）判定八大空间拓扑谓词；④ 是 OGC Simple Features 与空间 SQL（`ST_Contains`、`ST_Touches` 等）的数学基础。
 
@@ -369,8 +372,50 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const raw = document.getElementById("md-raw").textContent;
-    document.getElementById("content").innerHTML = marked.parse(raw);
-    renderMathInElement(document.getElementById("content"), {
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
       delimiters: [
         {left: "$$", right: "$$", display: true},
         {left: "$", right: "$", display: false}
