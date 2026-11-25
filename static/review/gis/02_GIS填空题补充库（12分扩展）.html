@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02_GIS填空题补充库（12分扩展）</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.75; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .nav-bar { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+  .nav-bar a { color: #00ff80; text-decoration: none; font-weight: 600; font-size: 0.95em; }
+  h1, h2, h3 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin-top: 28px; }
+  h1 { color: #00ff80; font-size: 1.7em; }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; min-width: 110px; }
+  th { background: #161b22; color: #58a6ff; }
+  tr:nth-child(even) { background: #12171f; }
+  code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
+  blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
+  strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
+</style>
+<link rel="stylesheet" href="../assets/review-ui.css">
+<script defer src="../assets/review-ui.js"></script>
+</head>
+<body>
+<div class="nav-bar"><a href="../index.html">← 返回复习总目录</a></div>
+<div id="content"></div>
+<script type="text/plain" id="md-raw"># 02 GIS 填空题补充库（12 分扩展）
+
+> **补充库声明**：本篇为 `00` 圈画主库的同题型扩展补充库，已自动剔除 `00` 已收录核心考点（`00` 已覆盖 28 组标星填空与表 2.1 椭球参数），完整收编原版高频数字常数宽表、分类对照表与并列考点。
+> **复习用法**：开启顶部 **「背诵自测模式」** 可自动遮盖每条冒号后的挖空答案，重点牢记 **`【关键词】`** 与数字常数！
+
+---
+
+## 模块一：地球参考系、投影分带与地形图常数（第 1～2 章扩展）
+
+* **1. GIS 起源与工程投资比重**：世界第一个 GIS 为【1963 年】加拿大【Roger Tomlinson】主持建立的【CGIS】；1992 年 Goodchild 提出【地理信息科学（GISc）】；GIS 工程建设经验投资比重为硬件∶软件∶空间数据 $\approx$ 【$1:2:7$】。
+* **2. 我国三大参考系原点与地心扁率**：1954 北京采用【克拉索夫斯基】椭球（参心系，原点前苏联【普尔科沃】）；1980 西安采用【1975 国际椭球】（参心系，原点【陕西泾阳永乐镇】）；【CGCS2000】与【WGS84】均为地心坐标系（CGCS2000 扁率【$1/298.257222101$】，WGS84 扁率【$1/298.257223563$】）。
+* **3. 我国法定高程基准水准原点高程**：1956 黄海高程系水准原点高程为【$72.289\ \mathrm{m}$】；现行【1985 国家高程基准】采用 1952～1979 年青岛大港验潮资料，水准原点高程为【$72.260\ \mathrm{m}$】，我国法定地形高程采用【正常高】。
+* **4. 高斯-克吕格投影实质与 6° 分带常数**：高斯投影实质为【横轴等角切圆柱投影】，中央子午线长度变形比为【$1$】；6° 分带起始经线【$0^\circ$】、全球【$60$】带、中央经线【$L_0 = 6n - 3^\circ$】、我国处于【13～23】带、最大长度变形【$\le 0.14\%$】，适用于【1∶2.5 万～1∶50 万】地形图。
+* **5. 高斯 3° 分带与 8 位 $Y$ 坐标判带规律**：3° 分带起始经线【$1.5^\circ$】、全球【$120$】带、中央经线【$L_0 = 3n$】、我国处于【24～45】带，适用于【1∶1 万】及更大比例尺；横坐标纵轴西移【$500\ \mathrm{km}$】并前置 2 位带号，我国陆地 8 位 $Y$ 坐标前两位 $\le 23$ 必为【6° 带】、$\ge 24$ 必为【3° 带】。
+* **6. UTM 投影关键常数与高斯带号差**：UTM 为【横轴等角割圆柱投影】，中央子午线比例因子为【$0.9996$】，6° 带最大长度变形【$\le 0.04\%$】，适用范围【$80^\circ\mathrm{S} \sim 84^\circ\mathrm{N}$】；自【$180^\circ\mathrm{W}$】起向东分 60 带，与高斯 6° 带相差【$30$】带。
+* **7. 兰勃特与 Web Mercator 投影常数**：兰勃特（Lambert）为【正轴等角割圆锥投影】，【双标准纬线】上无任何变形，用于我国【1∶100 万】及中纬度东西延伸区域；Web Mercator 为正轴等角切圆柱投影，高纬截断于【$\pm 85.05^\circ$】。
+* **8. 布尔沙七参数模型构成**：跨参考椭球三维直角坐标转换需【3 个平移参数】、【3 个旋转角】和【1 个尺度因子】，至少需【3】个三维公共控制点求解。
+* **9. 国家基本比例尺地形图分幅编号常数**：我国有【7】种国家基本比例尺地形图（1∶100 万～1∶1 万）；1∶100 万分幅经差【$6^\circ$】、纬差【$4^\circ$】，行号自赤道起用【`A~V`】（22 行），列号自 $180^\circ$ 向东用【`1~60`】（60 列），现行新图号共【10】位。
+
+---
+
+## 模块二：空间模型、数据结构与拓扑压缩常数（第 3～4 章扩展）
+
+* **10. 空间实体四特征与场模型六载体**：空间实体具备【空间位置】、【属性】、【时间】和【空间关系】四大特征；静态二维场模型常以【规则格网】、【TIN】、【等值线】、【不规则点】、【规则点】和【不规则多边形】六种载体表达。
+* **11. 时空模型常见逻辑实现与线性参照**：时空数据模型常见逻辑结构为【序列快照模型】、【基态修正模型】、【时空复合模型】与面向对象时空模型；线性参照沿线状要素引入一维里程量度【$M$ 值】实现【动态分段】。
+* **12. 四交（4IM）与九交（9IM）模型维数**：4IM 为【$2\times 2$】矩阵（仅内部与边界）；9IM 增入【外部点集 $A^-$】构成【$3\times 3$】矩阵，理论共【$2^9 = 512$】种布尔态，二维简单面间可精确区分【8】种基本拓扑关系（点-点 2 种、点-面 3 种）。
+* **13. 拓扑四表与欧拉公式拓扑检核**：矢量拓扑逻辑四表为【多边形-弧段表】、【结点-弧段表】、【弧段-结点表】和【弧段-多边形表】，图廓外部虚多边形记为【$P_0$】，弧段负号表示【内岛或反向】；单连通平面图欧拉公式为【$V - E + F = 2$】，$k$ 个连通分支时为【$V - E + F = 1 + k$】。
+* **14. 栅格像元赋值四法与压缩编码常数**：矢量转栅格常用像元赋值法为【中心点法】、【面积占优法】、【重要性法】和【长度占优法】；游程长度编码（RLE）记录【`(属性值, 游程长度)`】或`(属性值, 终止列号)`。
+* **15. 四叉树深度、节点与变量数常数**：$2^n \times 2^n$ 栅格四叉树最大深度为【$n$】，满四叉树总节点数为【$(4^{n+1}-1)/3$】；常规四叉树每节点占【6】个变量（1 父指针 + 4 子指针 + 1 属性值）；线性四叉树仅存叶节点，存储量为常规的【$2\% \sim 25\%$】。
+* **16. Freeman 链码、金字塔与矢栅一体化常数**：Freeman 链码采用【`0～7`】八方向码（`0` 东、`2` 北、`4` 西、`6` 南）；地图瓦片常用【$256\times 256$】或 $512\times 512$ 像素，影像金字塔额外增加约【$1/3$】存储空间；矢栅一体化三级格网 `(M0, M1, M2)` 依次对应【粗格网】、【基本格网】、【细分格网】。
+* **17. 栅格矢量化线细化与三维数据结构**：线状栅格转矢量须经【$3\times 3$ 窗口细化】提取单像素骨架（共【$2^8 = 256$】种邻域态，去重 51 种），8 邻域追踪中 0 个前景格为【孤立点】、1 个为【端点】、2 个为【中间点】、$\ge 3$ 个为【拓扑结点】；三维 GIS 两大结构为【八叉树】和【边界表示法（B-rep）】。
+
+---
+
+## 模块三：空间数据库、数据质控、空间分析与实验常数（第 5～8 章 + 实验扩展）
+
+* **18. 空间数据管理演进与 R 树对比**：空间数据管理历经【纯文件】→【文件-关系混合】→【全关系（BLOB）】→【对象-关系数据库（ORDBMS）】；【R 树】允许兄弟节点 MBR 重叠且不拆分实体，【$\mathrm{R}^+$ 树】严禁兄弟 MBR 重叠但须拆分跨界实体以实现单路径点查。
+* **19. 地理配准与线抽稀核心参数**：地理配准中线性/仿射配准至少需【4】个控制点，多项式配准在 SuperMap 实验中要求【$\ge 10$】个点且中误差控制至【$< 1$】，配准参数可导出【`.drfu`】文件；最优矢量线简化算法为【道格拉斯-普克（Douglas-Peucker）】递归分裂法。
+* **20. 拓扑错误四类、接边与质量评价五指标**：矢量常见四类拓扑错误为【伪结点】、【悬挂结点（过头/欠头）】、【碎屑多边形】和【不正规多边形】；图幅拼接含【几何接边】（回缩 2～3 点）与【逻辑接边】；空间数据质量五大评价指标为【数据完整性】、【逻辑一致性】、【位置精度】、【时间精度】和【属性精度】；FGDC 元数据标准 CSDGM 第二版含【7】个主子集、【3】个次子集，共【460】个元素。
+* **21. 矢量叠置三步骤与六大算子代数**：矢量多边形叠置三步为【几何求交】→【拓扑重构】→【属性传递】；六大算子为并【Union（$A\cup B$）】、交【Intersect（$A\cap B$，继承双属性）】、裁剪【Clip（仅保留源图层 $A$ 属性）】、擦除【Erase（$A - A\cap B$）】、标识/同一【Identity（保 $A$ 全域，交区挂 $B$ 属性）】和对称差【SymDiff（$(A\cup B)-(A\cap B)$）】。
+* **22. 窗口统计模式与滤波算子核**：栅格窗口分析按移动方式分为【焦点统计（Focal，窗口重叠）】和【块统计（Block，互不重叠）】；低通平滑滤波常用 $3\times 3$ 均权【$1/9$】滤除噪点，【高通滤波】以中心正高权、四周负权增强边缘。
+* **23. Delaunay 三准则与三大插值性能排序**：TIN 构建遵循 Delaunay 三准则：【形状最佳（最大化最小内角）】、【空外接圆】和【唯一性】；教材与 PPT 对三大插值法对比：速度最快【IDW】、细节保持最优【Kriging】、曲面最光滑【Spline】、对孤立异常点最敏感【IDW】（易生【牛眼】现象）。
+* **24. 坡面因子、宏观地形因子与 D8 水文常数**：坡度【$S = \arctan\sqrt{f_x^2 + f_y^2}$】范围【$[0^\circ, 90^\circ]$】，坡向正北顺时针【$[0^\circ, 360^\circ)$】（平地记【$-1$】）；【剖面曲率】控水流加减速，【平面曲率】控水流汇散；起伏度【$H_{\max}-H_{\min}$】、地表粗糙度【$R \approx 1/\cos S$】（平地为【$1$】）、切割深度【$H_{\text{mean}}-H_{\min}$】；D8 单流向编码为【`1, 2, 4, 8, 16, 32, 64, 128`】，对角高差须除以【$\sqrt{2}$】，山脊处汇流累积量为【$0$】；可视域视点总高 = 【地表高程 + 附加高程】。
+* **25. SuperMap 上机实验高频硬参数**：矢量转栅格设【4 位像素格式】时存储范围为【$[0, 15]$】，越界值（如 20）将被强制置【`0`】；`.tif` 转 `.ecw` 体积骤减因采用【小波压缩】；二维拓扑构网节点容限常设【`2.0`】；DEM 专题图叠盖晕渲常设【`60%`】不透明度；三维淹没模拟设高程【$3000\ \mathrm{m}$】，飞行路径（`.fpf`）高度【$5000\ \mathrm{m}$】。
+
+---
+
+## 模块四：空间统计、视觉变量匹配与 OGC 服务常数（第 9～11 章扩展）
+
+* **26. 空间自相关、热点与半变异函数四参数**：Moran's I 理论期望为【$E[I] = -1/(n-1)$】；Getis-Ord $G_i^*$ 显著正 $z$ 标示【热点（高值聚集）】，显著负 $z$ 标示【冷点（低值聚集）】；半变异函数四参数为【块金值（测量误差+微观变异）】、【基台值（总变异上限）】、【偏基台值（基台减块金）】和【变程（空间相关最大作用距离）】。
+* **27. 空间分级、密度与高级回归统计**：自然断裂法（Jenks）目标是【类间方差最大、类内方差最小】；核密度（KDE）【带宽】越大表面越宏观平滑；【地理加权回归（GWR）】将空间坐标嵌入系数以解决【空间非平稳性】；【地理探测器】统计量 $q \in$ 【$[0, 1]$】，含【分异因子、交互、风险、生态】四探测器。
+* **28. 制图规范、晕渲分类与三维优化**：图面配置主图置于【光学中心】（几何中心偏上），注记习惯【水系用斜体、政区用粗体】，点名放【右上方】，非正北向地图必加【指北针】；地形晕渲按光源分【斜照晕渲】（立体最强）、【直照晕渲】（坡度最明）和【综合光照晕渲】；大规模三维场景渲染优化关键技术为【细节层次模型（LOD）】。
+* **29. 网络 GIS、Web Service 与 Grid 4A 常数**：B/S（WebGIS）浏览器充当【瘦客户端】；Web Service 三大底层协议为【SOAP（调用）】、【WSDL（描述）】和【UDDI（发现）】；Grid GIS 终极愿景为【4A】服务目标：【Anyevent】、【Anytime】、【Anywhere】、【Anyone】。
+
+**【视觉变量几何要素匹配速记表（第 10 章重点）】**：
+
+| 要素维度 | 定性表达（类型差异） | 定量表达（数量/等级） | 必背制图禁忌与规则 |
+| :--- | :--- | :--- | :--- |
+| **点要素** | 首选：**【色调、形状】**；次选：方向 | 首选：**【大小、值、亮度】**；次选：透视高度 | 点注记习惯置于符号 **【右上方】** |
+| **线要素** | 首选：**【色调、形状】** | 首选：**【大小（线宽）】**；次选：透视高度、值、亮度 | 线注记平行走向；水系用 **【斜体】** |
+| **面要素** | 首选：**【色调、形状】**；次选：方向 | 首选：**【值、亮度、饱和度、大小】** | **【派生比率】** 用等值区域图，**【绝对总量】** 用分级符号 |
+| **2.5 维要素** | **【不推荐定性变量】**（忌形状/方向） | 首选：**【透视高度、亮度、值】**；次选：饱和度 | 适合连续高程/透视柱 |
+| **3 维要素** | 首选：**【方向、形状】**；次选：色调 | 首选：**【亮度、值、饱和度】**；次选：大小 | **【不推荐使用“透视高度”】**；配合 **【LOD】** 优化帧率 |
+
+**【OGC 空间信息网络服务标准速记表（第 11 章重点）】**：
+
+| OGC 标准 | 核心中文名称 | 返回 / 传输的实体本质 | 核心区分特征 |
+| :--- | :--- | :--- | :--- |
+| **WMS** | 【网络地图服务】 | 服务端动态渲染的 **【静态栅格图片】**（PNG/JPEG） | 仅浏览与点查，不可编辑几何 |
+| **WMTS** | 【网络地图瓦片服务】 | 预切分的 **【固定尺度静态栅格瓦片】**（`z/y/x`） | 极易 CDN 缓存，高并发秒开 |
+| **WFS** | 【网络要素服务】 | 原始 **【矢量几何坐标与属性】**（GML / GeoJSON） | 支持下载分析与在线事务编辑（**【WFS-T】**） |
+| **WCS** | 【网络覆盖服务】 | 未经渲染的 **【原始科学数值栅格】**（DEM/遥感矩阵） | 保留物理像元值，可供客户端定量计算 |
+| **WPS / CSW / GML** | 处理 / 目录 / 标记语言 | **【在线空间分析算子】** / **【元数据目录】** / **【XML 编码】** | 实现远程分析服务、目录检索与统一数据编码 |
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const raw = document.getElementById("md-raw").textContent;
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>

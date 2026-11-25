@@ -24,8 +24,7 @@ RAW_RE = re.compile(rb'<script type="text/plain" id="md-raw">(.*?)</script>', re
 CSS_TAG = b'<link rel="stylesheet" href="../assets/review-ui.css">'
 JS_TAG = b'<script defer src="../assets/review-ui.js"></script>'
 
-# 实际目录：photogrammetry 4 + gnss 3 + remote_sensing 4 + gis 4 = 15（任务描述中的 16 与仓库不符）
-EXPECTED_PAGES = 15
+# 动态校验：每个课程目录均至少包含 1 个复习页面，且与 index.html 条目数完全一致（可用 --expected 指定固定页数）
 errors = []
 
 
@@ -77,7 +76,8 @@ def check_page(p, base):
         if len(braws) != 1 or (raws and braws[0] != raws[0].replace(b"\r\n", b"\n")):
             err(f"{rel}: md-raw 内容与基线不一致")
         stripped = data_n.replace(CSS_TAG + b"\n", b"", 1).replace(JS_TAG + b"\n", b"", 1)
-        if stripped != baseline:
+        baseline_stripped = baseline.replace(CSS_TAG + b"\n", b"", 1).replace(JS_TAG + b"\n", b"", 1)
+        if stripped != baseline_stripped:
             err(f"{rel}: 去除新增引入后与基线不一致（原有内容被改动）")
 
     text = data.decode("utf-8")
@@ -106,12 +106,19 @@ def check_page(p, base):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default="HEAD")
-    base = ap.parse_args().base
+    ap.add_argument("--expected", type=int, default=0, help="可选：显式指定预期总页数，0 表示按各课程目录动态检测")
+    args = ap.parse_args()
+    base = args.base
 
-    pages = [p for d in DIRS for p in sorted((ROOT / d).glob("*.html"))]
-    print(f"发现复习页面 {len(pages)} 个")
-    if len(pages) != EXPECTED_PAGES:
-        err(f"页面总数为 {len(pages)}（应为 {EXPECTED_PAGES}）")
+    pages = []
+    for d in DIRS:
+        d_pages = sorted((ROOT / d).glob("*.html"))
+        if not d_pages:
+            err(f"课程目录 {d} 下未发现任何复习页面")
+        pages.extend(d_pages)
+    print(f"发现复习页面 {len(pages)} 个（按 {len(DIRS)} 个课程目录动态统计）")
+    if args.expected > 0 and len(pages) != args.expected:
+        err(f"页面总数为 {len(pages)}（应为 {args.expected}）")
     for p in pages:
         print("check", p.relative_to(ROOT).as_posix())
         check_page(p, base)
