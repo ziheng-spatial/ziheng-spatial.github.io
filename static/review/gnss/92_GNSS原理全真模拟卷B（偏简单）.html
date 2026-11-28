@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>92_GNSS原理全真模拟卷B（偏简单）</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.75; max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .nav-bar { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #21262d; }
+  .nav-bar a { color: #00ff80; text-decoration: none; font-weight: 600; font-size: 0.95em; }
+  h1, h2, h3 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin-top: 28px; }
+  h1 { color: #00ff80; font-size: 1.7em; }
+  table { border-collapse: collapse; width: 100%; margin: 18px 0; display: block; overflow-x: auto; }
+  th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; min-width: 110px; }
+  th { background: #161b22; color: #58a6ff; }
+  tr:nth-child(even) { background: #12171f; }
+  code { background: #161b22; color: #ff7b72; padding: 2px 6px; border-radius: 4px; }
+  blockquote { border-left: 4px solid #00b4ff; background: #161b22; margin: 16px 0; padding: 10px 16px; color: #8b949e; }
+  strong { color: #ffa657; }
+  .katex-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 6px 0; }
+</style>
+<link rel="stylesheet" href="../assets/review-ui.css">
+<script defer src="../assets/review-ui.js"></script>
+</head>
+<body>
+<div class="nav-bar"><a href="../index.html">← 返回复习总目录</a></div>
+<div id="content"></div>
+<script type="text/plain" id="md-raw"># 92 GNSS 原理全真模拟卷 B（偏简单）
+
+**适用课程与考纲**：山东理工大学（SDUT）《GNSS 原理与应用》期末全真模拟（偏基础难度 · 与 A 卷完全互补零重复）
+
+**背诵自测说明**：点击页面顶部「**背诵自测模式**」开关，所有答案区将自动模糊遮盖，作答后点击单题即可揭晓核对。
+
+| 题号 | 题型 | 题量与分值 | 考查侧重 |
+| :---: | :--- | :---: | :--- |
+| **一** | 名词解释 | 8 题 × 4 分 = 32 分 | AS 政策、UTC、岁差章动、星历、对流层、DOP、模糊度周跳、高程 |
+| **二** | 简答题 | 3 题 × 12 分 = 36 分 | 坐标基准与转换、电离层 vs 对流层、DGPS 与单站/网络 RTK |
+| **三** | 综合计算与应用题 | 2 题 × 16 分 = 32 分 | **时间换算 SOW + GPS 水准四点拟合** + **CORS RTK 实操与排错** |
+
+---
+
+## 一、名词解释（共 8 小题，每小题 4 分，共 32 分）
+
+### 1. AS 政策（反电子欺骗）与 Z 跟踪技术（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **政策定义**（1 分）：美国国防部自 1994 年起持续实施至今的军用测距码加密防电子欺骗政策；
+> 2. **加密机制**（1 分）：在精码 P 码上模二叠加保密 W 码生成保密 Y 码（$\mathrm{P}\oplus\mathrm{W}=\mathrm{Y}$）；
+> 3. **限制效应**（1 分）：阻止非授权用户直接利用 P 码测距和采用码相关法重建 $L_2$ 载波；
+> 4. **Z 跟踪技术**（1 分）：现代测量型接收机利用 W 码速率低于 P 码约 20 倍的特性分段相关剥离 W 码，无码恢复双频精密伪距与全波长 $L_2$ 载波。
+
+### 2. 协调世界时（UTC）与闰秒（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **系统定位**（1 分）：兼顾原子时均匀秒长与世界时贴近地球自转时刻的国际通用标准时间系统；
+> 2. **秒长基准**（1 分）：UTC 秒长严格等于国际原子时 TAI 秒长；
+> 3. **闰秒机制**（1 分）：通过人为增减整秒（跳秒/闰秒），始终维持 $\lvert \mathrm{UT1} - \mathrm{UTC} \rvert < 0.9\ \mathrm{s}$；
+> 4. **连续性特征**（1 分）：属于秒长均匀但时刻阶跃不连续的时间系统（北京时间 $=\mathrm{UTC}+8^{\mathrm{h}}$）。
+
+### 3. 岁差（Precession）与章动（Nutation）（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **物理成因**（1 分）：日、月及行星对地球赤道隆起部分施加万有引力矩，引起地球自转轴在**天球惯性空间**指向发生周期运动；
+> 2. **岁差**（1 分）：引力矩长期分量使北天极绕北黄极作周期约 $25\,800$ 年的圆锥进动、春分点沿黄道西移；
+> 3. **章动**（1 分）：日月位置周期变化使瞬时真北天极在平均岁差轨迹上叠加短周期摆动（主周期 $18.6$ 年、振幅 $9.2''$）；
+> 4. **参考系作用**（1 分）：仅改变惯性空间轴向（不改变地面点经纬度），是协议天球系转瞬时真天球系的必改项。
+
+### 4. 广播星历与精密星历（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **广播星历定义与参数**（1 分）：主控站定轨并**向前外推预报**、经导航电文第 2/3 子帧实时播发的 **16 参数**摄动开普勒轨道根数；
+> 2. **广播星历精度与用途**（1 分）：实时性强、轨道精度约 $1\ \mathrm{m}$，用于实时导航、SPP 与中短基线相对定位；
+> 3. **精密星历定义与格式**（1 分）：IGS 等中心利用全球站实测数据**事后严密解算**、按 SP3 格式（$15\ \mathrm{min}$ 间隔坐标钟差表）网络发布，需拉格朗日内插；
+> 4. **精密星历精度与用途**（1 分）：最终精度达 $2.5\ \mathrm{cm}$，支撑 PPP 与长基线精密控制网解算。
+
+### 5. 对流层折射延迟（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **空间范围与介质属性**（1 分）：$50\ \mathrm{km}$ 以下中性大气层对微波属**非色散介质**（折射率与信号频率无关，天顶延迟约 $2.3\ \mathrm{m}$）；
+> 2. **码相作用规律**（1 分）：测码伪距与载波相位受到大小与符号完全相等的正延迟，**无法通过双频组合消除**；
+> 3. **干延迟处理**（1 分）：占总延迟约 $90\%$、稳定变化，可用地面气压代入 Saastamoinen/Hopfield 模型改正至毫米级；
+> 4. **湿延迟处理**（1 分）：占 $10\%$ 但水汽时空剧变难建模，精密定位中结合映射函数设为天顶湿延迟参数（ZWD）估计。
+
+### 6. 精度衰减因子（DOP）（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **基本定义**（1 分）：衡量所观测卫星空间几何分布构型对测距误差放大倍数的无量纲指标（$m = m_0\cdot\mathrm{DOP}$）；
+> 2. **五大分类**（1 分）：由协因数阵 $\boldsymbol{Q}=(\boldsymbol{B}^{\mathrm{T}}\boldsymbol{B})^{-1}$ 主对角元开方定义，含几何 GDOP、三维位置 PDOP、平面 HDOP、高程 VDOP 与时间 TDOP；
+> 3. **恒等关系**（1 分）：满足 $\mathrm{GDOP}^2 = \mathrm{PDOP}^2 + \mathrm{TDOP}^2 = \mathrm{HDOP}^2 + \mathrm{VDOP}^2 + \mathrm{TDOP}^2$；
+> 4. **几何规律**（1 分）：与测站-卫星单位矢量所围四面体体积成反比；受地表遮挡恒有 $\mathrm{VDOP} > \mathrm{HDOP}$。
+
+### 7. 整周模糊度与周跳（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **整周模糊度 $N$**（1.5 分）：接收机首次锁定载波瞬间 $t_0$，鉴相器仅能测出不足一周的小数相位，无法直接读出的卫地距所含**未知整周波长数 $N$**（双差后具严格整数性，经 LAMBDA 固定达厘米/毫米级）；
+> 2. **周跳定义**（1.5 分）：连续跟踪中因遮挡、强干扰等导致锁相环暂时失锁、整周计数器中断，重捕后**整周计数出现整数周 $\delta N$ 阶跃跳变而小数相位仍正确**的现象；
+> 3. **周跳特征与探测**（1 分）：具整周性、向后历元继承累积性与粗差破坏性，常用三差法或 M-W + GF 组合探测修复。
+
+### 8. 大地高（$H$）、正常高（$H_\gamma$）与高程异常（$\zeta$）（4 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **大地高 $H$**（1 分）：地面点沿参考椭球法线到**参考椭球面**的纯几何距离（GNSS 直接测得）；
+> 2. **正常高 $H_\gamma$**（1 分）：地面点沿铅垂线到**似大地水准面**的距离（我国 1985 国家高程基准法定系统）；
+> 3. **高程异常 $\zeta$ 与核心关系**（1 分）：似大地水准面高出参考椭球面的距离，满足核心公式 **$H = H_\gamma + \zeta$**；
+> 4. **工程转换方法**（1 分）：利用公共水准点算 $\zeta_i = H_i - H_{\gamma,i}$ 并曲面拟合内插（GPS 水准）将大地高转换为实用正常高。
+
+---
+
+## 二、简答题（共 3 小题，每小题 12 分，共 36 分）
+
+### 9. 阐述我国常用三大国家大地坐标系（Beijing54、Xian80、CGCS2000）的特征及与 WGS-84 的异同，并简述不同坐标系之间的常用转换模型。（12 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **北京 54 与西安 80 参心坐标系特征**（2 分）：**Beijing54** 采用克拉索夫斯基椭球（$a=6\,378\,245\ \mathrm{m}$），原点在苏联普尔科沃；**Xian80** 采用 IAG 1975 椭球（$a=6\,378\,140\ \mathrm{m}$），原点在陕西泾阳永乐镇——两者均为局部最佳贴合的**参心坐标系**（椭球中心偏离地心数十至百米）。
+> 2. **CGCS2000 与 WGS-84 的高度一致性**（2 分）：**CGCS2000**（我国现行法定与北斗基准）与 **WGS-84**（GPS 基准）同属全球地心地固右手直角坐标系（原点均为含海洋大气的地球质心、三轴协议定义相同、椭球长半轴均为 $a=6\,378\,137\ \mathrm{m}$），仅因扁率 $J_2$ 微差致极半径差约 $0.1\ \mathrm{mm}$，同历元常规工程可直接等同；而与参心系绝对不可直接混用。
+> 3. **天球系（GCRS）转地球系（ITRS）四步链路**（2 分）：依次经岁差 $\boldsymbol{P}^{-1}$、章动 $\boldsymbol{N}^{-1}$、地球自转 $\boldsymbol{R}^{-1}$ 与极移 $\boldsymbol{W}^{-1}$ 四步旋转矩阵转换：$\boldsymbol{X}_{\mathrm{ITRS}} = \boldsymbol{W}^{-1}\boldsymbol{R}^{-1}\boldsymbol{N}^{-1}\boldsymbol{P}^{-1}\boldsymbol{X}_{\mathrm{GCRS}}$。
+> 4. **三维基准转换——布尔莎（Bursa-Wolf）七参数模型**（2 分）：用于地心系与参心系或不同框架三维直角坐标转换，含 3 个平移 $(T_X,T_Y,T_Z)$、3 个微小旋转 $(\omega_X,\omega_Y,\omega_Z)$ 与 1 个尺度 $m$，至少需 **3 个不共线三维公共点**求解。
+> 5. **二维平面转换——平面四参数相似变换模型**（2 分）：当小测区缺乏高精度大地高时，先高斯投影至平面，再用含 2 平移 $(\Delta X_0,\Delta Y_0)$、1 旋转 $\alpha$ 与 1 尺度 $m$ 的平面四参数转换（最少 **2 个**公共点，工程取 $\ge 3$ 点）。
+> 6. **高程基准转换——GPS 水准法**（2 分）：利用均匀联测的公共水准点求高程异常 $\zeta_i=H_i-H_{\gamma,i}$，通过平面或二次曲面多项式拟合将 GNSS 大地高转换为国家正常高。
+
+### 10. 详细对比电离层折射延迟与对流层折射延迟在大气物理性质、对码与载波影响规律以及削弱处理方法上的核心差异。（12 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **空间高度与介质色散性本质不同**（2 分）：**电离层**位于 $60\sim 1000\ \mathrm{km}$ 高空，为自由电子构成的**色散介质**（折射率随频率 $f$ 变化）；**对流层**位于 $50\ \mathrm{km}$ 以下中性大气底层，对 GNSS 微波为**非色散介质**（折射率与频率无关）。
+> 2. **对伪距与载波相位的作用方向不同**（2 分）：**电离层等大反向**——测码伪距群速度变慢出现**群延迟（变长 $+I$）**，载波相速度超光速出现**相超前（变短 $-I$）**，$I=\frac{40.3}{f^2}\mathrm{TEC}$；**对流层同向等量**——伪距与载波发生完全相等的正延迟（均变长）。
+> 3. **误差量级与时空主导因素不同**（2 分）：电离层天顶白天 $5\sim 15\ \mathrm{m}$（低仰角 $>50\ \mathrm{m}$），受太阳活动与昼夜磁纬剧烈支配；对流层天顶总延迟约 $2.3\ \mathrm{m}$（低仰角 $>20\ \mathrm{m}$），分为稳定的**干分量（90%）** 和随水汽剧变的**湿分量（10%）**。
+> 4. **双频线性组合消除效果截然不同**（2 分）：电离层延迟与 $1/f^2$ 成正比，**双频无电离层组合（LC/IF）可消除 $>99\%$ 一阶延迟**；对流层与频率完全无关，**任何多频组合均无法消除对流层延迟**。
+> 5. **模型改正与参数估计策略不同**（2 分）：单频电离层用 8 参数 Klobuchar 模型改正 $60\%\sim 70\%$；对流层干延迟用实测气压代入 Saastamoinen/Hopfield 模型改正至毫米级，湿延迟则结合映射函数设天顶湿延迟参数（ZWD）在平差中估计。
+> 6. **站间相对定位差分削弱边界不同**（2 分）：短基线（$<15\ \mathrm{km}$）且站间高差较小时，单/双差可大幅抵消两类大气延迟；但长基线须用双频消电离层，**测站间高差悬殊时即使基线很短也必须估计相对对流层参数**。
+
+### 11. 对比广义差分定位（DGPS）中的“位置差分”与“伪距差分（距离差分）”原理及优缺点，并对比传统单基站 RTK 与网络 RTK（CORS）的工作原理及优势。（12 分）
+
+> **【参考答案与分步采分点】**：
+> 1. **位置差分原理与局限**（2 分）：基准站将单点定位坐标与已知真值比较求得三维坐标改正数 $(\Delta X,\Delta Y,\Delta Z)$ 发给流动站直接修正坐标；**致命缺陷**是强依赖同一 DOP 矩阵，**要求两站必须同步观测完全相同的一组卫星**，遮挡少星即产生大错，工程极少用。
+> 2. **伪距差分（距离差分）原理与优势**（2 分）：基准站反算至全部可见星真实几何距与实测伪距之差，播发每星**伪距改正数 $\mathrm{PRC}_i$ 及其变化率 $\mathrm{RRC}_i$**；流动站用自身可见任意 $\ge 4$ 颗星修正伪距后独立平差定位，**解除同星座束缚、顾及传输时延、精度达 $0.5\sim 2\ \mathrm{m}$**，是海事/车载主流 DGPS。
+> 3. **传统单基站 RTK 原理**（2 分）：在已知点自建基准站，经 UHF 电台播发载波相位与站坐标，流动站实时组建**载波相位双差方程**并借助 **OTF（LAMBDA）算法**秒级固定整周模糊度，实时输出厘米级三维坐标。
+> 4. **传统单基站 RTK 优缺点**（2 分）：优点是实时厘米级、无需点间通视、作业效率高；缺点是**作业半径受限（$<10\sim 15\ \mathrm{km}$）**、精度随站距线性衰减、电台易受遮挡干扰且每次须人工架设看守基准站。
+> 5. **网络 RTK（CORS）核心原理**（2 分）：按 $50\sim 100\ \mathrm{km}$ 站距建多座永久连续运行参考站，控制中心实时固定基站网模糊度并构建**区域电离层、对流层与星历误差内插模型**，通过 **VRS（虚拟参考站）/ MAC / FKP** 与 4G/5G 网络向流动站播发定制虚拟差分流。
+> 6. **网络 RTK（CORS）四大优势**（2 分）：① 覆盖范围极广（站距 $50\sim 100\ \mathrm{km}$）；② 消除距离衰减，全网均匀厘米级精度（$1\sim 3\ \mathrm{cm}$）；③ **单人单机免建基站**轻便作业；④ 多站冗余完好性监控，可靠性极高。
+
+---
+
+## 三、综合计算与应用题（共 2 小题，每小题 16 分，共 32 分）
+
+### 12. 【基础必考 · 时间系统换算 SOW 与 GPS 水准四点平面拟合计算】（16 分）
+
+（1）（6 分）已知观测时刻为北京时间 2026 年 11 月 24 日（星期二）$14^{\mathrm{h}}20^{\mathrm{m}}00^{\mathrm{s}}$，设当前 $\mathrm{TAI} - \mathrm{UTC} = 37\ \mathrm{s}$（且恒有 $\mathrm{TAI} - \mathrm{GPST} = 19\ \mathrm{s}$，$\mathrm{TAI} - \mathrm{BDT} = 33\ \mathrm{s}$）。求此刻对应的 UTC 时刻、国际原子时 TAI、GPS 时（GPST）与北斗时（BDT）日内时刻，并计算 GPS 周内秒 $\mathrm{SOW}_{\mathrm{GPS}}$ 与北斗周内秒 $\mathrm{SOW}_{\mathrm{BDT}}$。<br>
+（2）（10 分）某平坦测区均匀布设 $A, B, C, D$ 共 4 个等权 GPS 水准公共点，测得平面坐标与大地高 $H$、水准正常高 $H_\gamma$ 如下表。试用坐标重心化归一化（取缩放常数 $S_0 = 1000\ \mathrm{m}$）构建平面拟合模型 $\zeta = a_0 + a_1\,\mathrm{d}X + a_2\,\mathrm{d}Y$ 求解参数，评定内符合精度 $\hat{\sigma}_0$，并推算待定点 $P(X_P = 3500\ \mathrm{m},\ Y_P = 4500\ \mathrm{m},\ H_P = 32.500\ \mathrm{m})$ 的正常高 $\hat{H}_{\gamma,P}$。
+
+| 点名 | $X_i\ (\mathrm{m})$ | $Y_i\ (\mathrm{m})$ | 大地高 $H_i\ (\mathrm{m})$ | 正常高 $H_{\gamma,i}\ (\mathrm{m})$ |
+| :---: | :---: | :---: | :---: | :---: |
+| **$A$** | $2000$ | $3000$ | $30.100$ | $40.308$ |
+| **$B$** | $4000$ | $3000$ | $31.420$ | $41.592$ |
+| **$C$** | $4000$ | $5000$ | $33.050$ | $43.238$ |
+| **$D$** | $2000$ | $5000$ | $31.810$ | $42.042$ |
+
+> **【参考答案与分步采分点】**：
+>
+> **（1）时间系统换算与周内秒 SOW 计算（6 分）**：
+> - 协调世界时（1 分）：$\mathrm{UTC} = \text{北京时间} - 8^{\mathrm{h}} = 14^{\mathrm{h}}20^{\mathrm{m}}00^{\mathrm{s}} - 8^{\mathrm{h}} = \mathbf{2026\text{年}11\text{月}24\text{日（星期二） }06^{\mathrm{h}}20^{\mathrm{m}}00^{\mathrm{s}}}$；
+> - TAI、GPST 与 BDT 日内时刻（2 分）：
+>
+> $$\mathrm{TAI} = \mathrm{UTC} + 37\ \mathrm{s} = \mathbf{06^{\mathrm{h}}20^{\mathrm{m}}37^{\mathrm{s}}}, \quad \mathrm{GPST} = \mathrm{TAI} - 19\ \mathrm{s} = \mathbf{06^{\mathrm{h}}20^{\mathrm{m}}18^{\mathrm{s}}}, \quad \mathrm{BDT} = \mathrm{TAI} - 33\ \mathrm{s} = \mathbf{06^{\mathrm{h}}20^{\mathrm{m}}04^{\mathrm{s}}}$$
+>
+> - 周内秒计算（3 分，GPS/BDT 均以星期日 $0^{\mathrm{h}}$ 为起点，星期二已完整经过日、一共 $D = 2$ 整天）：
+>
+> $$\mathrm{SOW}_{\mathrm{GPS}} = 2 \times 86400 + 6 \times 3600 + 20 \times 60 + 18 = 172800 + 21600 + 1200 + 18 = \mathbf{195\,618\ \mathrm{s}}$$
+>
+> $$\mathrm{SOW}_{\mathrm{BDT}} = \mathrm{SOW}_{\mathrm{GPS}} - 14\ \mathrm{s} = \mathbf{195\,604\ \mathrm{s}}$$
+>
+> **（2）GPS 水准四点平面拟合计算（10 分）**：
+> - 求实测高程异常 $\zeta_i = H_i - H_{\gamma,i}$ 与重心化坐标（2 分）：
+>   $\zeta_A = 30.100 - 40.308 = -10.208\ \mathrm{m}$，$\zeta_B = -10.172\ \mathrm{m}$，$\zeta_C = -10.188\ \mathrm{m}$，$\zeta_D = -10.232\ \mathrm{m}$；
+>   重心 $X_0 = 3000\ \mathrm{m},\ Y_0 = 4000\ \mathrm{m}$，$S_0 = 1000\ \mathrm{m} \implies (\mathrm{d}X_i, \mathrm{d}Y_i)$ 依次为 $A(-1,-1),\ B(+1,-1),\ C(+1,+1),\ D(-1,+1)$。
+> - 列误差方程并最小二乘解算（4 分）：
+>
+> $$\boldsymbol{B} = \begin{bmatrix} 1 & -1 & -1 \\ 1 & +1 & -1 \\ 1 & +1 & +1 \\ 1 & -1 & +1 \end{bmatrix}, \quad \boldsymbol{l} = \begin{bmatrix} -10.208 \\ -10.172 \\ -10.188 \\ -10.232 \end{bmatrix} \implies \boldsymbol{B}^{\mathrm{T}}\boldsymbol{B} = 4\boldsymbol{I}_3, \quad \boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} -40.800 \\ +0.080 \\ -0.040 \end{bmatrix}$$
+>
+> $$\hat{\boldsymbol{x}} = \frac{1}{4}\boldsymbol{B}^{\mathrm{T}}\boldsymbol{l} = \begin{bmatrix} \mathbf{-10.200\ \mathrm{m}} \\ \mathbf{+0.020\ \mathrm{m/km}} \\ \mathbf{-0.010\ \mathrm{m/km}} \end{bmatrix} \implies \hat{\zeta} = -10.200 + 0.020\,\mathrm{d}X - 0.010\,\mathrm{d}Y$$
+>
+> - 内符合拟合中误差评定（2 分，多余观测 $f = 4 - 3 = 1$）：回代算残差 $v_i = \hat{\zeta}_i - \zeta_i$ 得 $v_A = -2\ \mathrm{mm},\ v_B = +2\ \mathrm{mm},\ v_C = -2\ \mathrm{mm},\ v_D = +2\ \mathrm{mm}$，故：
+>
+> $$\hat{\sigma}_0 = \pm\sqrt{\frac{(-2)^2 + 2^2 + (-2)^2 + 2^2}{4 - 3}} = \pm\sqrt{16} = \mathbf{\pm 4.0\ \mathrm{mm}}$$
+>
+> - 推算待定点 $P$ 的正常高（2 分）：$\mathrm{d}X_P = \dfrac{3500 - 3000}{1000} = +0.5\ \mathrm{km}$，$\mathrm{d}Y_P = \dfrac{4500 - 4000}{1000} = +0.5\ \mathrm{km}$：
+>
+> $$\hat{\zeta}_P = -10.200 + 0.020(0.5) - 0.010(0.5) = -10.195\ \mathrm{m} \implies \hat{H}_{\gamma,P} = H_P - \hat{\zeta}_P = 32.500 - (-10.195) = \mathbf{42.695\ \mathrm{m}}$$
+>
+>   （故待定点 $P$ 的正常高为 $42.695\ \mathrm{m}$。）
+
+### 13. 【实验与工程综合 · 网络 RTK（CORS）外业操作配置与三大故障诊断】（16 分）
+
+结合外业网络 RTK（CORS）碎部测量实验，完成以下设计：
+
+（1）详述使用网络 RTK（CORS）与手簿进行地形图碎部测量的五步标准操作流程及关键参数设置（含坐标系、数据链、CORS 端口与挂载点、已知点检核与导出要点）；（10 分）<br>
+（2）现场作业遇到以下三种异常状态时，分别分析原因并给出排查对策：① 一直显示“单点解”；② 差分延迟正常但长期停留在“浮点解”；③ 显示“固定解”但上已知控制点检核相差数十厘米甚至上百米。（6 分）
+
+> **【参考答案与分步采分点】**：
+>
+> **（1）网络 RTK（CORS）五步标准外业流程与关键配置（10 分）**：
+> - **Step 1：单机组装与新建工程**（2 分）：组装流动站、对中杆与手簿蓝牙连接；新建工程设置目标椭球（**CGCS2000**）及高斯投影 **$3^\circ$ 带中央子午线**；输入对中杆高（直高）并校准电子气泡。
+> - **Step 2：配置移动站数据链**（2 分）：将移动站数据链设为“接收机移动网络（SIM 卡）”或“手簿网络（热点）”，关闭电台路由，设卫星截止高度角 $10^\circ\sim 15^\circ$。
+> - **Step 3：登录 CORS 并选择挂载点**（2 分）：输入 CORS 服务器 IP/域名、**匹配目标坐标框架的端口号**（如 8003 对应 CGCS2000，选错会引起分米～米级偏差）、账号密码；获取接入点选择五星十六频挂载点（如 `RTCM33GRCEJ`），**开启自动上传 NMEA-GGA** 以便 VRS 生成虚拟参考站。
+> - **Step 4：OTF 固定与已知点检核**（2 分）：开阔处确认差分延迟 $1\sim 2\ \mathrm{s}$、解状态变为 **【固定解 Fixed】**（HRMS/VRMS $<2\sim 3\ \mathrm{cm}$）；正式测图前必须到测区已知控制点实测比对检核（若用地方独立系需联测 $\ge 3\sim 4$ 个均匀控制点做点校正）。
+> - **Step 5：碎部采集与导出**（2 分）：保持气泡居中与固定解采点（树下/墙角改偏心或全站仪补测）；收工导出南方 CASS `.dat` 文件（注意第 3 列为东坐标 $Y$、第 4 列为北坐标 $X$，防止纵横轴反序）。
+>
+> **（2）现场三大异常诊断与排查（6 分）**：
+> - **① 一直显示“单点解”（差分延迟无变化，2 分）**：通信链路中断未收到差分流。排查 SIM 卡流量/信号、手簿热点、IP/端口/账号密码拼写、是否点击获取并选中挂载点、是否勾选自动发 GGA。
+> - **② 差分延迟正常但卡“浮点解”（2 分）**：卫星遮挡严重或周跳多路径频发。排查头顶树冠、高楼夹缝、旁侧水面/玻璃幕墙或高压线干扰，移至开阔处重新初始化并切换多星多频挂载点。
+> - **③ 显示“固定解”但已知点检核超差（2 分）**：相差数十至上百公里查**中央子午线或带号是否设错**；相差数十厘米至数米查 **CORS 端口框架是否选错、杆高输错或点校正混入错误控制点**；树荫边缘相差十余厘米则为模糊度**假固定**，需重置 RTK 解算引擎重测核对。</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const raw = document.getElementById("md-raw").textContent;
+    const codeMasks = [];
+    const mathBlocks = [];
+    const mathInlines = [];
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    let safe = raw.replace(/```[\s\S]*?```|`[^`\n]+`/g, function(m) {
+      const id = "KATEXCODEMASK" + codeMasks.length + "END";
+      codeMasks.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/\$\$([\s\S]*?)\$\$/g, function(m) {
+      const id = "KATEXMATHBLOCK" + mathBlocks.length + "END";
+      mathBlocks.push(m);
+      return id;
+    });
+    safe = safe.replace(/\$([^\$\n]+?)\$/g, function(m) {
+      const id = "KATEXMATHINLINE" + mathInlines.length + "END";
+      mathInlines.push(m);
+      return id;
+    });
+
+    safe = safe.replace(/KATEXCODEMASK(\d+)END/g, function(_, i) {
+      return codeMasks[Number(i)];
+    });
+
+    let html = marked.parse(safe);
+
+    html = html.replace(/KATEXMATHBLOCK(\d+)END/g, function(_, i) {
+      return escapeHtml(mathBlocks[Number(i)]);
+    });
+    html = html.replace(/KATEXMATHINLINE(\d+)END/g, function(_, i) {
+      return escapeHtml(mathInlines[Number(i)]);
+    });
+
+    const container = document.getElementById("content");
+    container.innerHTML = html;
+    renderMathInElement(container, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+</body>
+</html>
